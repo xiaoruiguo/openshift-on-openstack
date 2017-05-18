@@ -2,10 +2,6 @@
 #
 # Prepare an OpenShift node VM for configuration by Ansible
 #
-# ENVVARS
-#   WC_NOTIFY - a curl URL from an OpenStack WaitCondition
-#               send status to OpenStack
-#
 # CONSTANTS
 #
 # The device to mount to store Docker images and containers
@@ -20,14 +16,6 @@ set -o pipefail
 
 source /usr/local/share/openshift-on-openstack/common_functions.sh
 source /usr/local/share/openshift-on-openstack/common_openshift_functions.sh
-sed -i '$a proxy=http://opscloud:cloud0518@10.53.13.245:3128/' /etc/yum.conf
-yum install wget git -y
-sed -i '$a https_proxy=http://opscloud:cloud0518@10.53.13.245:3128/' /etc/wgetrc
-sed -i '$a http_proxy =http://opscloud:cloud0518@10.53.13.245:3128/' /etc/wgetrc
-sed -i '$a ftp_proxy =http://opscloud:cloud0518@10.53.13.245:3128/' /etc/wgetrc
-git config --global http.proxy  http://opscloud:cloud0518@10.53.13.245:3128
-git config --global http.proxy  https://opscloud:cloud0518@10.53.13.245:3128
-
 
 
 ifup eth1
@@ -43,13 +31,14 @@ then
     systemd_add_docker_socket
 fi
 
-docker_set_storage_device $VOLUME_ID
-
 # lvmetad allows new volumes to be configured and made available as they appear
 # This is good for dynamically created volumes in a cloud provider service
 systemctl enable lvm2-lvmetad
 systemctl start lvm2-lvmetad
 
-/usr/bin/docker-storage-setup || notify_failure "Docker Storage setup failed"
+if [ -n "$VOLUME_ID" ]
+then
+    docker_set_storage_device $VOLUME_ID
+fi
 
 notify_success "OpenShift node has been prepared for running docker."

@@ -159,7 +159,7 @@ parameters:
 
   loadbalancer_type:
     type: string
-    default: none
+    default: neutron
     description: >
       Loadbalancer type used for loadbalancing console/API/router requests.
       See 'Select Loadbalancer Type' section in README for more details.

@@ -6,7 +6,7 @@ parameters:
   # This value is used to select the RPM repo for the OSP release to install
   osp_version:
     type: string
-    default: "15"
+    default: "10"
     description: >
       The version of OpenStack Platform to use to collect data
 
