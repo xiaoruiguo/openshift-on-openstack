@@ -197,7 +197,7 @@ parameters:
 
    # Set an existing network for inbound and outbound traffic
    external_network: public
-   dns_nameserver: 8.8.4.4,8.8.8.8
+   dns_nameserver: 10.238.19.24,8.8.8.8
 
    # Define the host name templates for master and nodes
    domain_name: "example.com"

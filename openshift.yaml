@@ -1,4 +1,4 @@
-heat_template_version: 2014-10-16
+heat_template_version: 2017-02-24
 
 description: >
   Deploy Atomic/OpenShift 3 on OpenStack.
@@ -9,7 +9,7 @@ parameters:
   # This value is used to select the RPM repo for the OCP release to install
   ocp_version:
     type: string
-    default: "3.5"
+    default: "1.5.2"
     description: >
       The version of OpenShift Container Platform to deploy
 
