@@ -216,7 +216,7 @@ resources:
       parts:
       - config: {get_resource: set_hostname}
       - config: {get_resource: included_files}
-      - config: {get_resource: set_proxy}
+#      - config: {get_resource: set_proxy}
       - config: {get_resource: update_ca_cert}
       - config: {get_resource: set_extra_repos}
       - config: {get_resource: set_extra_docker_repos}
@@ -285,10 +285,10 @@ resources:
         - {get_param: ansible_public_key}
 
   # Add CA Cert to trust chain
-  set_proxy:
-    type: OS::Heat::SoftwareConfig
-    properties:
-      config: {get_file: fragments/set_proxy.sh}
+#  set_proxy:
+#    type: OS::Heat::SoftwareConfig
+#    properties:
+#      config: {get_file: fragments/set_proxy.sh}
 
   # Add CA Cert to trust chain
   update_ca_cert:
@@ -411,9 +411,9 @@ resources:
 
   # Additional space for Docker container and image storage
   docker_volume:
-    name: Bastion Volume
     type: OS::Cinder::Volume
     properties:
+      description: Bastion Volume
       size: {get_param: docker_volume_size}
 
   # Bind docker file space to the host filesystem
