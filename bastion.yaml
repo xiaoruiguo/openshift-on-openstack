@@ -225,7 +225,6 @@ resources:
       - port: {get_param: port}
       user_data_format: SOFTWARE_CONFIG
       user_data: {get_resource: init}
-      software_config_transport: POLL_SERVER_HEAT
 
   # Install, configure and enable the Heat configuration agent
   config_agent:
@@ -417,7 +416,6 @@ resources:
         get_resource: host
       input_values:
         node_count: {get_param: node_count}
-      signal_transport: HEAT_SIGNAL
 
   deployment_write_templates:
     depends_on: wait_condition
@@ -427,7 +425,6 @@ resources:
         get_resource: write_templates
       server:
         get_resource: host
-      signal_transport: HEAT_SIGNAL
 
   # Apply ansible performance tuning values
   tune_ansible:
@@ -447,7 +444,6 @@ resources:
         get_resource: tune_ansible
       server:
         get_resource: host
-      signal_transport: HEAT_SIGNAL
 
   node_cleanup:
     type: OS::Heat::SoftwareConfig
@@ -467,7 +463,6 @@ resources:
         get_resource: node_cleanup
       server:
         get_resource: host
-      signal_transport: HEAT_SIGNAL
 
   # Additional space for Docker container and image storage
   docker_volume:
