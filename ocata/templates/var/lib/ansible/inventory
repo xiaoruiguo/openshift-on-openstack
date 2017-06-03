@@ -1,0 +1,64 @@
+mkdir -p /var/lib/os-apply-config/templates/var/lib/ansible
+cat << 'EOF' > /var/lib/os-apply-config/templates/var/lib/ansible/inventory
+# Create an OSEv3 group that contains the masters and nodes groups
+[OSv3:children]
+bastion
+masters
+nodes
+etcd
+new_nodes
+{{#dedicated_lb}}
+lb
+
+[lb]
+loadbalancer
+{{/dedicated_lb}}
+
+[bastion]
+localhost
+
+[masters]
+{{#masters}}
+{{.}}.{{domainname}}
+{{/masters}}
+
+[etcd]
+{{#masters}}
+{{.}}.{{domainname}}
+{{/masters}}
+
+# FIXME: this is used only in playbooks/haproxy.yml for
+# setting up dedicated loadbalancer
+[infra]
+{{#infra_nodes}}
+{{.}}.{{domainname}}
+{{/infra_nodes}}
+
+[nodes]
+{{#masters}}
+{{.}}.{{domainname}} openshift_node_labels="{'zone': 'default'}"
+{{/masters}}
+{{#infra_nodes}}
+{{.}}.{{domainname}} openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
+{{/infra_nodes}}
+{{#nodes}}
+{{.}} openshift_node_labels="{'region': 'primary', 'zone': 'default'}"
+{{/nodes}}
+
+[new_nodes]
+{{^ansible_first_run}}
+{{#new_nodes}}
+{{.}} openshift_node_labels="{'region': 'primary', 'zone': 'default'}"
+{{/new_nodes}}
+{{/ansible_first_run}}
+
+[dns]
+localhost
+{{^no_lb}}
+{{^external_lb}}
+
+[extradnsitems]
+loadbalancer
+{{/external_lb}}
+{{/no_lb}}
+EOF

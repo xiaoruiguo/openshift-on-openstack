@@ -1,0 +1,25 @@
+mkdir -p /var/lib/os-apply-config/templates/var/lib/ansible/playbooks
+cat << 'EOF' > /var/lib/os-apply-config/templates/var/lib/ansible/playbooks/scaleup.yml
+{{=<% %>=}}
+<%#volume_quota%>
+- include: /var/lib/ansible/playbooks/quota.yml
+<%/volume_quota%>
+
+- include: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-node/scaleup.yml
+  vars:
+    openshift_infra_nodes: "{{ groups.infra | default([]) }}"
+
+- hosts: new_nodes
+  sudo: yes
+  tasks:
+  - name: Allow docker traffic
+    shell: iptables -A DOCKER -p tcp -j ACCEPT
+    when: openshift_use_flannel
+
+- hosts: new_nodes
+  sudo: yes
+  tasks:
+  - name: Restart node service
+    service: name={{openshift.common.service_type}}-node state=restarted
+<%={{ }}=%>
+EOF

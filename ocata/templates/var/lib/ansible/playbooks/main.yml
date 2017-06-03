@@ -1,0 +1,114 @@
+mkdir -p /var/lib/os-apply-config/templates/var/lib/ansible/playbooks
+cat << 'EOF' > /var/lib/os-apply-config/templates/var/lib/ansible/playbooks/main.yml
+{{=<% %>=}}
+
+<%#ansible_first_run%>
+<%#external_lb%>
+# an external LB can not be pre-set with master IPs because both creation
+# of master nodes and openshift-ansible are part of the same stack-create
+# process. Temporarily override external LB's IP to point to the first
+# master node. This IP is removed at the end of the first successful
+# setup.
+- hosts: all
+  tasks:
+  - name: Override external LB hostname's IP
+    lineinfile: dest=/etc/hosts regexp='.* <%lb_hostname%>' line="<%master_ip%> <%lb_hostname%>" state=present
+<%/external_lb%>
+
+<%#deploy_registry%>
+<%#prepare_registry%>
+- include: /var/lib/ansible/playbooks/registry.yml
+<%/prepare_registry%>
+<%/deploy_registry%>
+<%#volume_quota%>
+- include: /var/lib/ansible/playbooks/quota.yml
+<%/volume_quota%>
+<%/ansible_first_run%>
+
+- include: /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
+  vars:
+    openshift_infra_nodes: "{{ groups.infra | default([]) }}"
+
+<%#openshift_use_flannel%>
+- include: /var/lib/ansible/playbooks/flannel.yml
+<%/openshift_use_flannel%>
+
+- hosts: masters[0]
+  sudo: yes
+  tasks:
+  - name: Fetch cert file
+    fetch:
+      src=/etc/origin/master/ca.crt
+      dest=<%heat_outputs_path%>.ca_cert
+      flat=yes
+
+  - name: Fetch ca key
+    fetch:
+      src=/etc/origin/master/ca.key
+      dest=<%heat_outputs_path%>.ca_key
+      flat=yes
+
+- hosts: nodes
+  sudo: yes
+  tasks:
+  - name: Restart node service
+    service: name={{openshift.common.service_type}}-node state=restarted
+
+<%#deploy_registry%>
+- name: Waiting for registry setup
+  hosts: masters[0]
+  tasks:
+  - action: shell oc get pod | grep -v deploy | grep registry | grep Running
+    register: result
+    until: result.rc == 0
+    retries: 15
+    delay: 60
+<%/deploy_registry%>
+
+<%#deploy_router%>
+- name: Waiting for router setup
+  hosts: masters[0]
+  tasks:
+  - action: shell oc get pod | grep -v deploy | grep router | grep Running
+    register: result
+    until: result.rc == 0
+    retries: 15
+    delay: 60
+
+<%#router_vip%>
+- include: /var/lib/ansible/playbooks/ipfailover.yml
+
+- name: Waiting for IP failover setup
+  hosts: masters[0]
+  tasks:
+  - action: shell oc get pod | grep -v deploy | grep ipfailover | grep Running
+    register: result
+    until: result.rc == 0
+    retries: 15
+    delay: 60
+<%/router_vip%>
+<%/deploy_router%>
+
+- hosts: masters[0]
+  sudo: yes
+  tasks:
+  - name: Clean pods in DeadlineExceeded status
+    shell: oc get pod | grep DeadlineExceeded | cut -f 1 -d " " | xargs -r oc delete pod
+
+<%#deploy_router%>
+<%#dedicated_lb%>
+- include: /var/lib/ansible/playbooks/haproxy.yml
+<%/dedicated_lb%>
+<%/deploy_router%>
+
+<%#ansible_first_run%>
+<%#external_lb%>
+- hosts: all
+  tasks:
+  - name: Remove external LB hostname's IP
+    lineinfile: dest=/etc/hosts regexp='.* <%lb_hostname%>' state=absent
+<%/external_lb%>
+<%/ansible_first_run%>
+
+<%={{ }}=%>
+EOF
