@@ -56,7 +56,7 @@ parameters:
     description: Name or ID of the host image registered with Glance
     constraints:
     - custom_constraint: glance.image
-    default: centos72
+    default: centos7-heat-agents
 
   infra_image:
     type: string
@@ -804,11 +804,11 @@ resources:
       save_private_key: True
 
   # OpenShift web and REST API network controls
-  master_server_group:
-    type: OS::Nova::ServerGroup
-    properties:
-      name: master_server_group
-      policies: {get_param: master_server_group_policies}
+ # master_server_group:
+ #   type: OS::Nova::ServerGroup
+ #   properties:
+ #     name: master_server_group
+ #     policies: {get_param: master_server_group_policies}
 
   master_security_group:
     type: OS::Neutron::SecurityGroup
@@ -870,11 +870,11 @@ resources:
         port_range_max: 2380
         remote_mode: remote_group_id
 
-  infra_server_group:
-    type: OS::Nova::ServerGroup
-    properties:
-      name: infra_server_group
-      policies: {get_param: infra_server_group_policies}
+#  infra_server_group:
+#    type: OS::Nova::ServerGroup
+#    properties:
+#      name: infra_server_group
+#      policies: {get_param: infra_server_group_policies}
 
   infra_security_group:
     type: OS::Neutron::SecurityGroup
@@ -914,33 +914,33 @@ resources:
     properties:
       floating_network: {get_param: external_network}
 
-  loadbalancer:
-    type:  OOShift::LoadBalancer
-    properties:
-      ocp_version: {get_param: ocp_version}
-      image: {get_param: loadbalancer_image}
-      flavor: {get_param: loadbalancer_flavor}
-      key_name: {get_param: ssh_key_name}
-      ssh_user: {get_param: ssh_user}
-      hostname: {get_param: lb_hostname}
-      domain_name: {get_param: domain_name}
-      app_subdomain: {get_param: app_subdomain}
-      stack_name: {get_param: 'OS::stack_name'}
-      ansible_public_key: {get_attr: [ansible_keys, public_key]}
-      fixed_subnet: {get_resource: fixed_subnet}
-      members: {get_attr: [openshift_masters, host]}
-      master_hostname: {get_attr: [openshift_masters, resource.0.hostname]}
-      floatingip_id: {get_resource: lb_floating_ip}
-      floatingip: {get_attr: [lb_floating_ip, floating_ip_address]}
-      fixed_network: {get_resource: fixed_network}
-      fixed_subnet: {get_resource: fixed_subnet}
-      extra_repository_urls: {get_param: extra_repository_urls}
-      extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
-      stack_name: {get_param: 'OS::stack_name'}
-      bastion_node: {get_attr: [bastion_host, resource.host]}
-      dns_servers: {get_param: dns_nameserver}
-      dns_update_key: {get_param: dns_update_key}
-      ca_cert: {get_param: ca_cert}
+ # loadbalancer:
+ #   type:  OOShift::LoadBalancer
+ #   properties:
+ #     ocp_version: {get_param: ocp_version}
+ #     image: {get_param: loadbalancer_image}
+ #     flavor: {get_param: loadbalancer_flavor}
+ #     key_name: {get_param: ssh_key_name}
+ #     ssh_user: {get_param: ssh_user}
+ #     hostname: {get_param: lb_hostname}
+ #     domain_name: {get_param: domain_name}
+ #     app_subdomain: {get_param: app_subdomain}
+ #     stack_name: {get_param: 'OS::stack_name'}
+ #     ansible_public_key: {get_attr: [ansible_keys, public_key]}
+ #     fixed_subnet: {get_resource: fixed_subnet}
+ #     members: {get_attr: [openshift_masters, host]}
+ #     master_hostname: {get_attr: [openshift_masters, resource.0.hostname]}
+ #     floatingip_id: {get_resource: lb_floating_ip}
+ #     floatingip: {get_attr: [lb_floating_ip, floating_ip_address]}
+ #     fixed_network: {get_resource: fixed_network}
+ #     fixed_subnet: {get_resource: fixed_subnet}
+ #     extra_repository_urls: {get_param: extra_repository_urls}
+ #     extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
+ #     stack_name: {get_param: 'OS::stack_name'}
+ #     bastion_node: {get_attr: [bastion_host, resource.host]}
+ #     dns_servers: {get_param: dns_nameserver}
+ #     dns_update_key: {get_param: dns_update_key}
+ #     ca_cert: {get_param: ca_cert}
 
 outputs:
 
