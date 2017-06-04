@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../ansible/.idea/ansible.iml" filepath="$PROJECT_DIR$/../ansible/.idea/ansible.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../diskimage-builder/.idea/diskimage-builder.iml" filepath="$PROJECT_DIR$/../diskimage-builder/.idea/diskimage-builder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../heat-agents/.idea/heat-agents.iml" filepath="$PROJECT_DIR$/../heat-agents/.idea/heat-agents.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../kolla/.idea/kolla.iml" filepath="$PROJECT_DIR$/../kolla/.idea/kolla.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../kolla-ansible/.idea/kolla-ansible.iml" filepath="$PROJECT_DIR$/../kolla-ansible/.idea/kolla-ansible.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/openshift-on-openstack.iml" filepath="$PROJECT_DIR$/.idea/openshift-on-openstack.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../os-apply-config/.idea/os-apply-config.iml" filepath="$PROJECT_DIR$/../os-apply-config/.idea/os-apply-config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../os-collect-config/.idea/os-collect-config.iml" filepath="$PROJECT_DIR$/../os-collect-config/.idea/os-collect-config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../os-refresh-config/.idea/os-refresh-config.iml" filepath="$PROJECT_DIR$/../os-refresh-config/.idea/os-refresh-config.iml" />
+    </modules>
+  </component>
+</project>

@@ -66,6 +66,34 @@ parameters:
       The SSH public key that Ansible will use to access master and node hosts
       This will be placed on each VM host in /root/.ssh/authorized_keys
     type: string
+    default: |
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEowIBAAKCAQEApDxjQGKg62WlrQRtTP8u9Cl1HNF9IwT4xsBpJMeIz5yGz0F5
+      7EsAu67/dIx56M73Br6ZoGiVg6wamj1WS2rT+XyujrE6/CirQ9u56exFGtyjRDE6
+      RE+PHvEg2AS4CHvD8vk0kRjnXIt8mbPB/PZAUQbR4Zm5KojlzTKVLOfXvfMgZz8w
+      TrtMhitaL0NGmOg30B8XlPojlXyekw4yC5umTwJZq/j8VVXwoWcSnfg7xGzyPykO
+      LDjym1MSm4p0w8m+W0PT5MNTAFslntnNjuevsOtWGG9jLb6xO9e6nEmu4BgtO1t/
+      jLCN5g99FTN7xojne7zrLnWsKYSfipV/RjKyeQIDAQABAoIBAHX5nv4wGxIdKT64
+      sF8f67WeVi8GWNKgDqiOrLir0J35/WjByvgvBG7NjVlGU4glq5MftTFiDwzPwyhK
+      qUNxkKVlp+p+azWZbTVIkCr1+soJ9gnVJtrNH60FXydtdFk7to1B8D3OWtvCoxWx
+      58Zzic3qjTd2emmQfyrAjCH+xJ3/8b4FRfOv0Vwy4r9OoEqdBrdCQP40RiLBNVpX
+      KpWeWV2OofUaSH7cjj5US4fdVyCNdWVLM5Jo69NvqTBKRwUg408QRhkaOuh0OPze
+      0kCq4Bgvseidb+1r+aAShQKp8jugEInPDA6/fGd/DPQdJSlbWcPcTAPM23yGWMbq
+      ofAPEAECgYEA1tCx2MdYIO5EaVE1zxz05bawRNpL0rsam7mxoM2mC7eSSvf6m0et
+      l66K9TvJzwZXlxjA0JAzx3NvcpBvzwsU0uv1ZQ4Tb5+sQAtzzsnPF5ET2iv3JquM
+      I2j1SYJ0oKwdqdTWdD8h3Fqz3v1KDDu7GYrEFVDw/uj0jBBMskm8XHkCgYEAw7k3
+      +PP/8zq9Ght86y38Tsk+7L3cUvUWJXrloq1WvFhY46GFEpg0QjPbKfXkR3BpJLv7
+      96XF6eTFnvH3s6PsbsxjoQdEeSqUsGt4DcU505fJYK2bDWJva48ukQacCMMUqcrw
+      LrBAl/WKkODf1LTGuqV/wuGNy2ihUWn2iBLHhgECgYEAusHrrMz6iH69yVZKUssY
+      +tGOg/3JZ+c1JegWTvgbgRpSvIzFOtThTfr4YmZdeHhKFFn34BtOePuaC98Y5cb7
+      jriHuxi2uxf1uCR8xW5cdl+yA76ve9Yu2uY4QnWBkeKxU2JwI9ZzSNEuihJpmyMe
+      8gDborChJO1BFrhhBavnb/kCgYBVgh4KDc/Mm+Tx+wBgXv7UDOgI1gnj1F+QkFiy
+      8bfrIU30ZSSWMxjhs3YUpvDMpTfKbLZwQ2RsAx6zilMFkKBC59i/CUXJCelcChex
+      LHFPGAlKy43qEw9KlotpoNGaol/srlSwkSAnQ4b+NMCVVUVdVeCza4dfTp7ryreC
+      S3IQAQKBgAc8cM1N3JgYT0mTXmMxZrqmo9Mq0paD/4I6sFT9OB8Iw56QUftHYO3a
+      3NuvL7sy6CcfplHtwt5NnzMu4wT8wuOBGjiLQCCgAsLCl5WlfCs2UmRzwFvFAbst
+      XLVQg+s6Zpv/GANO18ixyV/bbI2L7D7xL1VEji842D2QlAaFLDB1
+      -----END RSA PRIVATE KEY-----
 
   ssh_user:
     description: >
@@ -164,14 +192,17 @@ parameters:
     description: >
       ID of a server group containing all of the master hosts
     type: string
+    default: ''
 
   master_security_group:
     description: >
       ID of the network access policies for the OpenShift master hosts
     type: string
+    default: default
 
   system_update:
     type: boolean
+    default: true
 
   extra_repository_urls:
     type: comma_delimited_list
@@ -186,6 +217,7 @@ parameters:
   dns_servers:
     type: comma_delimited_list
     description: address of dns nameservers reachable in your environment
+    default: 10.238.19.24, 8.8.8.8
 
   dns_update_key:
     type: string
@@ -194,6 +226,31 @@ parameters:
   ca_cert:
     type: string
     description: Certificate Authority Certificate to be added to trust chain
+    default: |
+      -----BEGIN CERTIFICATE-----
+      MIID9TCCAt2gAwIBAgIJAI0NUxl/BtdzMA0GCSqGSIb3DQEBCwUAMIGQMQswCQYD
+      VQQGEwJDTjEQMA4GA1UECAwHQmVpamluZzEQMA4GA1UEBwwHQmVpamluZzEWMBQG
+      A1UECgwNd3d3LnBjaXRjLmNvbTEMMAoGA1UECwwDRVJQMRMwEQYDVQQDDAp4aWFv
+      cnVpZ3VvMSIwIAYJKoZIhvcNAQkBFhNzZWFuLnhpYW9AcGNpdGMuY29tMB4XDTE3
+      MDYwMjIzMTkzMFoXDTI3MDUzMTIzMTkzMFowgZAxCzAJBgNVBAYTAkNOMRAwDgYD
+      VQQIDAdCZWlqaW5nMRAwDgYDVQQHDAdCZWlqaW5nMRYwFAYDVQQKDA13d3cucGNp
+      dGMuY29tMQwwCgYDVQQLDANFUlAxEzARBgNVBAMMCnhpYW9ydWlndW8xIjAgBgkq
+      hkiG9w0BCQEWE3NlYW4ueGlhb0BwY2l0Yy5jb20wggEiMA0GCSqGSIb3DQEBAQUA
+      A4IBDwAwggEKAoIBAQCpgIqDxVYRaBEFMoE0A5BunGhYSbA/PkVdbt2xQVbve/z7
+      UiD7JFEs02EYWaVC6kzn9ydarc4NTimDEGkaT7wZGkWP7jEqc6AlxrIFTWD7x7vj
+      t3KrZ5OK4obRjNkYt2qN13GPZYnqKo3BBhrwjy1GmbemX/MTMxFcMY8tCVKuX9Fq
+      saPbi3AMCu1l3Gas4fe7bdGi88K7clVCY0ESLAqucH0ckBy7N4vEo9gNxOdQE4LU
+      znGaIIXV4EUronw+Y0te3Toj30XKLbjYrCzY+6LPDUilfSGqYdOHqS4ZT1sXG9+Q
+      Pbxo6/HLRLS0MSY1UcKUTxT1rLBD9VAIPh47xGyxAgMBAAGjUDBOMB0GA1UdDgQW
+      BBQcIcAMidUr0sRqh0SMl0IzzAAuJjAfBgNVHSMEGDAWgBQcIcAMidUr0sRqh0SM
+      l0IzzAAuJjAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQCbc6F64toe
+      MRlOSycv2aRxYrE3UrKnJYRc8bEqPa9LYSWXao8CMooLCHFrBNjW/3Hg4pdm+EEd
+      CWROreH92yPpzMrjrpnJoVvUaenHNJEhvW78EZ5iwX++dTn3gjHmwcrMcGDSE6BQ
+      c9TGl8ME3ZxJElOFxxh7uWTbi27BAO7yTYV5dxDLobIyhog6/BMz5pU5zMbcX8lS
+      /TPREAPBYhoNawl8DGjks5vaaEmU+42koHwIOfjp2Zns3ol904AIUDdfr6Mt4aI9
+      55N20+m4h35n4E6OiFHjcUju/8hnG9V6ADTy3hkpqCcwrPJHacwtYcnFaWxqsSOK
+      flwj4Wm7RAqQ
+      -----END CERTIFICATE-----
 
 resources:
 
