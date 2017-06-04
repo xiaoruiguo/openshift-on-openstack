@@ -256,8 +256,8 @@ parameters:
 resources:
 
   # Create a network connection on the internal communications network
-#  port:
-#    type: OS::Neutron::Port
+  port:
+    type: OS::Neutron::Port
 #    properties:
 #      security_groups:
 #      - {get_param: master_security_group}
@@ -315,7 +315,7 @@ resources:
     type: OS::Neutron::FloatingIP
     properties:
       floating_network: {get_param: external_network}
-      port_id: {get_resource: port}
+#      port_id: {get_resource: port}
 
   # Compose configuration data into a single structure
   init:
