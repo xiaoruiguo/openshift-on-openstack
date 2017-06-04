@@ -1,0 +1,3 @@
+resource_registry:
+  # use openshift SDN
+  OOShift::ContainerPort: sdn_openshift_sdn.yaml

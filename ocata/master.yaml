@@ -222,6 +222,7 @@ parameters:
   dns_update_key:
     type: string
     hidden: true
+    default: ''
 
   ca_cert:
     type: string
