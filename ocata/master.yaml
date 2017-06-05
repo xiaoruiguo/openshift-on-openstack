@@ -530,6 +530,8 @@ resources:
   # with a status at the end of of the cloud-init process
   wait_handle:
     type: OS::Heat::WaitConditionHandle
+    properties:
+      signal_transport: HEAT_SIGNAL
 
 outputs:
   console_url:
