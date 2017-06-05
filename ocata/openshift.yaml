@@ -532,14 +532,14 @@ resources:
       volume_size: {get_param: registry_volume_size}
       volume_id: {get_param: registry_volume_id}
 
-  ipfailover:
-    depends_on: external_router_interface
-    type: OOShift::IPFailover
-    properties:
-      fixed_network: {get_resource: fixed_network}
-      fixed_subnet: {get_resource: fixed_subnet}
-      external_network: {get_param: external_network}
-      loadbalancer_ip: {get_attr: [lb_floating_ip, floating_ip_address]}
+#  ipfailover:
+#    depends_on: external_router_interface
+#    type: OOShift::IPFailover
+#    properties:
+#      fixed_network: {get_resource: fixed_network}
+#      fixed_subnet: {get_resource: fixed_subnet}
+#      external_network: {get_param: external_network}
+#      loadbalancer_ip: {get_attr: [lb_floating_ip, floating_ip_address]}
 
   # VM Host definitions
   bastion_host:
