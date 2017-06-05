@@ -20,6 +20,7 @@ resources:
   volume:
     type: OS::Cinder::Volume
     properties:
+       description: Registry ephemeral Volume
       size: {get_param: volume_size}
 
 outputs:

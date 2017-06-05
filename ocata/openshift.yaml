@@ -526,11 +526,11 @@ resources:
       gateway_ip: ""
 
   # Create space for Openshift registry
-  registry_volume:
-    type: OOShift::RegistryVolume
-    properties:
-      volume_size: {get_param: registry_volume_size}
-      volume_id: {get_param: registry_volume_id}
+#  registry_volume:
+#    type: OOShift::RegistryVolume
+#    properties:
+#      volume_size: {get_param: registry_volume_size}
+#      volume_id: {get_param: registry_volume_id}
 
 #  ipfailover:
 #    depends_on: external_router_interface
