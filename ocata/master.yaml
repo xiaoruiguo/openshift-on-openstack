@@ -317,7 +317,7 @@ resources:
     type: OS::Neutron::FloatingIP
     properties:
       floating_network: {get_param: external_network}
-#      port_id: {get_resource: port}
+      port_id: {get_resource: port}
 
   # Compose configuration data into a single structure
   init:
