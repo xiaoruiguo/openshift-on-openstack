@@ -433,7 +433,7 @@ resources:
   add_dns_record:
     type: OS::Heat::StructuredConfig #    type: OS::Heat::SoftwareConfig
     properties:
-       group: script
+      group: script
       config:
         str_replace:
           params:
