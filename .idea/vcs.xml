@@ -5,9 +5,12 @@
     <mapping directory="$PROJECT_DIR$/../ansible" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../diskimage-builder" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../heat-agents" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../instack" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../instack-undercloud" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../kolla-ansible" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../os-apply-config" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../os-collect-config" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../os-refresh-config" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../tripleo-incubator" vcs="Git" />
   </component>
 </project>

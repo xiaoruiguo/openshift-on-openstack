@@ -10,6 +10,7 @@ parameters:
     type: string
     constraints:
     - custom_constraint: neutron.network
+    default: tenant
 
   subnet:
     description: >
@@ -17,11 +18,13 @@ parameters:
     type: string
     constraints:
     - custom_constraint: neutron.subnet
+    default: tenant-sub
 
   security_group:
     description: >
       ID of the network access policies
     type: string
+    default: default
 
 resources:
   security_group_port:

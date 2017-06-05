@@ -12,6 +12,9 @@
     <orderEntry type="module" module-name="os-apply-config" />
     <orderEntry type="module" module-name="heat-agents" />
     <orderEntry type="module" module-name="ansible" />
+    <orderEntry type="module" module-name="instack" />
+    <orderEntry type="module" module-name="instack-undercloud" />
+    <orderEntry type="module" module-name="tripleo-incubator" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_FOLDERS">
