@@ -302,6 +302,7 @@ resources:
   docker_volume:
     type: OS::Cinder::Volume
     properties:
+      description: Master Volume
       size: {get_param: docker_volume_size}
 
   # Bind the docker storage to the VM
