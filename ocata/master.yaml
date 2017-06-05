@@ -339,8 +339,8 @@ resources:
       - config: {get_resource: set_extra_repos}
       - config: {get_resource: set_extra_docker_repos}
       - config: {get_resource: host_update}
-      - config: {get_resource: add_dns_record}
-      - config: {get_resource: master_boot}
+#      - config: {get_resource: add_dns_record}
+#      - config: {get_resource: master_boot}
 
   # Compose the short hostname and fully qualified domain name for the new host
   set_hostname:
@@ -431,8 +431,9 @@ resources:
           template: {get_file: fragments/host-update.sh}
 
   add_dns_record:
-    type: OS::Heat::SoftwareConfig
+    type: OS::Heat::StructuredConfig #    type: OS::Heat::SoftwareConfig
     properties:
+       group: script
       config:
         str_replace:
           params:
@@ -445,7 +446,7 @@ resources:
 
   # Prepare the host to run Docker and Ansible for OpenShift install and config
   master_boot:
-    type: OS::Heat::SoftwareConfig
+    type: OS::Heat::StructuredConfig #    type: OS::Heat::SoftwareConfig
     properties:
       group: script
       config:
@@ -453,6 +454,29 @@ resources:
           params:
             $DOCKER_VOLUME_ID: {get_resource: docker_volume}
           template: {get_file: fragments/master-boot.sh}
+
+
+  deployment_add_dns_record:
+    type: OS::Heat::StructuredDeployment
+    properties:
+      name: 70_deployment_add_dns_record
+      signal_transport: HEAT_SIGNAL
+      config:
+        get_resource: add_dns_record
+      server:
+        get_resource: host
+      signal_transport: HEAT_SIGNAL
+
+  deployment_master_boot:
+    type: OS::Heat::StructuredDeployment
+    properties:
+      name: 80_deployment_master_boot
+      signal_transport: HEAT_SIGNAL
+      config:
+        get_resource: master_boot
+      server:
+        get_resource: host
+      signal_transport: HEAT_SIGNAL
 
   # Add a node's IP/Name mapping to DNS
   node_add:
@@ -469,7 +493,7 @@ resources:
 
   # Add the hostname and address of the bastion host to the master host
   deployment_bastion_node_add:
-    depends_on: wait_condition
+    depends_on: [deployment_master_boot, wait_condition]
     type: OS::Heat::SoftwareDeployment
     properties:
       config:
