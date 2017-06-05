@@ -278,6 +278,10 @@ resources:
       network: {get_param: internal_network}
       subnet: {get_param: internal_subnet}
 
+
+
+
+
   # Create the VM instance to host the OpenShift master service
   host:
     type: OS::Nova::Server
@@ -429,7 +433,6 @@ resources:
   add_dns_record:
     type: OS::Heat::SoftwareConfig
     properties:
-      group: script
       config:
         str_replace:
           params:
