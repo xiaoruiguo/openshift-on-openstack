@@ -256,6 +256,7 @@ parameters:
   set_proxy:
     type: string
     description: proxy for external network
+
 resources:
 
   # Create a network connection on the internal communications network
