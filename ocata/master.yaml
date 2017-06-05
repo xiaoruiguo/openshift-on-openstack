@@ -335,7 +335,9 @@ resources:
       - config: {get_resource: set_extra_repos}
       - config: {get_resource: set_extra_docker_repos}
       - config: {get_resource: host_update}
-#      - config: {get_resource: add_dns_record}
+        type: multipart
+      - config: {get_resource: add_dns_record}
+        type: multipart
       - config: {get_resource: master_boot}
 
   # Compose the short hostname and fully qualified domain name for the new host
