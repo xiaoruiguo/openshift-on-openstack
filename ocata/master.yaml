@@ -385,12 +385,6 @@ resources:
         ssh_authorized_keys:
         - {get_param: ansible_public_key}
 
-  # Add yum ,git ,wget proxy
-#  set_proxy:
-#    type: OS::Heat::SoftwareConfig
-#    properties:
-#      config: {get_file: fragments/set_proxy.sh}
-
   # Add CA Cert to trust chain
   update_ca_cert:
     type: OS::Heat::SoftwareConfig
