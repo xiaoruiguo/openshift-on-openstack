@@ -532,6 +532,11 @@ resources:
       volume_size: {get_param: registry_volume_size}
       volume_id: {get_param: registry_volume_id}
 
+  set_proxy:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config: {get_file: fragments/set_proxy.sh}
+
 #  ipfailover:
 #    depends_on: external_router_interface
 #    type: OOShift::IPFailover
@@ -560,6 +565,7 @@ resources:
             '%stackname%': {get_param: 'OS::stack_name'}
             '%hostname%': {get_param: bastion_hostname}
       domain_name: {get_param: domain_name}
+      set_proxy: {get_resource: set_proxy}
 #      fixed_network: {get_resource: fixed_network}
 #      fixed_subnet: {get_resource: fixed_subnet}
       ansible_public_key: {get_attr: [ansible_keys, public_key]}
@@ -595,6 +601,7 @@ resources:
                 '%stackname%': {get_param: 'OS::stack_name'}
                 '%hostname%': {get_param: master_hostname}
           domain_name: {get_param: domain_name}
+          set_proxy: {get_resource: set_proxy}
           ansible_public_key: {get_attr: [ansible_keys, public_key]}
           bastion_node: {get_attr: [bastion_host, resource.host]}
           fixed_network: {get_resource: fixed_network}
