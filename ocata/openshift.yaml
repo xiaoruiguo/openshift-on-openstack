@@ -968,9 +968,9 @@ resources:
 
 outputs:
 
-  loadbalancer_ip:
-    description: External IP address of the loadbalancer for master nodes.
-    value: {get_attr: [lb_floating_ip, floating_ip_address]}
+#  loadbalancer_ip:
+#    description: External IP address of the loadbalancer for master nodes.
+#    value: {get_attr: [lb_floating_ip, floating_ip_address]}
 
   router_ip:
     description: External IP address of the OpenShift router.
