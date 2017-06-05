@@ -63,14 +63,14 @@ parameters:
     description: Name or ID of the host image registered with Glance
     constraints:
     - custom_constraint: glance.image
-    default: centos72
+    default: centos7-heat-agents
 
   node_image:
     type: string
     description: Name or ID of the openshift node image registered with Glance
     constraints:
     - custom_constraint: glance.image
-    default: centos72 
+    default: centos7-heat-agents
 
   # once openshift-ansible supports containerized loadbalancer node setup
   # this can be deleted
@@ -79,7 +79,7 @@ parameters:
       Select a base image to use for the loadbalancer nodes, this is required
       only if 'dedicated' loadbalancer_type is used.
     type: string
-    default: centos72
+    default: centos7-heat-agents
 
   bastion_flavor:
     type: string
@@ -159,7 +159,7 @@ parameters:
       other. As such, this means you will have to update your DNS
       servers manually.
     hidden: true
-    default: ""
+    default: ''
 
   system_update:
     type: boolean
@@ -393,39 +393,39 @@ parameters:
     type: string
     description: >
       The Openstack authentication URL to be used by Openshift
-    default: ''
+    default: "http://10.238.117.210:35357/v3"
 
   os_username:
     type: string
     description: >
       The Openstack username to be used by Openshift
-    default: ''
+    default: "admin"
 
   os_password:
     type: string
     description: >
       The Openstack password to be used by Openshift
     hidden: true
-    default: ''
+    default: "oracle"
 
   os_tenant_name:
     type: string
     description: >
       The Openstack tenant to by used by Openshift
-    default: ''
+    default: "admin"
 
   os_domain_name:
     description: >
       The name of the OpenStack domain for OpenShift to use. Leave it
       empty for v2 authentication.
     type: string
-    default: ''
+    default: "default"
 
   os_region_name:
     type: string
     description: >
       The Openstack region name to by used by Openshift
-    default: ''
+    default: "RegionOne"
 
   extra_repository_urls:
     type: comma_delimited_list
@@ -459,12 +459,36 @@ parameters:
   extra_openshift_ansible_params:
     type: string
     description: Extra parameters for openshift-ansible as a JSON string
-    default: ""
+    default: ''
 
   ca_cert:
     type: string
     description: Certificate Authority Certificate to be added to trust chain
-    default: ''
+    default: |
+      -----BEGIN CERTIFICATE-----
+      MIID9TCCAt2gAwIBAgIJAI0NUxl/BtdzMA0GCSqGSIb3DQEBCwUAMIGQMQswCQYD
+      VQQGEwJDTjEQMA4GA1UECAwHQmVpamluZzEQMA4GA1UEBwwHQmVpamluZzEWMBQG
+      A1UECgwNd3d3LnBjaXRjLmNvbTEMMAoGA1UECwwDRVJQMRMwEQYDVQQDDAp4aWFv
+      cnVpZ3VvMSIwIAYJKoZIhvcNAQkBFhNzZWFuLnhpYW9AcGNpdGMuY29tMB4XDTE3
+      MDYwMjIzMTkzMFoXDTI3MDUzMTIzMTkzMFowgZAxCzAJBgNVBAYTAkNOMRAwDgYD
+      VQQIDAdCZWlqaW5nMRAwDgYDVQQHDAdCZWlqaW5nMRYwFAYDVQQKDA13d3cucGNp
+      dGMuY29tMQwwCgYDVQQLDANFUlAxEzARBgNVBAMMCnhpYW9ydWlndW8xIjAgBgkq
+      hkiG9w0BCQEWE3NlYW4ueGlhb0BwY2l0Yy5jb20wggEiMA0GCSqGSIb3DQEBAQUA
+      A4IBDwAwggEKAoIBAQCpgIqDxVYRaBEFMoE0A5BunGhYSbA/PkVdbt2xQVbve/z7
+      UiD7JFEs02EYWaVC6kzn9ydarc4NTimDEGkaT7wZGkWP7jEqc6AlxrIFTWD7x7vj
+      t3KrZ5OK4obRjNkYt2qN13GPZYnqKo3BBhrwjy1GmbemX/MTMxFcMY8tCVKuX9Fq
+      saPbi3AMCu1l3Gas4fe7bdGi88K7clVCY0ESLAqucH0ckBy7N4vEo9gNxOdQE4LU
+      znGaIIXV4EUronw+Y0te3Toj30XKLbjYrCzY+6LPDUilfSGqYdOHqS4ZT1sXG9+Q
+      Pbxo6/HLRLS0MSY1UcKUTxT1rLBD9VAIPh47xGyxAgMBAAGjUDBOMB0GA1UdDgQW
+      BBQcIcAMidUr0sRqh0SMl0IzzAAuJjAfBgNVHSMEGDAWgBQcIcAMidUr0sRqh0SM
+      l0IzzAAuJjAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQCbc6F64toe
+      MRlOSycv2aRxYrE3UrKnJYRc8bEqPa9LYSWXao8CMooLCHFrBNjW/3Hg4pdm+EEd
+      CWROreH92yPpzMrjrpnJoVvUaenHNJEhvW78EZ5iwX++dTn3gjHmwcrMcGDSE6BQ
+      c9TGl8ME3ZxJElOFxxh7uWTbi27BAO7yTYV5dxDLobIyhog6/BMz5pU5zMbcX8lS
+      /TPREAPBYhoNawl8DGjks5vaaEmU+42koHwIOfjp2Zns3ol904AIUDdfr6Mt4aI9
+      55N20+m4h35n4E6OiFHjcUju/8hnG9V6ADTy3hkpqCcwrPJHacwtYcnFaWxqsSOK
+      flwj4Wm7RAqQ
+      -----END CERTIFICATE-----
 
 resources:
 
@@ -536,8 +560,8 @@ resources:
             '%stackname%': {get_param: 'OS::stack_name'}
             '%hostname%': {get_param: bastion_hostname}
       domain_name: {get_param: domain_name}
-      fixed_network: {get_resource: fixed_network}
-      fixed_subnet: {get_resource: fixed_subnet}
+#      fixed_network: {get_resource: fixed_network}
+#      fixed_subnet: {get_resource: fixed_subnet}
       ansible_public_key: {get_attr: [ansible_keys, public_key]}
       ansible_private_key: {get_attr: [ansible_keys, private_key]}
       floating_ip: {get_attr: [bastion_floating_ip, floating_ip_address]}

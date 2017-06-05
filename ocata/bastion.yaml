@@ -73,7 +73,7 @@ parameters:
   port:
     description: Neutron port (with a floating IP address) to assign to the DNS Nova Server
     type: string
-    default: ""
+#    default: ""
 
   ansible_public_key:
     description: >
@@ -204,8 +204,8 @@ resources:
       flavor: {get_param: flavor}
       key_name: {get_param: key_name}
       networks:
-      - network: tenant
-#      - port: {get_param: port}
+#      - network: tenant
+      - port: {get_param: port}
       user_data_format: SOFTWARE_CONFIG
       user_data: {get_resource: init}
       software_config_transport: POLL_SERVER_HEAT
