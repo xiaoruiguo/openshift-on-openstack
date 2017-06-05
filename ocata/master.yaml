@@ -295,8 +295,8 @@ resources:
       user_data_format: SOFTWARE_CONFIG
       software_config_transport: POLL_SERVER_HEAT
       user_data: {get_resource: init}
-#      scheduler_hints:
-#        group: {get_param: master_server_group}
+      scheduler_hints:
+        group: {get_param: master_server_group}
 
   # Create space for Docker containers and images
   docker_volume:
