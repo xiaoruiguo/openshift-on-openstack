@@ -217,7 +217,7 @@ resources:
       parts:
       - config: {get_resource: set_hostname}
       - config: {get_resource: included_files}
-#      - config: {get_resource: set_proxy}
+      - config: {get_resource: set_proxy}
       - config: {get_resource: update_ca_cert}
       - config: {get_resource: set_extra_repos}
       - config: {get_resource: set_extra_docker_repos}
@@ -285,11 +285,11 @@ resources:
         ssh_authorized_keys:
         - {get_param: ansible_public_key}
 
-  # Add CA Cert to trust chain
-#  set_proxy:
-#    type: OS::Heat::SoftwareConfig
-#    properties:
-#      config: {get_file: fragments/set_proxy.sh}
+  # Add yum ,git ,wget proxy
+  set_proxy:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config: {get_file: fragments/set_proxy.sh}
 
   # Add CA Cert to trust chain
   update_ca_cert:
