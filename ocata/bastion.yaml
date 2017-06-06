@@ -345,7 +345,8 @@ resources:
         get_resource: host
       input_values:
         node_count: {get_param: node_count}
-        previous:  get_attr: [deployment_bastion_boot, deploy_stdout]
+        previous:
+          get_attr: [deployment_bastion_boot, deploy_stdout]
       signal_transport: HEAT_SIGNAL
 
   deployment_write_templates:
@@ -355,7 +356,8 @@ resources:
     properties:
       name: 200_deployment_write_templates
       input_values:
-        previous:  get_attr: [deployment_update_node_count, deploy_stdout]
+        previous:
+          get_attr: [deployment_update_node_count, deploy_stdout]
       config:
         get_resource: write_templates
       server:
@@ -378,7 +380,8 @@ resources:
     properties:
       name: 210_deployment_tune_ansible
       input_values:
-        previous:  get_attr: [deployment_write_templates, deploy_stdout]
+        previous:
+          get_attr: [deployment_write_templates, deploy_stdout]
       actions: ['CREATE']
       config:
         get_resource: tune_ansible
@@ -431,7 +434,8 @@ resources:
     properties:
       name: 120_deployment_included_files
       input_values:
-        previous:  get_attr: [deployment_set_hostname, deploy_stdout]
+        previous:
+          get_attr: [deployment_set_hostname, deploy_stdout]
       config:
         get_resource: included_files
       server:
@@ -458,7 +462,8 @@ resources:
     properties:
       name: 140_deployment_update_ca_cert
       input_values:
-        previous:  get_attr: [deployment_included_files, deploy_stdout]
+        previous:
+          get_attr: [deployment_included_files, deploy_stdout]
       config:
         get_resource: update_ca_cert
       server:
@@ -472,7 +477,8 @@ resources:
     properties:
       name: 150_deployment_set_extra_repos
       input_values:
-        previous:  get_attr: [deployment_update_ca_cert, deploy_stdout]
+        previous:
+          get_attr: [deployment_update_ca_cert, deploy_stdout]
       config:
         get_resource: set_extra_repos
       server:
@@ -485,7 +491,8 @@ resources:
     properties:
       name: 160_deployment_set_extra_docker_repos
       input_values:
-        previous:  get_attr: [deployment_set_extra_repos, deploy_stdout]
+        previous:
+          get_attr: [deployment_set_extra_repos, deploy_stdout]
       config:
         get_resource: set_extra_docker_repos
       server:
@@ -498,7 +505,8 @@ resources:
     properties:
       name: 170_deployment_host_update
       input_values:
-        previous:  get_attr: [deployment_set_extra_docker_repos, deploy_stdout]
+        previous:
+          get_attr: [deployment_set_extra_docker_repos, deploy_stdout]
       config:
         get_resource: host_update
       server:
@@ -511,7 +519,8 @@ resources:
     properties:
       name: 180_deployment_bastion_boot
       input_values:
-        previous:  get_attr: [deployment_host_update, deploy_stdout]
+        previous:
+          get_attr: [deployment_host_update, deploy_stdout]
       config:
         get_resource: bastion_boot
       server:
