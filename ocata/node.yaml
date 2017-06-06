@@ -360,7 +360,6 @@ resources:
   docker_volume:
     type: OOShift::DockerVolume
     properties:
-      description: Node Volume
       size: {get_param: docker_volume_size}
 
   docker_volume_attachment:
