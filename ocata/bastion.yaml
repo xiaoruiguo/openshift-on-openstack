@@ -234,11 +234,11 @@ resources:
           content: {get_file: fragments/merge_dict.py}
         - path: /usr/local/share/openshift-on-openstack/common_functions.sh
           permissions: 0755
-          content:
-            str_replace:
-              params:
-                $WC_NOTIFY: { get_attr: ['wait_handle', 'curl_cli'] }
-              template: {get_file: fragments/common_functions.sh}
+          content: {get_file: fragments/common_functions.sh}
+#            str_replace:
+#              params:
+#                $WC_NOTIFY: { get_attr: ['wait_handle', 'curl_cli'] }
+#              template: {get_file: fragments/common_functions.sh}
         - path: /root/.ssh/id_rsa
           permissions: 0600
 #          content: {get_file: fragments/id_rsa}
