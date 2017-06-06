@@ -68,12 +68,12 @@ parameters:
     description: >
       TBD: What is this a floating IP for? For the DNS server?
     type: string
-    default: ""
+    default: ''
 
   port:
     description: Neutron port (with a floating IP address) to assign to the DNS Nova Server
     type: string
-#    default: ""
+    default: ''
 
   ansible_public_key:
     description: >
