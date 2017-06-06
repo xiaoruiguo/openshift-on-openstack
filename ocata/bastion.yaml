@@ -189,6 +189,7 @@ parameters:
   set_proxy:
     type: string
     description: proxy for external network
+    default: ''
 
 resources:
 
