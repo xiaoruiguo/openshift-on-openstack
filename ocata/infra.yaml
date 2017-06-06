@@ -13,7 +13,6 @@ parameters:
     type: string
     description: >
       The version of OpenShift Container Platform to deploy
-    default: 1.5.2
 
   key_name:
     description: >
@@ -21,15 +20,13 @@ parameters:
     type: string
     constraints:
     - custom_constraint: nova.keypair
-    default: default
 
   image:
     description: >
-      Select a base image to use for the master servers
+      Select a base image to use for the infra servers
     type: string
     constraints:
     - custom_constraint: glance.image
-    default: centos7-heat-agents
 
   flavor:
     description: >
@@ -37,7 +34,6 @@ parameters:
     type: string
     constraints:
     - custom_constraint: nova.flavor
-    default: m1.medium
 
   docker_volume_size:
     description: >
@@ -46,11 +42,15 @@ parameters:
     type: number
     default: 25
 
+  extra_rhn_pools:
+    type: comma_delimited_list
+    description: List of rhn pools which will be installed on each node.
+    default: ''
+
   hostname:
     description: >
-      A string to identify master hostnames.
+      A string to identify infra hostnames.
     type: string
-    default: master
     constraints:
     - allowed_pattern: '[a-z0-9\-]*'
       description: Hostname must contain only characters [a-z0-9\-].
@@ -59,66 +59,35 @@ parameters:
     description: >
       The DNS domain suffix. All VMs will be placed in this domain
     type: string
-    default: openshift.labs.local
 
   ansible_public_key:
     description: >
       The SSH public key that Ansible will use to access master and node hosts
       This will be placed on each VM host in /root/.ssh/authorized_keys
     type: string
-    default: |
-      -----BEGIN RSA PRIVATE KEY-----
-      MIIEowIBAAKCAQEApDxjQGKg62WlrQRtTP8u9Cl1HNF9IwT4xsBpJMeIz5yGz0F5
-      7EsAu67/dIx56M73Br6ZoGiVg6wamj1WS2rT+XyujrE6/CirQ9u56exFGtyjRDE6
-      RE+PHvEg2AS4CHvD8vk0kRjnXIt8mbPB/PZAUQbR4Zm5KojlzTKVLOfXvfMgZz8w
-      TrtMhitaL0NGmOg30B8XlPojlXyekw4yC5umTwJZq/j8VVXwoWcSnfg7xGzyPykO
-      LDjym1MSm4p0w8m+W0PT5MNTAFslntnNjuevsOtWGG9jLb6xO9e6nEmu4BgtO1t/
-      jLCN5g99FTN7xojne7zrLnWsKYSfipV/RjKyeQIDAQABAoIBAHX5nv4wGxIdKT64
-      sF8f67WeVi8GWNKgDqiOrLir0J35/WjByvgvBG7NjVlGU4glq5MftTFiDwzPwyhK
-      qUNxkKVlp+p+azWZbTVIkCr1+soJ9gnVJtrNH60FXydtdFk7to1B8D3OWtvCoxWx
-      58Zzic3qjTd2emmQfyrAjCH+xJ3/8b4FRfOv0Vwy4r9OoEqdBrdCQP40RiLBNVpX
-      KpWeWV2OofUaSH7cjj5US4fdVyCNdWVLM5Jo69NvqTBKRwUg408QRhkaOuh0OPze
-      0kCq4Bgvseidb+1r+aAShQKp8jugEInPDA6/fGd/DPQdJSlbWcPcTAPM23yGWMbq
-      ofAPEAECgYEA1tCx2MdYIO5EaVE1zxz05bawRNpL0rsam7mxoM2mC7eSSvf6m0et
-      l66K9TvJzwZXlxjA0JAzx3NvcpBvzwsU0uv1ZQ4Tb5+sQAtzzsnPF5ET2iv3JquM
-      I2j1SYJ0oKwdqdTWdD8h3Fqz3v1KDDu7GYrEFVDw/uj0jBBMskm8XHkCgYEAw7k3
-      +PP/8zq9Ght86y38Tsk+7L3cUvUWJXrloq1WvFhY46GFEpg0QjPbKfXkR3BpJLv7
-      96XF6eTFnvH3s6PsbsxjoQdEeSqUsGt4DcU505fJYK2bDWJva48ukQacCMMUqcrw
-      LrBAl/WKkODf1LTGuqV/wuGNy2ihUWn2iBLHhgECgYEAusHrrMz6iH69yVZKUssY
-      +tGOg/3JZ+c1JegWTvgbgRpSvIzFOtThTfr4YmZdeHhKFFn34BtOePuaC98Y5cb7
-      jriHuxi2uxf1uCR8xW5cdl+yA76ve9Yu2uY4QnWBkeKxU2JwI9ZzSNEuihJpmyMe
-      8gDborChJO1BFrhhBavnb/kCgYBVgh4KDc/Mm+Tx+wBgXv7UDOgI1gnj1F+QkFiy
-      8bfrIU30ZSSWMxjhs3YUpvDMpTfKbLZwQ2RsAx6zilMFkKBC59i/CUXJCelcChex
-      LHFPGAlKy43qEw9KlotpoNGaol/srlSwkSAnQ4b+NMCVVUVdVeCza4dfTp7ryreC
-      S3IQAQKBgAc8cM1N3JgYT0mTXmMxZrqmo9Mq0paD/4I6sFT9OB8Iw56QUftHYO3a
-      3NuvL7sy6CcfplHtwt5NnzMu4wT8wuOBGjiLQCCgAsLCl5WlfCs2UmRzwFvFAbst
-      XLVQg+s6Zpv/GANO18ixyV/bbI2L7D7xL1VEji842D2QlAaFLDB1
-      -----END RSA PRIVATE KEY-----
 
   ssh_user:
     description: >
       The user for SSH access to the VM hosts
     type: string
-    default: centos
 
   timeout:
-    description: Time to wait until the master setup is ready.
+    description: Time to wait until the infra setup is ready.
     type: number
     default: 10800
-
-  external_network:
-    description: >
-      The name of the inbound access network
-    type: string
-    default: public
-    constraints:
-    - custom_constraint: neutron.network
 
   bastion_node:
     description: >
       The hostname of the bastion node in the deployment
     type: string
-    default: bastion.openshift.labs.local
+    default: ''
+
+  external_network:
+    description: >
+      The name of the inbound access network
+    type: string
+    constraints:
+    - custom_constraint: neutron.network
 
   fixed_network:
     description: >
@@ -126,7 +95,6 @@ parameters:
     type: string
     constraints:
     - custom_constraint: neutron.network
-    default: public
 
   fixed_subnet:
     description: >
@@ -134,7 +102,6 @@ parameters:
     type: string
     constraints:
     - custom_constraint: neutron.subnet
-    default: public-float
 
   internal_network:
     description: >
@@ -142,7 +109,6 @@ parameters:
     type: string
     constraints:
     - custom_constraint: neutron.network
-    default: tenant
 
   internal_subnet:
     description: >
@@ -150,7 +116,13 @@ parameters:
     type: string
     constraints:
     - custom_constraint: neutron.subnet
-    default: tenant-sub
+
+  allowed_address_pairs:
+    description: >
+      Allowed address pairs to apply on the ports of the nodes
+      that host the Openshift router
+    type: json
+
 
   ldap_url:
     description: >
@@ -188,21 +160,18 @@ parameters:
     type: string
     default: false
 
-  master_server_group:
+  infra_server_group:
     description: >
-      ID of a server group containing all of the master hosts
+      ID of a server group containing all of the infra hosts
     type: string
-    default: ''
 
-  master_security_group:
+  infra_security_group:
     description: >
-      ID of the network access policies for the OpenShift master hosts
+      ID of the network access policies for the OpenShift infra hosts
     type: string
-    default: default
 
   system_update:
     type: boolean
-    default: true
 
   extra_repository_urls:
     type: comma_delimited_list
@@ -217,41 +186,14 @@ parameters:
   dns_servers:
     type: comma_delimited_list
     description: address of dns nameservers reachable in your environment
-    default: 10.238.19.24, 8.8.8.8
 
   dns_update_key:
     type: string
     hidden: true
-    default: ''
 
   ca_cert:
     type: string
     description: Certificate Authority Certificate to be added to trust chain
-    default: |
-      -----BEGIN CERTIFICATE-----
-      MIID9TCCAt2gAwIBAgIJAI0NUxl/BtdzMA0GCSqGSIb3DQEBCwUAMIGQMQswCQYD
-      VQQGEwJDTjEQMA4GA1UECAwHQmVpamluZzEQMA4GA1UEBwwHQmVpamluZzEWMBQG
-      A1UECgwNd3d3LnBjaXRjLmNvbTEMMAoGA1UECwwDRVJQMRMwEQYDVQQDDAp4aWFv
-      cnVpZ3VvMSIwIAYJKoZIhvcNAQkBFhNzZWFuLnhpYW9AcGNpdGMuY29tMB4XDTE3
-      MDYwMjIzMTkzMFoXDTI3MDUzMTIzMTkzMFowgZAxCzAJBgNVBAYTAkNOMRAwDgYD
-      VQQIDAdCZWlqaW5nMRAwDgYDVQQHDAdCZWlqaW5nMRYwFAYDVQQKDA13d3cucGNp
-      dGMuY29tMQwwCgYDVQQLDANFUlAxEzARBgNVBAMMCnhpYW9ydWlndW8xIjAgBgkq
-      hkiG9w0BCQEWE3NlYW4ueGlhb0BwY2l0Yy5jb20wggEiMA0GCSqGSIb3DQEBAQUA
-      A4IBDwAwggEKAoIBAQCpgIqDxVYRaBEFMoE0A5BunGhYSbA/PkVdbt2xQVbve/z7
-      UiD7JFEs02EYWaVC6kzn9ydarc4NTimDEGkaT7wZGkWP7jEqc6AlxrIFTWD7x7vj
-      t3KrZ5OK4obRjNkYt2qN13GPZYnqKo3BBhrwjy1GmbemX/MTMxFcMY8tCVKuX9Fq
-      saPbi3AMCu1l3Gas4fe7bdGi88K7clVCY0ESLAqucH0ckBy7N4vEo9gNxOdQE4LU
-      znGaIIXV4EUronw+Y0te3Toj30XKLbjYrCzY+6LPDUilfSGqYdOHqS4ZT1sXG9+Q
-      Pbxo6/HLRLS0MSY1UcKUTxT1rLBD9VAIPh47xGyxAgMBAAGjUDBOMB0GA1UdDgQW
-      BBQcIcAMidUr0sRqh0SMl0IzzAAuJjAfBgNVHSMEGDAWgBQcIcAMidUr0sRqh0SM
-      l0IzzAAuJjAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQCbc6F64toe
-      MRlOSycv2aRxYrE3UrKnJYRc8bEqPa9LYSWXao8CMooLCHFrBNjW/3Hg4pdm+EEd
-      CWROreH92yPpzMrjrpnJoVvUaenHNJEhvW78EZ5iwX++dTn3gjHmwcrMcGDSE6BQ
-      c9TGl8ME3ZxJElOFxxh7uWTbi27BAO7yTYV5dxDLobIyhog6/BMz5pU5zMbcX8lS
-      /TPREAPBYhoNawl8DGjks5vaaEmU+42koHwIOfjp2Zns3ol904AIUDdfr6Mt4aI9
-      55N20+m4h35n4E6OiFHjcUju/8hnG9V6ADTy3hkpqCcwrPJHacwtYcnFaWxqsSOK
-      flwj4Wm7RAqQ
-      -----END CERTIFICATE-----
 
   set_proxy:
     type: string
@@ -264,21 +206,29 @@ resources:
     type: OS::Neutron::Port
     properties:
       security_groups:
-      - {get_param: master_security_group}
+      - {get_param: infra_security_group}
       network: {get_param: fixed_network}
+      allowed_address_pairs: {get_param: allowed_address_pairs}
       fixed_ips:
       - subnet: {get_param: fixed_subnet}
       replacement_policy: AUTO
+
+  # Provide access to the Master on the public network
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network: {get_param: external_network}
+      port_id: {get_resource: port}
 
   # Create a network connection on the internal communications network
   internal_port:
     type: OOShift::ContainerPort
     properties:
-      security_group: {get_param: master_security_group}
+      security_group: {get_param: infra_security_group}
       network: {get_param: internal_network}
       subnet: {get_param: internal_subnet}
 
-  # Create the VM instance to host the OpenShift master service
+  # Create the VM instance to host the OpenShift infra service
   host:
     type: OS::Nova::Server
     properties:
@@ -298,13 +248,13 @@ resources:
       user_data_format: SOFTWARE_CONFIG
       user_data: {get_resource: init}
       scheduler_hints:
-        group: {get_param: master_server_group}
+        group: {get_param: infra_server_group}
 
   # Create space for Docker containers and images
   docker_volume:
     type: OS::Cinder::Volume
     properties:
-      description: Master Volume
+      description: Infra Volume
       size: {get_param: docker_volume_size}
 
   # Bind the docker storage to the VM
@@ -313,13 +263,6 @@ resources:
     properties:
       instance_uuid: {get_resource: host}
       volume_id: {get_resource: docker_volume}
-
-  # Provide access to the Master on the public network
-  floating_ip:
-    type: OS::Neutron::FloatingIP
-    properties:
-      floating_network: {get_param: external_network}
-      port_id: {get_resource: port}
 
   # Compose configuration data into a single structure
   init:
@@ -334,7 +277,7 @@ resources:
       - config: {get_resource: set_extra_docker_repos}
       - config: {get_resource: host_update}
       - config: {get_resource: add_dns_record}
-      - config: {get_resource: master_boot}
+      - config: {get_resource: infra_boot}
 
   # Compose the short hostname and fully qualified domain name for the new host
   set_hostname:
@@ -437,7 +380,7 @@ resources:
           template: {get_file: fragments/add_dns_record.sh}
 
   # Prepare the host to run Docker and Ansible for OpenShift install and config
-  master_boot:
+  infra_boot:
     type: OS::Heat::SoftwareConfig
     properties:
       group: script
@@ -445,7 +388,7 @@ resources:
         str_replace:
           params:
             $DOCKER_VOLUME_ID: {get_resource: docker_volume}
-          template: {get_file: fragments/master-boot.sh}
+          template: {get_file: fragments/infra-boot.sh}
 
   # Add a node's IP/Name mapping to DNS
   node_add:
@@ -460,7 +403,7 @@ resources:
       - name: result
       config: {get_file: fragments/bastion-node-add.sh}
 
-  # Add the hostname and address of the bastion host to the master host
+  # Add the hostname and address of the bastion host to the infra host
   deployment_bastion_node_add:
     depends_on: wait_condition
     type: OS::Heat::SoftwareDeployment
@@ -470,7 +413,7 @@ resources:
       server:
         get_param: bastion_node
       input_values:
-        node_type: master
+        node_type: infra
         node_hostname:
           str_replace:
             template: "HOST.DOMAIN"
@@ -506,7 +449,7 @@ resources:
     properties:
       actions: ['DELETE']
       input_values:
-        node_type: master
+        node_type: infra
         node_name:
           str_replace:
             template: "HOST.DOMAIN"
@@ -518,7 +461,7 @@ resources:
       server:
         get_param: bastion_node
 
-  # Wait for master_boot (cloud-init) to complete or time out
+  # Wait for infra_boot (cloud-init) to complete or time out
   wait_condition:
     type: OS::Heat::WaitCondition
     properties:
@@ -554,7 +497,7 @@ outputs:
     description: The actual short name for the host
     value: {get_param: hostname}
   host:
-    description: A reference to the master host identifier
+    description: A reference to the infra host identifier
     value: {get_resource: host}
   ip_address:
     description: IP address of the node

@@ -618,44 +618,45 @@ resources:
           dns_update_key: {get_param: dns_update_key}
           ca_cert: {get_param: ca_cert}
 
-#  openshift_infra_nodes:
-#    depends_on: [external_router_interface, fixed_network, fixed_subnet]
-#    type: OS::Heat::ResourceGroup
-#    properties:
-#      count: {get_param: infra_count}
-#      resource_def:
-#        type: infra.yaml
-#        properties:
-#          ocp_version: {get_param: ocp_version}
-#          image: {get_param: infra_image}
-#          flavor: {get_param: infra_flavor}
-#          key_name: {get_param: ssh_key_name}
-#          ssh_user: {get_param: ssh_user}
-#          extra_rhn_pools: {get_param: extra_rhn_pools}
-#          docker_volume_size: {get_param: infra_docker_volume_size_gb}
-#          hostname:
-#            str_replace:
-#              template: "%stackname%-%hostname%-%index%"
-#              params:
-#                '%stackname%': {get_param: 'OS::stack_name'}
-#                '%hostname%': {get_param: infra_hostname}
-#          domain_name: {get_param: domain_name}
-#          ansible_public_key: {get_attr: [ansible_keys, public_key]}
-#          bastion_node: {get_attr: [bastion_host, resource.host]}
-#          fixed_network: {get_resource: fixed_network}
-#          fixed_subnet: {get_resource: fixed_subnet}
-#          internal_network: {get_resource: cluster_network}
-#          internal_subnet: {get_resource: cluster_subnet}
-#          external_network: {get_param: external_network}
-#          allowed_address_pairs: {get_attr: [ipfailover, allowed_address_pairs]}
-#          infra_server_group: {get_resource: infra_server_group}
-#          infra_security_group: {get_resource: infra_security_group}
-#          system_update: {get_param: system_update}
-#          extra_repository_urls: {get_param: extra_repository_urls}
-#          extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
-#          dns_servers: {get_param: dns_nameserver}
-#          dns_update_key: {get_param: dns_update_key}
-#          ca_cert: {get_param: ca_cert}
+  openshift_infra_nodes:
+    depends_on: [external_router_interface, fixed_network, fixed_subnet]
+    type: OS::Heat::ResourceGroup
+    properties:
+      count: {get_param: infra_count}
+      resource_def:
+        type: infra.yaml
+        properties:
+          ocp_version: {get_param: ocp_version}
+          image: {get_param: infra_image}
+          flavor: {get_param: infra_flavor}
+          key_name: {get_param: ssh_key_name}
+          ssh_user: {get_param: ssh_user}
+          extra_rhn_pools: {get_param: extra_rhn_pools}
+          docker_volume_size: {get_param: infra_docker_volume_size_gb}
+          hostname:
+            str_replace:
+              template: "%stackname%-%hostname%-%index%"
+              params:
+                '%stackname%': {get_param: 'OS::stack_name'}
+                '%hostname%': {get_param: infra_hostname}
+          domain_name: {get_param: domain_name}
+          set_proxy: {get_resource: set_proxy}
+          ansible_public_key: {get_attr: [ansible_keys, public_key]}
+          bastion_node: {get_attr: [bastion_host, resource.host]}
+          fixed_network: {get_resource: fixed_network}
+          fixed_subnet: {get_resource: fixed_subnet}
+          internal_network: {get_resource: cluster_network}
+          internal_subnet: {get_resource: cluster_subnet}
+          external_network: {get_param: external_network}
+          allowed_address_pairs: {get_attr: [ipfailover, allowed_address_pairs]}
+          infra_server_group: {get_resource: infra_server_group}
+          infra_security_group: {get_resource: infra_security_group}
+          system_update: {get_param: system_update}
+          extra_repository_urls: {get_param: extra_repository_urls}
+          extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
+          dns_servers: {get_param: dns_nameserver}
+          dns_update_key: {get_param: dns_update_key}
+          ca_cert: {get_param: ca_cert}
 
 #  openshift_nodes:
 #    depends_on: [external_router_interface, fixed_network, fixed_subnet]
