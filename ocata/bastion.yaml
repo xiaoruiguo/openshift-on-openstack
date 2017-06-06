@@ -195,7 +195,7 @@ resources:
 
   # Install the DNS server and retrieve the Ansible playbooks for OpenShift
   bastion_boot:
-    type: OS::Heat::StructuredConfig
+    type: OS::Heat::SoftwareConfig
     properties:
       group: script
       config:
@@ -209,7 +209,7 @@ resources:
 
   # Compose the FQDN for cloud-init
   set_hostname:
-    type: OS::Heat::StructuredConfig
+    type: OS::Heat::SoftwareConfig
     properties:
       cloud_config:
         hostname: {get_param: hostname}
@@ -222,7 +222,7 @@ resources:
 
   # Place host configuration files via cloud-init
   included_files:
-    type: OS::Heat::StructuredConfig
+    type: OS::Heat::SoftwareConfig
     properties:
       cloud_config:
         write_files:
@@ -255,13 +255,13 @@ resources:
 
   # Add CA Cert to trust chain
   update_ca_cert:
-    type: OS::Heat::StructuredConfig
+    type: OS::Heat::SoftwareConfig
     properties:
       config: {get_file: fragments/ca_cert.sh}
 
   # Enable any extra repositories
   set_extra_repos:
-    type: OS::Heat::StructuredConfig
+    type: OS::Heat::SoftwareConfig
     properties:
       config:
         str_replace:
@@ -273,7 +273,7 @@ resources:
           template: {get_file: fragments/set-extra-repos.sh}
 
   set_extra_docker_repos:
-    type: OS::Heat::StructuredConfig
+    type: OS::Heat::SoftwareConfig
     properties:
       config:
         str_replace:
@@ -286,9 +286,8 @@ resources:
 
   # Make sure the host software is current
   host_update:
-    type: OS::Heat::StructuredConfig
+    type: OS::Heat::SoftwareConfig
     properties:
-      group: script
       config:
         str_replace:
           params:
@@ -296,7 +295,7 @@ resources:
           template: {get_file: fragments/host-update.sh}
 
   write_templates:
-    type: OS::Heat::StructuredConfig
+    type: OS::Heat::SoftwareConfig
     properties:
       group: script
       config:
@@ -323,7 +322,7 @@ resources:
           - get_file: templates/var/lib/ansible/roles/xfs_grub_quota/tasks/main.yml
 
   update_node_count:
-    type: OS::Heat::StructuredConfig
+    type: OS::Heat::SoftwareConfig
     properties:
       group: script
       inputs:
@@ -336,7 +335,8 @@ resources:
 
   deployment_update_node_count:
 #    depends_on: wait_condition
-    type: OS::Heat::StructuredDeployment
+    type: OS::Heat::SoftwareDeployment
+    depends_on: deployment_bastion_boot
     properties:
       name: 190_deployment_update_node_count
       config:
@@ -345,13 +345,17 @@ resources:
         get_resource: host
       input_values:
         node_count: {get_param: node_count}
+        previous:  get_attr: [deployment_bastion_boot, deploy_stdout]
       signal_transport: HEAT_SIGNAL
 
   deployment_write_templates:
 #    depends_on: wait_condition
-    type: OS::Heat::StructuredDeployment
+    type: OS::Heat::SoftwareDeployment
+    depends_on: deployment_update_node_count
     properties:
       name: 200_deployment_write_templates
+      input_values:
+        previous:  get_attr: [deployment_update_node_count, deploy_stdout]
       config:
         get_resource: write_templates
       server:
@@ -360,7 +364,7 @@ resources:
 
   # Apply ansible performance tuning values
   tune_ansible:
-    type: OS::Heat::StructuredConfig
+    type: OS::Heat::SoftwareConfig
     properties:
       group: script
       config:
@@ -369,9 +373,12 @@ resources:
   # Execute the tuning operation on a host
   deployment_tune_ansible:
 #    depends_on: wait_condition
-    type: OS::Heat::StructuredDeployment
+    type: OS::Heat::SoftwareDeployment
+    depends_on: deployment_write_templates
     properties:
       name: 210_deployment_tune_ansible
+      input_values:
+        previous:  get_attr: [deployment_write_templates, deploy_stdout]
       actions: ['CREATE']
       config:
         get_resource: tune_ansible
@@ -409,7 +416,7 @@ resources:
 #      signal_transport: HEAT_SIGNAL
 
   deployment_set_hostname:
-    type: OS::Heat::StructuredDeployment
+    type: OS::Heat::SoftwareDeployment
     properties:
       name: 110_deployment_set_hostname
       config:
@@ -419,9 +426,12 @@ resources:
       signal_transport: HEAT_SIGNAL
 
   deployment_included_files:
-    type: OS::Heat::StructuredDeployment
+    type: OS::Heat::SoftwareDeployment
+    depends_on: deployment_set_hostname
     properties:
       name: 120_deployment_included_files
+      input_values:
+        previous:  get_attr: [deployment_set_hostname, deploy_stdout]
       config:
         get_resource: included_files
       server:
@@ -429,8 +439,11 @@ resources:
       signal_transport: HEAT_SIGNAL
 
 #  deployment_set_proxy:
-#    type: OS::Heat::StructuredDeployment
+#    type: OS::Heat::SoftwareDeployment
+#    depends_on: deployment_included_files
 #    properties:
+#      input_values:
+#        previous:  get_attr: [deployment_included_files, deploy_stdout]
 #      name: 130_deployment_set_proxy
 #      config:
 #        get_param: set_proxy
@@ -440,9 +453,12 @@ resources:
 
 
   deployment_update_ca_cert:
-    type: OS::Heat::StructuredDeployment
+    type: OS::Heat::SoftwareDeployment
+    depends_on: deployment_included_files
     properties:
       name: 140_deployment_update_ca_cert
+      input_values:
+        previous:  get_attr: [deployment_included_files, deploy_stdout]
       config:
         get_resource: update_ca_cert
       server:
@@ -451,9 +467,12 @@ resources:
 
 
   deployment_set_extra_repos:
-    type: OS::Heat::StructuredDeployment
+    type: OS::Heat::SoftwareDeployment
+    depends_on: deployment_update_ca_cert
     properties:
       name: 150_deployment_set_extra_repos
+      input_values:
+        previous:  get_attr: [deployment_update_ca_cert, deploy_stdout]
       config:
         get_resource: set_extra_repos
       server:
@@ -461,9 +480,12 @@ resources:
       signal_transport: HEAT_SIGNAL
 
   deployment_set_extra_docker_repos:
-    type: OS::Heat::StructuredDeployment
+    type: OS::Heat::SoftwareDeployment
+    depends_on: deployment_set_extra_repos
     properties:
       name: 160_deployment_set_extra_docker_repos
+      input_values:
+        previous:  get_attr: [deployment_set_extra_repos, deploy_stdout]
       config:
         get_resource: set_extra_docker_repos
       server:
@@ -471,9 +493,12 @@ resources:
       signal_transport: HEAT_SIGNAL
 
   deployment_host_update:
-    type: OS::Heat::StructuredDeployment
+    type: OS::Heat::SoftwareDeployment
+    depends_on: deployment_set_extra_docker_repos
     properties:
       name: 170_deployment_host_update
+      input_values:
+        previous:  get_attr: [deployment_set_extra_docker_repos, deploy_stdout]
       config:
         get_resource: host_update
       server:
@@ -481,9 +506,12 @@ resources:
       signal_transport: HEAT_SIGNAL
 
   deployment_bastion_boot:
-    type: OS::Heat::StructuredDeployment
+    type: OS::Heat::SoftwareDeployment
+    depends_on: deployment_host_update
     properties:
       name: 180_deployment_bastion_boot
+      input_values:
+        previous:  get_attr: [deployment_host_update, deploy_stdout]
       config:
         get_resource: bastion_boot
       server:
