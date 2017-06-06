@@ -193,6 +193,14 @@ parameters:
 
 resources:
 
+  # Collect the results from a set of resources
+  init:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+      - config: {get_resource: set_hostname}
+      - config: {get_resource: included_files}
+
   # Install the DNS server and retrieve the Ansible playbooks for OpenShift
   bastion_boot:
     type: OS::Heat::SoftwareConfig
@@ -209,7 +217,7 @@ resources:
 
   # Compose the FQDN for cloud-init
   set_hostname:
-    type: OS::Heat::SoftwareConfig
+    type: OS::Heat::CloudConfig
     properties:
       cloud_config:
         hostname: {get_param: hostname}
@@ -222,7 +230,7 @@ resources:
 
   # Place host configuration files via cloud-init
   included_files:
-    type: OS::Heat::SoftwareConfig
+    type: OS::Heat::CloudConfig
     properties:
       cloud_config:
         write_files:
@@ -234,11 +242,11 @@ resources:
           content: {get_file: fragments/merge_dict.py}
         - path: /usr/local/share/openshift-on-openstack/common_functions.sh
           permissions: 0755
-          content: {get_file: fragments/common_functions.sh}
-#            str_replace:
-#              params:
-#                $WC_NOTIFY: { get_attr: ['wait_handle', 'curl_cli'] }
-#              template: {get_file: fragments/common_functions.sh}
+          content:
+            str_replace:
+              params:
+                $WC_NOTIFY: { get_attr: ['wait_handle', 'curl_cli'] }
+              template: {get_file: fragments/common_functions.sh}
         - path: /root/.ssh/id_rsa
           permissions: 0600
 #          content: {get_file: fragments/id_rsa}
@@ -376,7 +384,7 @@ resources:
   deployment_tune_ansible:
 #    depends_on: wait_condition
     type: OS::Heat::SoftwareDeployment
-    depends_on: deployment_write_templates
+    depends_on:  deployment_write_templates
     properties:
       name: 210_deployment_tune_ansible
       input_values:
@@ -404,43 +412,43 @@ resources:
       volume_id: {get_resource: docker_volume}
 
   # Wait until the cloud-init process ends and reports or times out
-#  wait_condition:
-#    type: OS::Heat::WaitCondition
-#    properties:
-#      handle: {get_resource: wait_handle}
-#      timeout: {get_param: timeout}
+  wait_condition:
+    type: OS::Heat::WaitCondition
+    properties:
+      handle: {get_resource: wait_handle}
+      timeout: {get_param: timeout}
 
   # This is passed to bastion_init cloud-init script as a curl CLI command
   # When the cloud-init process ends it queries the URL with
   # a message which ends the wait and returns the value
-#  wait_handle:
-#    type: OS::Heat::WaitConditionHandle
+  wait_handle:
+    type: OS::Heat::WaitConditionHandle
+    properties:
+      signal_transport: HEAT_SIGNAL
+
+#  deployment_set_hostname:
+#    type: OS::Heat::SoftwareDeployment
 #    properties:
+#      name: 110_deployment_set_hostname
+#      config:
+#        get_resource: set_hostname
+#      server:
+#        get_resource: host
 #      signal_transport: HEAT_SIGNAL
 
-  deployment_set_hostname:
-    type: OS::Heat::SoftwareDeployment
-    properties:
-      name: 110_deployment_set_hostname
-      config:
-        get_resource: set_hostname
-      server:
-        get_resource: host
-      signal_transport: HEAT_SIGNAL
-
-  deployment_included_files:
-    type: OS::Heat::SoftwareDeployment
-    depends_on: deployment_set_hostname
-    properties:
-      name: 120_deployment_included_files
-      input_values:
-        previous:
-          get_attr: [deployment_set_hostname, deploy_stdout]
-      config:
-        get_resource: included_files
-      server:
-        get_resource: host
-      signal_transport: HEAT_SIGNAL
+#  deployment_included_files:
+#    type: OS::Heat::SoftwareDeployment
+#    depends_on: deployment_set_hostname
+#    properties:
+#      name: 120_deployment_included_files
+#      input_values:
+#        previous:
+#          get_attr: [deployment_set_hostname, deploy_stdout]
+#      config:
+#        get_resource: included_files
+#      server:
+#        get_resource: host
+#      signal_transport: HEAT_SIGNAL
 
 #  deployment_set_proxy:
 #    type: OS::Heat::SoftwareDeployment
@@ -458,7 +466,7 @@ resources:
 
   deployment_update_ca_cert:
     type: OS::Heat::SoftwareDeployment
-    depends_on: deployment_included_files
+    depends_on: wait_condition
     properties:
       name: 140_deployment_update_ca_cert
       input_values:
@@ -545,7 +553,7 @@ resources:
       - network: tenant
 #      - port: {get_param: port}
       user_data_format: SOFTWARE_CONFIG
-#      user_data: {get_resource: init}
+      user_data: {get_resource: init}
       software_config_transport: POLL_SERVER_HEAT
 
 outputs:
