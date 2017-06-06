@@ -424,8 +424,8 @@ resources:
   # a message which ends the wait and returns the value
   wait_handle:
     type: OS::Heat::WaitConditionHandle
-    properties:
-      signal_transport: HEAT_SIGNAL
+#    properties:
+#      signal_transport: HEAT_SIGNAL
 
   deployment_update_ca_cert:
     type: OS::Heat::SoftwareDeployment
