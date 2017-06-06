@@ -432,9 +432,6 @@ resources:
     depends_on: wait_condition
     properties:
       name: 140_deployment_update_ca_cert
-      input_values:
-        previous:
-          get_attr: [deployment_included_files, deploy_stdout]
       config:
         get_resource: update_ca_cert
       server:
