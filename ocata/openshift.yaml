@@ -631,7 +631,7 @@ resources:
           flavor: {get_param: infra_flavor}
           key_name: {get_param: ssh_key_name}
           ssh_user: {get_param: ssh_user}
-          extra_rhn_pools: {get_param: extra_rhn_pools}
+#          extra_rhn_pools: {get_param: extra_rhn_pools}
           docker_volume_size: {get_param: infra_docker_volume_size_gb}
           hostname:
             str_replace:

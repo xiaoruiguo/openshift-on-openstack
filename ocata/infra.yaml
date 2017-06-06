@@ -42,11 +42,6 @@ parameters:
     type: number
     default: 25
 
-  extra_rhn_pools:
-    type: comma_delimited_list
-    description: List of rhn pools which will be installed on each node.
-    default: ''
-
   hostname:
     description: >
       A string to identify infra hostnames.
