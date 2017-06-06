@@ -278,10 +278,6 @@ resources:
       network: {get_param: internal_network}
       subnet: {get_param: internal_subnet}
 
-
-
-
-
   # Create the VM instance to host the OpenShift master service
   host:
     type: OS::Nova::Server
@@ -297,11 +293,9 @@ resources:
       flavor: {get_param: flavor}
       key_name: {get_param: key_name}
       networks:
-#        - network: {get_param: internal_network}
       - port: {get_resource: port}
       - port: {get_attr: [internal_port, port]}
       user_data_format: SOFTWARE_CONFIG
-      software_config_transport: POLL_SERVER_HEAT
       user_data: {get_resource: init}
       scheduler_hints:
         group: {get_param: master_server_group}
@@ -310,7 +304,6 @@ resources:
   docker_volume:
     type: OS::Cinder::Volume
     properties:
-      description: Master Volume
       size: {get_param: docker_volume_size}
 
   # Bind the docker storage to the VM
@@ -431,9 +424,8 @@ resources:
           template: {get_file: fragments/host-update.sh}
 
   add_dns_record:
-    type: OS::Heat::StructuredConfig #    type: OS::Heat::SoftwareConfig
+    type: OS::Heat::SoftwareConfig
     properties:
-      group: script
       config:
         str_replace:
           params:
@@ -441,12 +433,11 @@ resources:
             '%DNS_SERVER%': {get_param: [dns_servers, 0]}
             '%DNS_UPDATE_KEY%': {get_param: dns_update_key}
             '%IP_ADDRESS%': {get_attr: [port, fixed_ips, 0, ip_address]}
-            '%IP_ADDRESS%': {get_attr: [host, first_address]}
           template: {get_file: fragments/add_dns_record.sh}
 
   # Prepare the host to run Docker and Ansible for OpenShift install and config
   master_boot:
-    type: OS::Heat::StructuredConfig #    type: OS::Heat::SoftwareConfig
+    type: OS::Heat::SoftwareConfig
     properties:
       group: script
       config:
@@ -454,29 +445,6 @@ resources:
           params:
             $DOCKER_VOLUME_ID: {get_resource: docker_volume}
           template: {get_file: fragments/master-boot.sh}
-
-
-  deployment_add_dns_record:
-    type: OS::Heat::StructuredDeployment
-    properties:
-      name: 70_deployment_add_dns_record
-      signal_transport: HEAT_SIGNAL
-      config:
-        get_resource: add_dns_record
-      server:
-        get_resource: host
-      signal_transport: HEAT_SIGNAL
-
-  deployment_master_boot:
-    type: OS::Heat::StructuredDeployment
-    properties:
-      name: 80_deployment_master_boot
-      signal_transport: HEAT_SIGNAL
-      config:
-        get_resource: master_boot
-      server:
-        get_resource: host
-      signal_transport: HEAT_SIGNAL
 
   # Add a node's IP/Name mapping to DNS
   node_add:
@@ -493,7 +461,7 @@ resources:
 
   # Add the hostname and address of the bastion host to the master host
   deployment_bastion_node_add:
-    depends_on: [deployment_master_boot, wait_condition]
+    depends_on: wait_condition
     type: OS::Heat::SoftwareDeployment
     properties:
       config:
@@ -513,10 +481,8 @@ resources:
               template: "IP HOST.DOMAIN HOST #openshift"
               params:
                 IP: {get_attr: [port, fixed_ips, 0, ip_address]}
-                IP: {get_attr: [host, first_address]}
                 HOST: {get_param: hostname}
                 DOMAIN: {get_param: domain_name}
-      signal_transport: HEAT_SIGNAL
 
   node_cleanup:
     type: OS::Heat::SoftwareConfig
@@ -550,7 +516,6 @@ resources:
         get_resource: node_cleanup
       server:
         get_param: bastion_node
-      signal_transport: HEAT_SIGNAL
 
   # Wait for master_boot (cloud-init) to complete or time out
   wait_condition:
@@ -563,8 +528,6 @@ resources:
   # with a status at the end of of the cloud-init process
   wait_handle:
     type: OS::Heat::WaitConditionHandle
-    properties:
-      signal_transport: HEAT_SIGNAL
 
 outputs:
   console_url:
