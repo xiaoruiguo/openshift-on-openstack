@@ -200,6 +200,7 @@ resources:
       parts:
       - config: {get_resource: set_hostname}
       - config: {get_resource: included_files}
+#      - config: {get_param: set_proxy}
 
   # Install the DNS server and retrieve the Ansible playbooks for OpenShift
   bastion_boot:
@@ -425,44 +426,6 @@ resources:
     type: OS::Heat::WaitConditionHandle
     properties:
       signal_transport: HEAT_SIGNAL
-
-#  deployment_set_hostname:
-#    type: OS::Heat::SoftwareDeployment
-#    properties:
-#      name: 110_deployment_set_hostname
-#      config:
-#        get_resource: set_hostname
-#      server:
-#        get_resource: host
-#      signal_transport: HEAT_SIGNAL
-
-#  deployment_included_files:
-#    type: OS::Heat::SoftwareDeployment
-#    depends_on: deployment_set_hostname
-#    properties:
-#      name: 120_deployment_included_files
-#      input_values:
-#        previous:
-#          get_attr: [deployment_set_hostname, deploy_stdout]
-#      config:
-#        get_resource: included_files
-#      server:
-#        get_resource: host
-#      signal_transport: HEAT_SIGNAL
-
-#  deployment_set_proxy:
-#    type: OS::Heat::SoftwareDeployment
-#    depends_on: deployment_included_files
-#    properties:
-#      input_values:
-#        previous:  get_attr: [deployment_included_files, deploy_stdout]
-#      name: 130_deployment_set_proxy
-#      config:
-#        get_param: set_proxy
-#      server:
-#        get_resource: host
-#      signal_transport: HEAT_SIGNAL
-
 
   deployment_update_ca_cert:
     type: OS::Heat::SoftwareDeployment
