@@ -288,6 +288,7 @@ resources:
   host_update:
     type: OS::Heat::StructuredConfig
     properties:
+      group: script
       config:
         str_replace:
           params:
