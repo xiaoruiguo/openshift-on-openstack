@@ -548,7 +548,7 @@ resources:
 
   # VM Host definitions
   bastion_host:
-    depends_on: [external_router_interface, fixed_network, fixed_subnet, registry_volume]
+    depends_on: [external_router_interface, fixed_network, fixed_subnet] #, registry_volume
     type: bastion.yaml
     properties:
       node_count: {get_param: node_count}
