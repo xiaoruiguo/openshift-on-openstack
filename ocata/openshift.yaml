@@ -748,49 +748,49 @@ resources:
         port_range_max: 4789
 
   # Scaling and Operational Controls
-  scale_up_policy:
-    type: OS::Heat::ScalingPolicy
-    properties:
-      adjustment_type: change_in_capacity
-      auto_scaling_group_id: {get_resource: openshift_nodes}
-      cooldown: 60
-      scaling_adjustment: 1
-
-  scale_down_policy:
-    type: OS::Heat::ScalingPolicy
-    properties:
-      adjustment_type: change_in_capacity
-      auto_scaling_group_id: {get_resource: openshift_nodes}
-      cooldown: 60
-      scaling_adjustment: '-1'
-
-  cpu_alarm_high:
-    type: OS::Ceilometer::Alarm
-    properties:
-      meter_name: cpu_util
-      statistic: avg
-      period: 60
-      evaluation_periods: 1
-      threshold: 50
-      enabled: {get_param: autoscaling}
-      alarm_actions:
-        - {get_attr: [scale_up_policy, alarm_url]}
-      matching_metadata: {'metadata.user_metadata.stack': {get_param: "OS::stack_id"}}
-      comparison_operator: gt
-
-  cpu_alarm_low:
-    type: OS::Ceilometer::Alarm
-    properties:
-      meter_name: cpu_util
-      statistic: avg
-      period: 600
-      evaluation_periods: 1
-      threshold: 15
-      enabled: {get_param: autoscaling}
-      alarm_actions:
-        - {get_attr: [scale_down_policy, alarm_url]}
-      matching_metadata: {'metadata.user_metadata.stack': {get_param: "OS::stack_id"}}
-      comparison_operator: lt
+#  scale_up_policy:
+#    type: OS::Heat::ScalingPolicy
+#    properties:
+#      adjustment_type: change_in_capacity
+#      auto_scaling_group_id: {get_resource: openshift_nodes}
+#      cooldown: 60
+#      scaling_adjustment: 1
+#
+#  scale_down_policy:
+#    type: OS::Heat::ScalingPolicy
+#    properties:
+#      adjustment_type: change_in_capacity
+#      auto_scaling_group_id: {get_resource: openshift_nodes}
+#      cooldown: 60
+#      scaling_adjustment: '-1'
+#
+#  cpu_alarm_high:
+#    type: OS::Ceilometer::Alarm
+#    properties:
+#      meter_name: cpu_util
+#      statistic: avg
+#      period: 60
+#      evaluation_periods: 1
+#      threshold: 50
+#      enabled: {get_param: autoscaling}
+#      alarm_actions:
+#        - {get_attr: [scale_up_policy, alarm_url]}
+#      matching_metadata: {'metadata.user_metadata.stack': {get_param: "OS::stack_id"}}
+#      comparison_operator: gt
+#
+#  cpu_alarm_low:
+#    type: OS::Ceilometer::Alarm
+#    properties:
+#      meter_name: cpu_util
+#      statistic: avg
+#      period: 600
+#      evaluation_periods: 1
+#      threshold: 15
+#      enabled: {get_param: autoscaling}
+#      alarm_actions:
+#        - {get_attr: [scale_down_policy, alarm_url]}
+#      matching_metadata: {'metadata.user_metadata.stack': {get_param: "OS::stack_id"}}
+#      comparison_operator: lt
 
   bastion_port:
     type: OS::Neutron::Port
