@@ -220,12 +220,12 @@ resources:
       parts:
       - config: {get_resource: set_hostname}
       - config: {get_resource: included_files}
-      - config: {get_param: set_proxy}
       - config: {get_resource: update_ca_cert}
       - config: {get_resource: set_extra_repos}
       - config: {get_resource: set_extra_docker_repos}
       - config: {get_resource: host_update}
         type: multipart
+      - config: {get_param: set_proxy}
       - config: {get_resource: bastion_boot}
 
   # Install the DNS server and retrieve the Ansible playbooks for OpenShift
