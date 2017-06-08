@@ -41,6 +41,11 @@ docker_set_storage_device $VOLUME_ID
 systemctl enable lvm2-lvmetad
 systemctl start lvm2-lvmetad
 
+systemctl stop docker
+rm -rf /var/lib/docker/*
+systemctl start docker
+
+
 /usr/bin/docker-storage-setup || notify_failure "Docker Storage setup failed"
 
 notify_success "OpenShift node has been prepared for running docker."

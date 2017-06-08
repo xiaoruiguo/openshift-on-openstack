@@ -131,6 +131,10 @@ then
     systemctl enable lvm2-lvmetad
     systemctl start lvm2-lvmetad
 
+    systemctl stop docker
+    rm -rf /var/lib/docker/*
+    systemctl start docker
+
     docker-storage-setup || notify_failure "docker storage setup failed"
 
     systemctl start docker --ignore-dependencies ||

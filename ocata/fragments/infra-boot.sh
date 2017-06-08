@@ -35,6 +35,10 @@ fi
 systemctl enable lvm2-lvmetad
 systemctl start lvm2-lvmetad
 
+systemctl stop docker
+rm -rf /var/lib/docker/*
+systemctl start docker
+
 if [ -n "$VOLUME_ID" ]
 then
     docker_set_storage_device $VOLUME_ID

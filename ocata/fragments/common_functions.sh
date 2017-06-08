@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Send success status to OpenStack WaitCondition
 function notify_success() {
     $WC_NOTIFY --data-binary \
@@ -21,6 +23,8 @@ function sudo_enable_from_ssh() {
 function docker_set_storage_device() {
     # By default the cinder volume is mapped to virtio-first_20_chars of cinder
     # volume ID under /dev/disk/by-id/
+    # docker_set_storage_device f11b0436-2e13-44e5-b293-3311e02bc3f3 ${1:0:20}=f11b0436-2e13-44e5-b
+    # /dev/disk/by-id/virtio-f11b0436-2e13-44e5-b
     devlink=/dev/disk/by-id/virtio-${1:0:20}
     docker_dev=""
     if ! [ -e "$devlink" ];then
