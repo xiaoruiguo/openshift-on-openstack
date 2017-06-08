@@ -31,7 +31,7 @@ VOLUME_ID=$DOCKER_VOLUME_ID
 HEAT_AGENT_CONTAINER_IMAGE=jprovaznik/ooshift-heat-agent
 
 # Select the EPEL release to make it easier to update
-EPEL_RELEASE_VERSION=7-7
+EPEL_RELEASE_VERSION=7-9
 
 # ----------------------------------------------------------------------------
 # Functions for Atomic Host systems
