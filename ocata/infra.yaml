@@ -244,6 +244,7 @@ resources:
       user_data: {get_resource: init}
       scheduler_hints:
         group: {get_param: infra_server_group}
+      software_config_transport: POLL_SERVER_HEAT
 
   # Create space for Docker containers and images
   docker_volume:
@@ -422,6 +423,7 @@ resources:
                 IP: {get_attr: [port, fixed_ips, 0, ip_address]}
                 HOST: {get_param: hostname}
                 DOMAIN: {get_param: domain_name}
+      signal_transport: HEAT_SIGNAL
 
   node_cleanup:
     type: OS::Heat::SoftwareConfig
@@ -455,6 +457,7 @@ resources:
         get_resource: node_cleanup
       server:
         get_param: bastion_node
+      signal_transport: HEAT_SIGNAL
 
   # Wait for infra_boot (cloud-init) to complete or time out
   wait_condition:

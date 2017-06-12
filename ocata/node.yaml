@@ -355,6 +355,7 @@ resources:
       user_data_format: SOFTWARE_CONFIG
       user_data: {get_resource: init}
       metadata: {get_param: metadata}
+      software_config_transport: POLL_SERVER_HEAT
 
   # Create an external volume to contain the Docker containers and images
   docker_volume:
@@ -557,6 +558,7 @@ resources:
         get_resource: node_cleanup
       server:
         get_param: bastion_node
+      signal_transport: HEAT_SIGNAL
 
   # Add a node's IP/Name mapping to DNS
   node_add:
@@ -597,6 +599,7 @@ resources:
                 HOST: {get_param: hostname}
                 SUFFIX: {get_attr: [random_hostname_suffix, value]}
                 DOMAIN: {get_param: domain_name}
+      signal_transport: HEAT_SIGNAL
 
   # Execute the ansible playbook(s) on the bastion server to configure the
   # openshift hosts and services
@@ -706,6 +709,7 @@ resources:
               DOMAIN: {get_param: domain_name}
         all_master_nodes: {get_param: all_master_nodes}
         all_infra_nodes: {get_param: all_infra_nodes}
+      signal_transport: HEAT_SIGNAL
 
   # Wait for the node_boot (cloud-init) process to complete or time out
   wait_condition:
