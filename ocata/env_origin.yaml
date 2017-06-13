@@ -11,7 +11,8 @@ parameters:
   loadbalancer_image: centos7-heat-agents
   loadbalancer_flavor: m1.medium
   external_network: public
-  dns_nameserver: 10.238.19.24,8.8.8.8
+# dns_nameserver: 10.238.19.24,8.8.8.8
+  dns_nameserver: 10.238.121.34
   node_count: 2
 
   deployment_type: origin
