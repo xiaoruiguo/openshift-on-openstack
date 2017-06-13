@@ -19,7 +19,8 @@ def add_a_record(server, zone, key, name, address, ttl=300):
 
     # make input zones absolute
     #zone = zone + '.' if not zone.endswith('.')
-    keyring = dns.tsigkeyring.from_text({'update-key': key})
+    keyring = dns.tsigkeyring.from_text({'example.com': key})
+#    keyring = dns.tsigkeyring.from_text({'update-key': key})
     update = dns.update.Update(zone, keyring=keyring)
     update.replace(name, ttl, 'a', address)
     response = dns.query.tcp(update, server)
