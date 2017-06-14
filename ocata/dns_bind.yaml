@@ -50,6 +50,9 @@ parameters:
     description: List of repository URLs which will be installed on each node.
     default: ''
 
+  system_update:
+    type: boolean
+    default: true
 #  set_proxy:
 #    type: string
 #    description: proxy for external network
