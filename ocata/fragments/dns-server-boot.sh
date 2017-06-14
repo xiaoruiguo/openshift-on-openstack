@@ -7,6 +7,7 @@ set -x
 set -o pipefail
 
 domain=$DOMAIN
+forwarders=$FORWARDER
 
 if yum info python-dns; then
     retry yum -y install python-dns
@@ -37,7 +38,8 @@ restorecon -v /etc/rndc.* /etc/named.*
 chown -v root:named /etc/rndc.key
 chmod -v 640 /etc/rndc.key
 
-echo "forwarders { 8.8.8.8; 10.238.19.24; } ;" >> /var/named/forwarders.conf
+#echo "forwarders { 8.8.8.8; 10.238.19.24; } ;" >> /var/named/forwarders.conf
+echo "forwarders { ${forwarders} } ;" >> /var/named/forwarders.conf
 restorecon -v /var/named/forwarders.conf
 chmod -v 640 /var/named/forwarders.conf
 

@@ -44,6 +44,13 @@ parameters:
     default: default
 
   # VM characteristics centos72
+  dns_image:
+    type: string
+    description: Name or ID of the bastion image registered with Glance
+    constraints:
+    - custom_constraint: glance.image
+    default: centos7-heat-agents
+
   bastion_image:
     type: string
     description: Name or ID of the bastion image registered with Glance
@@ -87,7 +94,13 @@ parameters:
     default: m1.small
     constraints:
     - custom_constraint: nova.flavor
- 
+
+  dns_flavor:
+    type: string
+    description: The Nova flavor to use for the bastion node
+    default: m1.small
+    constraints:
+    - custom_constraint: nova.flavor
 
   loadbalancer_flavor:
     type: string
@@ -138,7 +151,7 @@ parameters:
       The subnet used for openshift node-node communication
     default: 10.0.0.0/24
 
-  dns_nameserver:
+  dns_forwarder:
     type: comma_delimited_list
     description: >
       A comma separated list of DNS nameserver IP addresses in your environment
@@ -235,6 +248,12 @@ parameters:
     description: >
       The hostname that is going to be set for the loadbalancer server.
     default: 'lb'
+
+  dns_hostname:
+    type: string
+    description: >
+      The hostname that is going to be set for the dedicated bastion node.
+    default: 'dns'
 
   bastion_hostname:
     type: string
@@ -501,8 +520,9 @@ resources:
     properties:
       cidr: {get_param: internal_subnet}
       network: {get_resource: fixed_network}
-      dns_nameservers: {get_param: dns_nameserver}
-
+      dns_nameservers: {get_attr: [dns_host, resource.0.ip_address]}
+#      dns_nameservers: {get_param: dns_nameserver}
+# get_attr: [dns_host, resource.0.ip_address]
   external_router:
     type: OS::Neutron::Router
     properties:
@@ -545,6 +565,36 @@ resources:
       fixed_subnet: {get_resource: fixed_subnet}
       external_network: {get_param: external_network}
       loadbalancer_ip: {get_attr: [lb_floating_ip, floating_ip_address]}
+
+  # DNS VM Host definitions
+  dns_host:
+    depends_on: [external_router_interface, fixed_network, fixed_subnet] #, registry_volume
+    type: dns.yaml
+    properties:
+      image: {get_param: dns_image}
+      flavor: {get_param: dns_flavor}
+      key_name: {get_param: ssh_key_name}
+      ssh_user: {get_param: ssh_user}
+      hostname:
+        str_replace:
+          template: "%stackname%-%hostname%"
+          params:
+            '%stackname%': {get_param: 'OS::stack_name'}
+            '%hostname%': {get_param: dns_hostname}
+      domain_name: {get_param: domain_name}
+      set_proxy: {get_resource: set_proxy}
+      ansible_public_key: {get_attr: [ansible_keys, public_key]}
+      ansible_private_key: {get_attr: [ansible_keys, private_key]}
+#      floating_ip: {get_attr: [bastion_floating_ip, floating_ip_address]}
+      port: {get_resource: dns_port}
+      system_update: {get_param: system_update}
+      extra_repository_urls: {get_param: extra_repository_urls}
+      dns_forwarder: {get_param: dns_forwarder}
+#      ca_cert: {get_param: ca_cert}
+#get_attr: [dns_host, first_address]
+# master_ip: {get_attr: [openshift_masters, resource.0.ip_address]}
+# master_ip: {get_attr: [dns_host, resource.0.ip_address]}
+
 
   # VM Host definitions
   bastion_host:
@@ -611,7 +661,9 @@ resources:
           system_update: {get_param: system_update}
           extra_repository_urls: {get_param: extra_repository_urls}
           extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
-          dns_servers: {get_param: dns_nameserver}
+          dns_servers: {get_attr: [dns_host, resource.0.ip_address]}
+#          dns_servers: {get_param: dns_nameserver}
+#get_attr: [dns_host, resource.0.ip_address]
           dns_update_key: {get_param: dns_update_key}
           ca_cert: {get_param: ca_cert}
 #
@@ -651,7 +703,8 @@ resources:
           system_update: {get_param: system_update}
           extra_repository_urls: {get_param: extra_repository_urls}
           extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
-          dns_servers: {get_param: dns_nameserver}
+          dns_servers: {get_attr: [dns_host, resource.0.ip_address]}
+#          dns_servers: {get_param: dns_nameserver}
           dns_update_key: {get_param: dns_update_key}
           ca_cert: {get_param: ca_cert}
 
@@ -717,7 +770,8 @@ resources:
           os_domain_name: {get_param: os_domain_name}
           os_region_name: {get_param: os_region_name}
           loadbalancer_type: {get_param: loadbalancer_type}
-          dns_servers: {get_param: dns_nameserver}
+          dns_servers: {get_attr: [dns_host, resource.0.ip_address]}
+#          dns_servers: {get_param: dns_nameserver}
           dns_update_key: {get_param: dns_update_key}
           lb_ip: {get_attr: [lb_floating_ip, floating_ip_address]}
           master_ip: {get_attr: [openshift_masters, resource.0.ip_address]}
@@ -746,6 +800,21 @@ resources:
         protocol: udp
         port_range_min: 4789
         port_range_max: 4789
+
+
+  # Define the network access policy for openshift nodes
+  dns_security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+      - direction: ingress
+        protocol: tcp
+        port_range_min: 53
+        port_range_max: 53
+      - direction: ingress
+        protocol: udp
+        port_range_min: 53
+        port_range_max: 53
 
   # Scaling and Operational Controls
 #  scale_up_policy:
@@ -791,6 +860,16 @@ resources:
 #        - {get_attr: [scale_down_policy, alarm_url]}
 #      matching_metadata: {'metadata.user_metadata.stack': {get_param: "OS::stack_id"}}
 #      comparison_operator: lt
+
+  dns_port:
+    type: OS::Neutron::Port
+    properties:
+      security_groups:
+      - {get_resource: dns_security_group}
+      network: {get_resource: fixed_network}
+      fixed_ips:
+      - subnet: {get_resource: fixed_subnet}
+      replacement_policy: AUTO
 
   bastion_port:
     type: OS::Neutron::Port
@@ -968,7 +1047,8 @@ resources:
       extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
       stack_name: {get_param: 'OS::stack_name'}
       bastion_node: {get_attr: [bastion_host, resource.host]}
-      dns_servers: {get_param: dns_nameserver}
+      dns_servers: {get_attr: [dns_host, resource.0.ip_address]}
+#      dns_servers: {get_param: dns_nameserver}
       dns_update_key: {get_param: dns_update_key}
       ca_cert: {get_param: ca_cert}
 

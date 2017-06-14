@@ -51,6 +51,14 @@ parameters:
     type: string
     default: centos
 
+  dns_forwarder:
+    type: comma_delimited_list
+    description: >
+      A comma separated list of DNS nameserver IP addresses in your environment
+      These will be configured into the OpenStack networks. They are the
+      namservers that new OpenShift instances will use.
+    default: 10.238.19.24; 8.8.8.8;
+
   extra_repository_urls:
     type: comma_delimited_list
     description: List of repository URLs which will be installed on each node.
@@ -59,10 +67,16 @@ parameters:
   system_update:
     type: boolean
     default: true
-#  set_proxy:
-#    type: string
-#    description: proxy for external network
 
+  set_proxy:
+    type: string
+    description: proxy for external network
+    default: ''
+
+  port:
+    description: Neutron port (with a floating IP address) to assign to the DNS Nova Server
+    type: string
+#    default: ""
 
   ansible_public_key:
     description: >
@@ -124,16 +138,16 @@ resources:
       flavor: {get_param: flavor}
       key_name: {get_param: key_name}
       networks:
-      - network: tenant
-#      - port: {get_param: port}
+#      - network: tenant
+      - port: {get_param: port}
       user_data_format: SOFTWARE_CONFIG
       user_data: {get_resource: init}
       software_config_transport: POLL_SERVER_HEAT
 
-  set_proxy:
-    type: OS::Heat::SoftwareConfig
-    properties:
-      config: {get_file: fragments/set_proxy.sh}
+#  set_proxy:
+#    type: OS::Heat::SoftwareConfig
+#    properties:
+#      config: {get_file: fragments/set_proxy.sh}
 
   # Collect the results from a set of resources
   init:
@@ -147,7 +161,7 @@ resources:
 #      - config: {get_resource: set_extra_docker_repos}
       - config: {get_resource: host_update}
         type: multipart
-      - config: {get_resource: set_proxy}
+      - config: {get_param: set_proxy}
       - config: {get_resource: dns_server_boot}
 
 
@@ -160,6 +174,7 @@ resources:
         str_replace:
           params:
             $DOMAIN: {get_param: domain_name}
+            $FORWARDER: {get_param: dns_forwarder}
           template: {get_file: fragments/dns-server-boot.sh}
 
   # Compose the FQDN for cloud-init
