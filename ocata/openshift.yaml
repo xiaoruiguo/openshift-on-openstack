@@ -650,6 +650,7 @@ resources:
           domain_name: {get_param: domain_name}
           set_proxy: {get_resource: set_proxy}
           ansible_public_key: {get_attr: [ansible_keys, public_key]}
+          dns_node: {get_attr: [dns_host, resource.host]}
           bastion_node: {get_attr: [bastion_host, resource.host]}
           fixed_network: {get_resource: fixed_network}
           fixed_subnet: {get_resource: fixed_subnet}
@@ -691,6 +692,7 @@ resources:
           domain_name: {get_param: domain_name}
           set_proxy: {get_resource: set_proxy}
           ansible_public_key: {get_attr: [ansible_keys, public_key]}
+          dns_node: {get_attr: [dns_host, resource.host]}
           bastion_node: {get_attr: [bastion_host, resource.host]}
           fixed_network: {get_resource: fixed_network}
           fixed_subnet: {get_resource: fixed_subnet}
@@ -740,6 +742,7 @@ resources:
           set_proxy: {get_resource: set_proxy}
           app_subdomain: {get_param: app_subdomain}
           ansible_public_key: {get_attr: [ansible_keys, public_key]}
+          dns_node: {get_attr: [dns_host, resource.host]}
           bastion_node: {get_attr: [bastion_host, resource.host]}
           system_update: {get_param: system_update}
           metadata: {"metering.stack": {get_param: "OS::stack_id"}}
