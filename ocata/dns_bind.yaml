@@ -86,7 +86,7 @@ resources:
       - config: {get_resource: included_files}
       - config: {get_resource: update_ca_cert}
       - config: {get_resource: set_extra_repos}
-      - config: {get_resource: set_extra_docker_repos}
+#      - config: {get_resource: set_extra_docker_repos}
       - config: {get_resource: host_update}
         type: multipart
       - config: {get_resource: set_proxy}
@@ -169,17 +169,17 @@ resources:
                 - {get_param: extra_repository_urls}
           template: {get_file: fragments/set-extra-repos.sh}
 
-  set_extra_docker_repos:
-    type: OS::Heat::SoftwareConfig
-    properties:
-      config:
-        str_replace:
-          params:
-            $REPOLIST:
-              list_join:
-                - " "
-                - {get_param: extra_docker_repository_urls}
-          template: {get_file: fragments/set-extra-docker-repos.sh}
+#  set_extra_docker_repos:
+#    type: OS::Heat::SoftwareConfig
+#    properties:
+#      config:
+#        str_replace:
+#          params:
+#            $REPOLIST:
+#              list_join:
+#                - " "
+#                - {get_param: extra_docker_repository_urls}
+#          template: {get_file: fragments/set-extra-docker-repos.sh}
 
   # Make sure the host software is current
   host_update:
