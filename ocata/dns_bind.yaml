@@ -45,6 +45,11 @@ parameters:
     type: string
     default: openshift.labs.local
 
+  extra_repository_urls:
+    type: comma_delimited_list
+    description: List of repository URLs which will be installed on each node.
+    default: ''
+
 #  set_proxy:
 #    type: string
 #    description: proxy for external network
