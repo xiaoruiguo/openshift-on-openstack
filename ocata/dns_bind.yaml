@@ -45,6 +45,12 @@ parameters:
     type: string
     default: openshift.labs.local
 
+  ssh_user:
+    description: >
+      The user for SSH access to the VM hosts
+    type: string
+    default: centos
+
   extra_repository_urls:
     type: comma_delimited_list
     description: List of repository URLs which will be installed on each node.
