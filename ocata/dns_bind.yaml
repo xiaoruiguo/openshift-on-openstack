@@ -1,7 +1,7 @@
 heat_template_version: 2014-10-16
 
 description: >
-  Openshift external DNS Server.
+  Openshift external DNS Server with Ansible.
 
 
 parameters:
@@ -45,9 +45,9 @@ parameters:
     type: string
     default: openshift.labs.local
 
-  set_proxy:
-    type: string
-    description: proxy for external network
+#  set_proxy:
+#    type: string
+#    description: proxy for external network
 
 resources:
 
@@ -66,11 +66,16 @@ resources:
       flavor: {get_param: flavor}
       key_name: {get_param: key_name}
       networks:
-#      - network: tenant
-      - port: {get_param: port}
+      - network: tenant
+#      - port: {get_param: port}
       user_data_format: SOFTWARE_CONFIG
       user_data: {get_resource: init}
       software_config_transport: POLL_SERVER_HEAT
+
+  set_proxy:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config: {get_file: fragments/set_proxy.sh}
 
   # Collect the results from a set of resources
   init:
@@ -84,7 +89,7 @@ resources:
       - config: {get_resource: set_extra_docker_repos}
       - config: {get_resource: host_update}
         type: multipart
-      - config: {get_param: set_proxy}
+      - config: {get_resource: set_proxy}
       - config: {get_resource: dns_server_boot}
 
 
@@ -96,10 +101,7 @@ resources:
       config:
         str_replace:
           params:
-            $OPENSHIFT_ANSIBLE_GIT_URL: {get_param: openshift_ansible_git_url}
-            $OPENSHIFT_ANSIBLE_GIT_REV: {get_param: openshift_ansible_git_rev}
-            $DOCKER_VOLUME_ID: {get_resource: docker_volume}
-            $ANSIBLE_VERSION: {get_param: ansible_version}
+            $DOMAIN: {get_param: domain_name}
           template: {get_file: fragments/dns-server-boot.sh}
 
   # Compose the FQDN for cloud-init
