@@ -14,7 +14,11 @@ yum install -y bind bind-utils
 
 keyfile=/var/named/${domain}.key
 pushd /var/named
+
+if [ -e K${domain}* ];  then
 rm K${domain}*
+fi
+
 dnssec-keygen -a HMAC-MD5 -b 512 -n USER -r /dev/urandom ${domain}
 KEY="$(grep Key: K${domain}*.private | cut -d ' ' -f 2)"
 popd
@@ -31,7 +35,10 @@ echo "forwarders { 8.8.8.8; 10.238.19.24; } ;" >> /var/named/forwarders.conf
 restorecon -v /var/named/forwarders.conf
 chmod -v 640 /var/named/forwarders.conf
 
+
+if [-e /var/named/dynamic ]; then
 rm -rvf /var/named/dynamic
+fi
 mkdir -vp /var/named/dynamic
 
 cat <<EOF > /var/named/dynamic/${domain}.db
