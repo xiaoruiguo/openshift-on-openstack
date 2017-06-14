@@ -8,7 +8,13 @@ set -o pipefail
 
 domain=$DOMAIN
 
-yum install -y bind bind-utils
+if yum info python-dns; then
+    retry yum -y install python-dns
+else
+    retry yum -y install python2-dns
+fi
+
+retry yum install -y bind bind-utils
 
 #domain=example.com
 
