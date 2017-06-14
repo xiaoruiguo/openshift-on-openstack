@@ -191,6 +191,15 @@ resources:
             $SYSTEM_UPDATE: {get_param: system_update}
           template: {get_file: fragments/host-update.sh}
 
+  # This is passed to bastion_init cloud-init script as a curl CLI command
+  # When the cloud-init process ends it queries the URL with
+  # a message which ends the wait and returns the value
+  wait_handle:
+    type: OS::Heat::WaitConditionHandle
+
 outputs:
+  instance_ip:
+    description: Instance private IP (used by other nodes for DNS queries).
+    value: {get_attr: [host, first_address]}
 
 
