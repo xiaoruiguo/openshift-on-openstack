@@ -136,7 +136,7 @@ resources:
       parts:
       - config: {get_resource: set_hostname}
       - config: {get_resource: included_files}
-      - config: {get_resource: update_ca_cert}
+#      - config: {get_resource: update_ca_cert}
       - config: {get_resource: set_extra_repos}
 #      - config: {get_resource: set_extra_docker_repos}
       - config: {get_resource: host_update}
@@ -196,17 +196,17 @@ resources:
           permissions: 0600
 #          content: {get_file: fragments/id_rsa.pub}
           content: {get_param: ansible_public_key}
-        - path: /etc/pki/ca-trust/source/anchors/ca.crt
-          permissions: 0600
-          content: {get_param: ca_cert}
+#        - path: /etc/pki/ca-trust/source/anchors/ca.crt
+#          permissions: 0600
+#          content: {get_param: ca_cert}
         ssh_authorized_keys:
         - {get_param: ansible_public_key}
 
   # Add CA Cert to trust chain
-  update_ca_cert:
-    type: OS::Heat::SoftwareConfig
-    properties:
-      config: {get_file: fragments/ca_cert.sh}
+#  update_ca_cert:
+#    type: OS::Heat::SoftwareConfig
+#    properties:
+#      config: {get_file: fragments/ca_cert.sh}
 
   # Enable any extra repositories
   set_extra_repos:
