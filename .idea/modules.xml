@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/../instack-undercloud/.idea/instack-undercloud.iml" filepath="$PROJECT_DIR$/../instack-undercloud/.idea/instack-undercloud.iml" />
       <module fileurl="file://$PROJECT_DIR$/../kolla/.idea/kolla.iml" filepath="$PROJECT_DIR$/../kolla/.idea/kolla.iml" />
       <module fileurl="file://$PROJECT_DIR$/../kolla-ansible/.idea/kolla-ansible.iml" filepath="$PROJECT_DIR$/../kolla-ansible/.idea/kolla-ansible.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../openshift-ansible/.idea/openshift-ansible.iml" filepath="$PROJECT_DIR$/../openshift-ansible/.idea/openshift-ansible.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/openshift-on-openstack.iml" filepath="$PROJECT_DIR$/.idea/openshift-on-openstack.iml" />
       <module fileurl="file://$PROJECT_DIR$/../os-apply-config/.idea/os-apply-config.iml" filepath="$PROJECT_DIR$/../os-apply-config/.idea/os-apply-config.iml" />
       <module fileurl="file://$PROJECT_DIR$/../os-collect-config/.idea/os-collect-config.iml" filepath="$PROJECT_DIR$/../os-collect-config/.idea/os-collect-config.iml" />
