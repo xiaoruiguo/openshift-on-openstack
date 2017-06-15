@@ -584,7 +584,6 @@ resources:
 #
   # DNS VM Host definitions
   openshift_dns:
-    depends_on: [fixed_network, fixed_subnet]
     type: dns.yaml
     properties:
       image: {get_param: dns_image}
