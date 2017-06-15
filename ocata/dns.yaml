@@ -105,7 +105,7 @@ parameters:
     - custom_constraint: neutron.subnet
     default: tenant-sub
 
-  master_security_group:
+  dns_security_group:
     description: >
       ID of the network access policies for the OpenShift master hosts
     type: string
