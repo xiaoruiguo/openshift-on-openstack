@@ -159,21 +159,6 @@ parameters:
       namservers that new OpenShift instances will use.
     default: 10.238.19.24, 8.8.8.8
 
-#  dns_update_key:
-#    type: string
-#    description: >
-#      A key for updating the DNS servers.
-#
-#      If specified, each node will update the `dns_nameserver` with
-#      the A record of their hostname and internal IP address.
-#
-#      If left empty, no DNS updates will be performed. Note that the
-#      OpenShift installation will fail if the nodes cannot resolve each
-#      other. As such, this means you will have to update your DNS
-#      servers manually.
-#    hidden: true
-#    default: ''
-
   system_update:
     type: boolean
     description: Run "yum update" on each node on first boot.
@@ -622,6 +607,13 @@ resources:
       docker_volume_size: {get_param: master_docker_volume_size_gb}
       openshift_ansible_git_url: {get_param: openshift_ansible_git_url}
       openshift_ansible_git_rev: {get_param: openshift_ansible_git_rev}
+      fixed_network: {get_resource: fixed_network}
+      fixed_subnet: {get_resource: fixed_subnet}
+      internal_network: {get_resource: cluster_network}
+      internal_subnet: {get_resource: cluster_subnet}
+      external_network: {get_param: external_network}
+#      dns_server_group: {get_resource: master_server_group}
+      dns_security_group: {get_resource: dns_security_group}
       system_update: {get_param: system_update}
       extra_repository_urls: {get_param: extra_repository_urls}
       extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
@@ -864,16 +856,6 @@ resources:
 #      matching_metadata: {'metadata.user_metadata.stack': {get_param: "OS::stack_id"}}
 #      comparison_operator: lt
 
-  dns_port:
-    type: OS::Neutron::Port
-    properties:
-      security_groups:
-      - {get_resource: dns_security_group}
-      network: {get_resource: fixed_network}
-      fixed_ips:
-      - subnet: {get_resource: fixed_subnet}
-      replacement_policy: AUTO
-
   bastion_port:
     type: OS::Neutron::Port
     properties:
@@ -916,6 +898,7 @@ resources:
       save_private_key: True
 
   # OpenShift web and REST API network controls
+
   master_server_group:
     type: OS::Nova::ServerGroup
     properties:
