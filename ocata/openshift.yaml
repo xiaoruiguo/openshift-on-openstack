@@ -159,20 +159,20 @@ parameters:
       namservers that new OpenShift instances will use.
     default: 10.238.19.24, 8.8.8.8
 
-  dns_update_key:
-    type: string
-    description: >
-      A key for updating the DNS servers.
-
-      If specified, each node will update the `dns_nameserver` with
-      the A record of their hostname and internal IP address.
-
-      If left empty, no DNS updates will be performed. Note that the
-      OpenShift installation will fail if the nodes cannot resolve each
-      other. As such, this means you will have to update your DNS
-      servers manually.
-    hidden: true
-    default: ''
+#  dns_update_key:
+#    type: string
+#    description: >
+#      A key for updating the DNS servers.
+#
+#      If specified, each node will update the `dns_nameserver` with
+#      the A record of their hostname and internal IP address.
+#
+#      If left empty, no DNS updates will be performed. Note that the
+#      OpenShift installation will fail if the nodes cannot resolve each
+#      other. As such, this means you will have to update your DNS
+#      servers manually.
+#    hidden: true
+#    default: ''
 
   system_update:
     type: boolean
@@ -665,7 +665,7 @@ resources:
           dns_servers: {get_attr: [dns_host, resource.0.ip_address]}
 #          dns_servers: {get_param: dns_nameserver}
 #get_attr: [dns_host, resource.0.ip_address]
-          dns_update_key: {get_param: dns_update_key}
+#          dns_update_key: {get_param: dns_update_key}
           ca_cert: {get_param: ca_cert}
 #
   openshift_infra_nodes:
@@ -707,7 +707,7 @@ resources:
           extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
           dns_servers: {get_attr: [dns_host, resource.0.ip_address]}
 #          dns_servers: {get_param: dns_nameserver}
-          dns_update_key: {get_param: dns_update_key}
+#          dns_update_key: {get_param: dns_update_key}
           ca_cert: {get_param: ca_cert}
 
   openshift_nodes:
@@ -775,7 +775,7 @@ resources:
           loadbalancer_type: {get_param: loadbalancer_type}
           dns_servers: {get_attr: [dns_host, resource.0.ip_address]}
 #          dns_servers: {get_param: dns_nameserver}
-          dns_update_key: {get_param: dns_update_key}
+#          dns_update_key: {get_param: dns_update_key}
           lb_ip: {get_attr: [lb_floating_ip, floating_ip_address]}
           master_ip: {get_attr: [openshift_masters, resource.0.ip_address]}
           lb_hostname: {get_attr: [loadbalancer, hostname]}
@@ -1052,7 +1052,7 @@ resources:
       bastion_node: {get_attr: [bastion_host, resource.host]}
       dns_servers: {get_attr: [dns_host, resource.0.ip_address]}
 #      dns_servers: {get_param: dns_nameserver}
-      dns_update_key: {get_param: dns_update_key}
+#      dns_update_key: {get_param: dns_update_key}
       ca_cert: {get_param: ca_cert}
 
 outputs:

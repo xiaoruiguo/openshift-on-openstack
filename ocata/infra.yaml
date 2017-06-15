@@ -188,9 +188,9 @@ parameters:
     type: comma_delimited_list
     description: address of dns nameservers reachable in your environment
 
-  dns_update_key:
-    type: string
-    hidden: true
+#  dns_update_key:
+#    type: string
+#    hidden: true
 
   ca_cert:
     type: string
@@ -375,7 +375,7 @@ resources:
       group: script
       inputs:
       - name: key_name
-      - name: key_secret
+#      - name: key_secret
       - name: dns_server
       - name: dns_zone
       - name: dns_record
@@ -419,7 +419,7 @@ resources:
         get_param: dns_node
       input_values:
         key_name: {get_param: domain_name}
-        key_secret: {get_param: dns_update_key}
+#        key_secret: {get_param: dns_update_key}
         dns_server: {get_param: dns_servers}
         dns_zone: {get_param: domain_name}
         dns_record: {get_param: hostname}
