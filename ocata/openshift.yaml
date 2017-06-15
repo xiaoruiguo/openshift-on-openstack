@@ -506,7 +506,8 @@ resources:
     properties:
       cidr: {get_param: internal_subnet}
       network: {get_resource: fixed_network}
-      dns_nameservers: {get_attr: [ openshift_dns, resource.host, first_address ]}
+      dns_nameservers:
+      - {get_attr: [ openshift_dns, resource.host, first_address ]}
 
   external_router:
     type: OS::Neutron::Router
