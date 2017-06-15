@@ -501,6 +501,7 @@ resources:
     type: OS::Neutron::Net
 
   fixed_subnet:
+    depends_on: openshift_dns
     type: OS::Neutron::Subnet
     properties:
       cidr: {get_param: internal_subnet}
