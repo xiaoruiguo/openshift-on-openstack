@@ -267,13 +267,13 @@ resources:
         - path: /usr/local/bin/merge_dict
           permissions: 0755
           content: {get_file: fragments/merge_dict.py}
-        - path: /usr/local/share/openshift-on-openstack/common_functions.sh
-          permissions: 0755
-          content:
-            str_replace:
-              params:
-                $WC_NOTIFY: { get_attr: ['wait_handle', 'curl_cli'] }
-              template: {get_file: fragments/common_functions.sh}
+#        - path: /usr/local/share/openshift-on-openstack/common_functions.sh
+#          permissions: 0755
+#          content:
+#            str_replace:
+#              params:
+#                $WC_NOTIFY: { get_attr: ['wait_handle', 'curl_cli'] }
+#              template: {get_file: fragments/common_functions.sh}
         - path: /root/.ssh/id_rsa
           permissions: 0600
 #          content: {get_file: fragments/id_rsa}
@@ -307,18 +307,6 @@ resources:
                 - {get_param: extra_repository_urls}
           template: {get_file: fragments/set-extra-repos.sh}
 
-#  set_extra_docker_repos:
-#    type: OS::Heat::SoftwareConfig
-#    properties:
-#      config:
-#        str_replace:
-#          params:
-#            $REPOLIST:
-#              list_join:
-#                - " "
-#                - {get_param: extra_docker_repository_urls}
-#          template: {get_file: fragments/set-extra-docker-repos.sh}
-
   # Make sure the host software is current
   host_update:
     type: OS::Heat::SoftwareConfig
@@ -329,11 +317,11 @@ resources:
             $SYSTEM_UPDATE: {get_param: system_update}
           template: {get_file: fragments/host-update.sh}
 
-  # This is passed to bastion_init cloud-init script as a curl CLI command
-  # When the cloud-init process ends it queries the URL with
-  # a message which ends the wait and returns the value
-  wait_handle:
-    type: OS::Heat::WaitConditionHandle
+#  # This is passed to bastion_init cloud-init script as a curl CLI command
+#  # When the cloud-init process ends it queries the URL with
+#  # a message which ends the wait and returns the value
+#  wait_handle:
+#    type: OS::Heat::WaitConditionHandle
 
 outputs:
   instance_ip:
