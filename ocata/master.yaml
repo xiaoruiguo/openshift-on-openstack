@@ -254,14 +254,24 @@ parameters:
       MRlOSycv2aRxYrE3UrKnJYRc8bEqPa9LYSWXao8CMooLCHFrBNjW/3Hg4pdm+EEd
       CWROreH92yPpzMrjrpnJoVvUaenHNJEhvW78EZ5iwX++dTn3gjHmwcrMcGDSE6BQ
       c9TGl8ME3ZxJElOFxxh7uWTbi27BAO7yTYV5dxDLobIyhog6/BMz5pU5zMbcX8lS
-resources:
-
-  # Create a network connection on the internal communications network
-  port:
       /TPREAPBYhoNawl8DGjks5vaaEmU+42koHwIOfjp2Zns3ol904AIUDdfr6Mt4aI9
       55N20+m4h35n4E6OiFHjcUju/8hnG9V6ADTy3hkpqCcwrPJHacwtYcnFaWxqsSOK
       flwj4Wm7RAqQ
       -----END CERTIFICATE-----
+
+resources:
+
+  # Create a network connection on the internal communications network
+  port:
+    type: OS::Neutron::Port
+    properties:
+      security_groups:
+      - {get_param: master_security_group}
+      network: {get_param: fixed_network}
+      fixed_ips:
+      - subnet: {get_param: fixed_subnet}
+      replacement_policy: AUTO
+
 
   set_proxy:
     type: string
