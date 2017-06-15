@@ -551,9 +551,40 @@ resources:
       external_network: {get_param: external_network}
       loadbalancer_ip: {get_attr: [lb_floating_ip, floating_ip_address]}
 
+  # VM Host definitions
+  bastion_host:
+    depends_on: [external_router_interface, fixed_network, fixed_subnet] #, registry_volume
+    type: bastion.yaml
+    properties:
+      node_count: {get_param: node_count}
+      ansible_version: {get_param: ansible_version}
+      image: {get_param: bastion_image}
+      flavor: {get_param: bastion_flavor}
+      key_name: {get_param: ssh_key_name}
+      ssh_user: {get_param: ssh_user}
+      hostname:
+        str_replace:
+          template: "%stackname%-%hostname%"
+          params:
+            '%stackname%': {get_param: 'OS::stack_name'}
+            '%hostname%': {get_param: bastion_hostname}
+      domain_name: {get_param: domain_name}
+      set_proxy: {get_resource: set_proxy}
+      ansible_public_key: {get_attr: [ansible_keys, public_key]}
+      ansible_private_key: {get_attr: [ansible_keys, private_key]}
+      floating_ip: {get_attr: [bastion_floating_ip, floating_ip_address]}
+      port: {get_resource: bastion_port}
+      docker_volume_size: {get_param: master_docker_volume_size_gb}
+      openshift_ansible_git_url: {get_param: openshift_ansible_git_url}
+      openshift_ansible_git_rev: {get_param: openshift_ansible_git_rev}
+      system_update: {get_param: system_update}
+      extra_repository_urls: {get_param: extra_repository_urls}
+      extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
+      ca_cert: {get_param: ca_cert}
+#
   # DNS VM Host definitions
   dns_host:
-    depends_on: [fixed_network, fixed_subnet] #, registry_volume
+    depends_on: [fixed_network, fixed_subnet]
     type: dns.yaml
     properties:
       image: {get_param: dns_image}
@@ -587,38 +618,6 @@ resources:
 # master_ip: {get_attr: [openshift_masters, resource.0.ip_address]}
 # master_ip: {get_attr: [dns_host, resource.0.ip_address]}
 
-
-  # VM Host definitions
-  bastion_host:
-    depends_on: [external_router_interface, fixed_network, fixed_subnet] #, registry_volume
-    type: bastion.yaml
-    properties:
-      node_count: {get_param: node_count}
-      ansible_version: {get_param: ansible_version}
-      image: {get_param: bastion_image}
-      flavor: {get_param: bastion_flavor}
-      key_name: {get_param: ssh_key_name}
-      ssh_user: {get_param: ssh_user}
-      hostname:
-        str_replace:
-          template: "%stackname%-%hostname%"
-          params:
-            '%stackname%': {get_param: 'OS::stack_name'}
-            '%hostname%': {get_param: bastion_hostname}
-      domain_name: {get_param: domain_name}
-      set_proxy: {get_resource: set_proxy}
-      ansible_public_key: {get_attr: [ansible_keys, public_key]}
-      ansible_private_key: {get_attr: [ansible_keys, private_key]}
-      floating_ip: {get_attr: [bastion_floating_ip, floating_ip_address]}
-      port: {get_resource: bastion_port}
-      docker_volume_size: {get_param: master_docker_volume_size_gb}
-      openshift_ansible_git_url: {get_param: openshift_ansible_git_url}
-      openshift_ansible_git_rev: {get_param: openshift_ansible_git_rev}
-      system_update: {get_param: system_update}
-      extra_repository_urls: {get_param: extra_repository_urls}
-      extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
-      ca_cert: {get_param: ca_cert}
-#
   openshift_masters:
     depends_on: [external_router_interface, fixed_network, fixed_subnet]
     type: OS::Heat::ResourceGroup

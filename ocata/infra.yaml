@@ -428,7 +428,7 @@ resources:
 
   # Add the hostname and address of the bastion host to the infra host
   deployment_bastion_node_add:
-    depends_on: deployment_add_dns_record
+    depends_on: [wait_condition, deployment_add_dns_record]
     type: OS::Heat::SoftwareDeployment
     properties:
       config:
