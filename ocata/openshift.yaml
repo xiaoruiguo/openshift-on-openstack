@@ -507,7 +507,9 @@ resources:
       cidr: {get_param: internal_subnet}
       network: {get_resource: fixed_network}
       dns_nameservers:
-      - {get_attr: [ openshift_dns, resource.host, first_address ]}
+      - 10.238.19.24
+      - 8.8.8.8
+#      - {get_attr: [ openshift_dns, resource.host, first_address ]}
 
   external_router:
     type: OS::Neutron::Router
@@ -603,11 +605,11 @@ resources:
       ansible_private_key: {get_attr: [ansible_keys, private_key]}
 #      floating_ip: {get_attr: [bastion_floating_ip, floating_ip_address]}
 #      port: {get_resource: dns_port}
-#      fixed_network: {get_resource: fixed_network}
-#      fixed_subnet: {get_resource: fixed_subnet}
+      fixed_network: {get_resource: fixed_network}
+      fixed_subnet: {get_resource: fixed_subnet}
 #      internal_network: {get_resource: cluster_network}
 #      internal_subnet: {get_resource: cluster_subnet}
-      external_network: {get_param: external_network}
+#      external_network: {get_param: external_network}
 #      dns_server_group: {get_resource: master_server_group}
       dns_security_group: {get_resource: dns_security_group}
       system_update: {get_param: system_update}

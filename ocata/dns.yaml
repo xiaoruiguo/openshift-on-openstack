@@ -73,21 +73,21 @@ parameters:
     description: proxy for external network
     default: ''
 
-#  fixed_network:
-#    description: >
-#      The name or ID of the admin and public network
-#    type: string
-#    constraints:
-#    - custom_constraint: neutron.network
-#    default: public
-#
-#  fixed_subnet:
-#    description: >
-#      The name or ID of the admin and public IPv4 space
-#    type: string
-#    constraints:
-#    - custom_constraint: neutron.subnet
-#    default: public-float
+  fixed_network:
+    description: >
+      The name or ID of the admin and public network
+    type: string
+    constraints:
+    - custom_constraint: neutron.network
+    default: public
+
+  fixed_subnet:
+    description: >
+      The name or ID of the admin and public IPv4 space
+    type: string
+    constraints:
+    - custom_constraint: neutron.subnet
+    default: public-float
 
 #  internal_network:
 #    description: >
@@ -170,6 +170,17 @@ parameters:
 
 resources:
 
+  # Create a network connection on the internal communications network
+  port:
+    type: OS::Neutron::Port
+    properties:
+      security_groups:
+      - {get_param: dns_security_group}
+      network: {get_param: fixed_network}
+      fixed_ips:
+      - subnet: {get_param: fixed_subnet}
+      replacement_policy: AUTO
+
 # A VM to provide host based orchestration and other sub-services
   host:
     type: OS::Nova::Server
@@ -184,10 +195,11 @@ resources:
       image: {get_param: image}
       flavor: {get_param: flavor}
       key_name: {get_param: key_name}
-      security_groups:
-      - {get_param: dns_security_group}
+#      security_groups:
+#      - {get_param: dns_security_group}
       networks:
-      - network: {get_param: external_network}
+      - port: {get_resource: port}
+#      - network: {get_param: external_network}
       user_data_format: SOFTWARE_CONFIG
       user_data: {get_resource: init}
       software_config_transport: POLL_SERVER_HEAT
