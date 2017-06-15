@@ -6,6 +6,8 @@ set -x
 # Return the non-zero exit code of the last cmd of a pipe (or 0 for success)
 set -o pipefail
 
+source /usr/local/share/openshift-on-openstack/common_functions.sh
+
 domain=$DOMAIN
 #forwarders=$FORWARDER
 
