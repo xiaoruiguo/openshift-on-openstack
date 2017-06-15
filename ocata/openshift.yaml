@@ -654,7 +654,8 @@ resources:
           system_update: {get_param: system_update}
           extra_repository_urls: {get_param: extra_repository_urls}
           extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
-          dns_servers: {get_attr: [openshift_dns, resource.0.ip_address]}
+#          dns_nameservers: {get_attr: [ openshift_dns, host, first_address ]}
+          dns_servers: {get_attr: [openshift_dns, host, first_address]}
 #          dns_servers: {get_param: dns_nameserver}
 #get_attr: [dns_host, resource.0.ip_address]
 #          dns_update_key: {get_param: dns_update_key}
@@ -697,7 +698,7 @@ resources:
           system_update: {get_param: system_update}
           extra_repository_urls: {get_param: extra_repository_urls}
           extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
-          dns_servers: {get_attr: [openshift_dns, resource.0.ip_address]}
+          dns_servers: {get_attr: [openshift_dns, host, first_address]}
 #          dns_servers: {get_param: dns_nameserver}
 #          dns_update_key: {get_param: dns_update_key}
           ca_cert: {get_param: ca_cert}
@@ -765,7 +766,7 @@ resources:
           os_domain_name: {get_param: os_domain_name}
           os_region_name: {get_param: os_region_name}
           loadbalancer_type: {get_param: loadbalancer_type}
-          dns_servers: {get_attr: [openshift_dns, resource.0.ip_address]}
+          dns_servers: {get_attr: [openshift_dns, host, first_address]}
 #          dns_servers: {get_param: dns_nameserver}
 #          dns_update_key: {get_param: dns_update_key}
           lb_ip: {get_attr: [lb_floating_ip, floating_ip_address]}
@@ -1048,7 +1049,7 @@ resources:
       extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
       stack_name: {get_param: 'OS::stack_name'}
       bastion_node: {get_attr: [bastion_host, resource.host]}
-      dns_servers: {get_attr: [openshift_dns, resource.0.ip_address]}
+      dns_servers: {get_attr: [openshift_dns, host, first_address]}
 #      dns_servers: {get_param: dns_nameserver}
 #      dns_update_key: {get_param: dns_update_key}
       ca_cert: {get_param: ca_cert}

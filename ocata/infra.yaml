@@ -185,7 +185,7 @@ parameters:
     default: ''
 
   dns_servers:
-    type: comma_delimited_list
+    type: string
     description: address of dns nameservers reachable in your environment
 
 #  dns_update_key:
