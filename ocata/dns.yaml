@@ -210,12 +210,7 @@ resources:
 #      - port: {get_attr: [internal_port, port]}
       user_data_format: SOFTWARE_CONFIG
       user_data: {get_resource: init}
-      software_config_transport: POLL_SERVER_HEAT
-
-#  set_proxy:
-#    type: OS::Heat::SoftwareConfig
-#    properties:
-#      config: {get_file: fragments/set_proxy.sh}
+#      software_config_transport: POLL_SERVER_HEAT
 
   # Collect the results from a set of resources
   init:
