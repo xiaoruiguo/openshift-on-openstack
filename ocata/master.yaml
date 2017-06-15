@@ -490,7 +490,7 @@ resources:
 
   # Add the hostname and address of the bastion host to the master host
   deployment_bastion_node_add:
-    depends_on: [wait_condition, deployment_add_dns_record]
+    depends_on: wait_condition
     type: OS::Heat::SoftwareDeployment
     properties:
       config:
