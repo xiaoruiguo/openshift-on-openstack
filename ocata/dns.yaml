@@ -52,7 +52,7 @@ parameters:
     default: centos
 
   dns_forwarder:
-    type: comma_delimited_list
+    type: string
     description: >
       A comma separated list of DNS nameserver IP addresses in your environment
       These will be configured into the OpenStack networks. They are the
