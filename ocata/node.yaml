@@ -296,7 +296,7 @@ parameters:
       The name of the OpenStack "region" to use to create or find resources
     type: string
 
-  dns_servers:
+  dns_server:
     type: string
     description: address of dns nameservers reachable in your environment
 
@@ -593,7 +593,7 @@ resources:
       input_values:
         key_name: {get_param: domain_name}
 #        key_secret: {get_param: dns_update_key}
-        dns_server: {get_param: dns_servers}
+        dns_server: {get_param: dns_server}
         dns_zone: {get_param: domain_name}
         dns_record: {get_param: hostname}
         dns_record_ip: {get_attr: [port, fixed_ips, 0, ip_address]}
