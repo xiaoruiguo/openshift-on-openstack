@@ -1048,25 +1048,25 @@ resources:
 
 outputs:
 
-  loadbalancer_ip:
-    description: External IP address of the loadbalancer for master nodes.
-    value: {get_attr: [lb_floating_ip, floating_ip_address]}
+#  loadbalancer_ip:
+#    description: External IP address of the loadbalancer for master nodes.
+#    value: {get_attr: [lb_floating_ip, floating_ip_address]}
 
-  router_ip:
-    description: External IP address of the OpenShift router.
-    value: {get_attr: [ipfailover, router_ip]}
-
-  console_url:
-    description: URL of the OpenShift web console
-    value: {get_attr: [loadbalancer, console_url]}
-
-  api_url:
-    description: URL entrypoint to the OpenShift API
-    value: {get_attr: [loadbalancer, api_url]}
-
-  host_ips:
-    description: IP addresses of the OpenShift nodes
-    value: {get_attr: [openshift_nodes, outputs_list, ip_address]}
+#  router_ip:
+#    description: External IP address of the OpenShift router.
+#    value: {get_attr: [ipfailover, router_ip]}
+#
+#  console_url:
+#    description: URL of the OpenShift web console
+#    value: {get_attr: [loadbalancer, console_url]}
+#
+#  api_url:
+#    description: URL entrypoint to the OpenShift API
+#    value: {get_attr: [loadbalancer, api_url]}
+#
+#  host_ips:
+#    description: IP addresses of the OpenShift nodes
+#    value: {get_attr: [openshift_nodes, outputs_list, ip_address]}
 #
 #  scale_up_url:
 #    description: >
@@ -1082,14 +1082,14 @@ outputs:
 #      this URL; no body nor extra headers are needed.
 #    value: {get_attr: [scale_down_policy, alarm_url]}
 #
-  ca_cert:
-    description: Openshift CA certificate.
-    value: {"Fn::Select": ["0", {get_attr: [openshift_nodes, outputs_list, ca_cert]}]}
-
-  ca_key:
-    description: Openshift CA certificate key.
-    value: {"Fn::Select": ["0", {get_attr: [openshift_nodes, outputs_list, ca_key]}]}
-
-  master_ips:
-    description: List of openshift master node IPs
-    value: {get_attr: [openshift_masters, ip_address]}
+#  ca_cert:
+#    description: Openshift CA certificate.
+#    value: {"Fn::Select": ["0", {get_attr: [openshift_nodes, outputs_list, ca_cert]}]}
+#
+#  ca_key:
+#    description: Openshift CA certificate key.
+#    value: {"Fn::Select": ["0", {get_attr: [openshift_nodes, outputs_list, ca_key]}]}
+#
+#  master_ips:
+#    description: List of openshift master node IPs
+#    value: {get_attr: [openshift_masters, ip_address]}
