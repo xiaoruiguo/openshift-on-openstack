@@ -584,7 +584,7 @@ resources:
 #
   # DNS VM Host definitions
   dns_host:
-    depends_on: [external_router_interface, fixed_network, fixed_subnet]
+    depends_on: [fixed_network, fixed_subnet]
     type: dns.yaml
     properties:
       image: {get_param: dns_image}
@@ -602,14 +602,14 @@ resources:
       ansible_public_key: {get_attr: [ansible_keys, public_key]}
       ansible_private_key: {get_attr: [ansible_keys, private_key]}
 #      floating_ip: {get_attr: [bastion_floating_ip, floating_ip_address]}
-      port: {get_resource: dns_port}
-#      fixed_network: {get_resource: fixed_network}
-#      fixed_subnet: {get_resource: fixed_subnet}
+#      port: {get_resource: dns_port}
+      fixed_network: {get_resource: fixed_network}
+      fixed_subnet: {get_resource: fixed_subnet}
 #      internal_network: {get_resource: cluster_network}
 #      internal_subnet: {get_resource: cluster_subnet}
 #      external_network: {get_param: external_network}
 #      dns_server_group: {get_resource: master_server_group}
-#      dns_security_group: {get_resource: dns_security_group}
+      dns_security_group: {get_resource: dns_security_group}
       system_update: {get_param: system_update}
       extra_repository_urls: {get_param: extra_repository_urls}
       dns_forwarder: {get_param: dns_forwarder}
@@ -855,15 +855,15 @@ resources:
 #      matching_metadata: {'metadata.user_metadata.stack': {get_param: "OS::stack_id"}}
 #      comparison_operator: lt
 
-  dns_port:
-    type: OS::Neutron::Port
-    properties:
-      security_groups:
-      - {get_resource: dns_security_group}
-      network: {get_resource: fixed_network}
-      fixed_ips:
-      - subnet: {get_resource: fixed_subnet}
-      replacement_policy: AUTO
+#  dns_port:
+#    type: OS::Neutron::Port
+#    properties:
+#      security_groups:
+#      - {get_resource: dns_security_group}
+#      network: {get_resource: fixed_network}
+#      fixed_ips:
+#      - subnet: {get_resource: fixed_subnet}
+#      replacement_policy: AUTO
 
   bastion_port:
     type: OS::Neutron::Port
