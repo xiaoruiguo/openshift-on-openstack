@@ -259,6 +259,10 @@ parameters:
       flwj4Wm7RAqQ
       -----END CERTIFICATE-----
 
+  set_proxy:
+    type: string
+    description: proxy for external network
+
 resources:
 
   # Create a network connection on the internal communications network
@@ -271,11 +275,6 @@ resources:
       fixed_ips:
       - subnet: {get_param: fixed_subnet}
       replacement_policy: AUTO
-
-
-  set_proxy:
-    type: string
-    description: proxy for external network
 
     type: OS::Neutron::Port
     properties:
