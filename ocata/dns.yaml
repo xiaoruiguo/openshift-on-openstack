@@ -204,7 +204,7 @@ resources:
       flavor: {get_param: flavor}
       key_name: {get_param: key_name}
       security_groups:
-      - {get_resource: dns_security_group}
+      - {get_param: dns_security_group}
       networks:
       - network: {get_param: external_network}
 #      - port: {get_param: port}
