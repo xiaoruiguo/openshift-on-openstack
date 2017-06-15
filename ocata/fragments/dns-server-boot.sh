@@ -137,3 +137,5 @@ echo "nameserver 127.0.0.1" >> /etc/resolv.conf
 systemctl enable named.service
 systemctl start named.service
 systemctl restart named.service
+
+notify_success "OpenShift DNS Server setup successfully."
