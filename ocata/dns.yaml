@@ -73,43 +73,48 @@ parameters:
     description: proxy for external network
     default: ''
 
-  fixed_network:
-    description: >
-      The name or ID of the admin and public network
-    type: string
-    constraints:
-    - custom_constraint: neutron.network
-    default: public
+#  fixed_network:
+#    description: >
+#      The name or ID of the admin and public network
+#    type: string
+#    constraints:
+#    - custom_constraint: neutron.network
+#    default: public
+#
+#  fixed_subnet:
+#    description: >
+#      The name or ID of the admin and public IPv4 space
+#    type: string
+#    constraints:
+#    - custom_constraint: neutron.subnet
+#    default: public-float
+#
+#  internal_network:
+#    description: >
+#      The name or ID of the internal network
+#    type: string
+#    constraints:
+#    - custom_constraint: neutron.network
+#    default: tenant
+#
+#  internal_subnet:
+#    description: >
+#      The name or ID of the internal IPv4 space
+#    type: string
+#    constraints:
+#    - custom_constraint: neutron.subnet
+#    default: tenant-sub
+#
+#  dns_security_group:
+#    description: >
+#      ID of the network access policies for the OpenShift master hosts
+#    type: string
+#    default: default
 
-  fixed_subnet:
-    description: >
-      The name or ID of the admin and public IPv4 space
+  port:
+    description: Neutron port (with a floating IP address) to assign to the DNS Nova Server
     type: string
-    constraints:
-    - custom_constraint: neutron.subnet
-    default: public-float
-
-  internal_network:
-    description: >
-      The name or ID of the internal network
-    type: string
-    constraints:
-    - custom_constraint: neutron.network
-    default: tenant
-
-  internal_subnet:
-    description: >
-      The name or ID of the internal IPv4 space
-    type: string
-    constraints:
-    - custom_constraint: neutron.subnet
-    default: tenant-sub
-
-  dns_security_group:
-    description: >
-      ID of the network access policies for the OpenShift master hosts
-    type: string
-    default: default
+#    default: ""
 
   ansible_public_key:
     description: >
@@ -156,24 +161,24 @@ parameters:
 
 resources:
 
-  # Create a network connection on the internal communications network
-  port:
-    type: OS::Neutron::Port
-    properties:
-      security_groups:
-      - {get_param: dns_security_group}
-      network: {get_param: fixed_network}
-      fixed_ips:
-      - subnet: {get_param: fixed_subnet}
-      replacement_policy: AUTO
-
-  # Create a network connection on the internal communications network
-  internal_port:
-    type: OOShift::ContainerPort
-    properties:
-      security_group: {get_param: dns_security_group}
-      network: {get_param: internal_network}
-      subnet: {get_param: internal_subnet}
+#  # Create a network connection on the internal communications network
+#  port:
+#    type: OS::Neutron::Port
+#    properties:
+#      security_groups:
+#      - {get_param: dns_security_group}
+#      network: {get_param: fixed_network}
+#      fixed_ips:
+#      - subnet: {get_param: fixed_subnet}
+#      replacement_policy: AUTO
+#
+#  # Create a network connection on the internal communications network
+#  internal_port:
+#    type: OOShift::ContainerPort
+#    properties:
+#      security_group: {get_param: dns_security_group}
+#      network: {get_param: internal_network}
+#      subnet: {get_param: internal_subnet}
 
 # A VM to provide host based orchestration and other sub-services
   host:
@@ -190,8 +195,9 @@ resources:
       flavor: {get_param: flavor}
       key_name: {get_param: key_name}
       networks:
-      - port: {get_resource: port}
-      - port: {get_attr: [internal_port, port]}
+      - port: {get_param: port}
+#      - port: {get_resource: port}
+#      - port: {get_attr: [internal_port, port]}
       user_data_format: SOFTWARE_CONFIG
       user_data: {get_resource: init}
       software_config_transport: POLL_SERVER_HEAT
