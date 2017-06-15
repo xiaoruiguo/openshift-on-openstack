@@ -616,7 +616,7 @@ resources:
       system_update: {get_param: system_update}
       extra_repository_urls: {get_param: extra_repository_urls}
       dns_forwarder: {get_param: dns_forwarder}
-#      ca_cert: {get_param: ca_cert}
+      ca_cert: {get_param: ca_cert}
 #get_attr: [dns_host, first_address]
 # master_ip: {get_attr: [openshift_masters, resource.0.ip_address]}
 # master_ip: {get_attr: [dns_host, resource.0.ip_address]}
