@@ -553,7 +553,7 @@ resources:
 
   # DNS VM Host definitions
   dns_host:
-    depends_on: [external_router_interface, fixed_network, fixed_subnet] #, registry_volume
+    depends_on: [fixed_network, fixed_subnet] #, registry_volume
     type: dns.yaml
     properties:
       image: {get_param: dns_image}
