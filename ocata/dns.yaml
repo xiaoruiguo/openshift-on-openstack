@@ -73,21 +73,21 @@ parameters:
     description: proxy for external network
     default: ''
 
-  fixed_network:
-    description: >
-      The name or ID of the admin and public network
-    type: string
-    constraints:
-    - custom_constraint: neutron.network
-    default: public
-
-  fixed_subnet:
-    description: >
-      The name or ID of the admin and public IPv4 space
-    type: string
-    constraints:
-    - custom_constraint: neutron.subnet
-    default: public-float
+#  fixed_network:
+#    description: >
+#      The name or ID of the admin and public network
+#    type: string
+#    constraints:
+#    - custom_constraint: neutron.network
+#    default: public
+#
+#  fixed_subnet:
+#    description: >
+#      The name or ID of the admin and public IPv4 space
+#    type: string
+#    constraints:
+#    - custom_constraint: neutron.subnet
+#    default: public-float
 
 #  internal_network:
 #    description: >
@@ -110,6 +110,15 @@ parameters:
       ID of the network access policies for the OpenShift master hosts
     type: string
     default: default
+
+  # Networks to connect to or create
+  external_network:
+    type: string
+    description: >
+      The external network that provides floating IP addresses for the nodes
+    constraints:
+    - custom_constraint: neutron.network
+    default: public
 
 #  port:
 #    description: Neutron port (with a floating IP address) to assign to the DNS Nova Server
@@ -195,8 +204,9 @@ resources:
       flavor: {get_param: flavor}
       key_name: {get_param: key_name}
       networks:
+      - network: {get_param: external_network}
 #      - port: {get_param: port}
-      - port: {get_resource: port}
+#      - port: {get_resource: port}
 #      - port: {get_attr: [internal_port, port]}
       user_data_format: SOFTWARE_CONFIG
       user_data: {get_resource: init}
