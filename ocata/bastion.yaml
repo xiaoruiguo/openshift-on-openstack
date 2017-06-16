@@ -294,13 +294,14 @@ resources:
               params:
                 $WC_NOTIFY: { get_attr: ['wait_handle', 'curl_cli'] }
               template: {get_file: fragments/common_functions.sh}
+        - path: /usr/local/bin/update_dns
+          permissions: 0755
+          content: {get_file: fragments/update_dns.py}
         - path: /root/.ssh/id_rsa
           permissions: 0600
-#          content: {get_file: fragments/id_rsa}
           content: {get_param: ansible_private_key}
         - path: /root/.ssh/id_rsa.pub
           permissions: 0600
-#          content: {get_file: fragments/id_rsa.pub}
           content: {get_param: ansible_public_key}
         - path: /etc/pki/ca-trust/source/anchors/ca.crt
           permissions: 0600

@@ -368,6 +368,8 @@ resources:
           params:
             $SYSTEM_UPDATE: {get_param: system_update}
           template: {get_file: fragments/host-update.sh}
+
+
   add_dns_record:
     type: OS::Heat::SoftwareConfig
     properties:
@@ -380,6 +382,7 @@ resources:
 #            '%DNS_ENTRY%': {get_param: hostname}
             '%IP_ADDRESS%': {get_attr: [port, fixed_ips, 0, ip_address]}
           template: {get_file: fragments/add_dns_record.sh}
+
 #  add_dns_record:
 #    type: OS::Heat::SoftwareConfig
 #    properties:
