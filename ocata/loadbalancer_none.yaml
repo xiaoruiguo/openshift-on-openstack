@@ -125,8 +125,8 @@ parameters:
       The name or ID of the bastion instance.
     default: ''
 
-  dns_servers:
-    type: comma_delimited_list
+  dns_server:
+    type: string
     description: address of dns nameservers reachable in your environment
 
 #  dns_update_key:
