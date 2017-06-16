@@ -728,7 +728,7 @@ resources:
           docker_volume_size: {get_param: node_docker_volume_size_gb}
           hostname:
             str_replace:
-              template: "%stackname%-%hostname%-%index%"
+              template: "%stackname%-%hostname%"
               params:
                 '%stackname%': {get_param: 'OS::stack_name'}
                 '%hostname%': {get_param: node_hostname}
