@@ -602,6 +602,7 @@ resources:
   # activation hook to add the node to DNS and Kubernetes cluster
   deployment_bastion_node_add:
     depends_on: [wait_condition, deployment_add_dns_record]
+#    depends_on: [wait_condition, deployment_add_dns_record]
     type: OS::Heat::SoftwareDeployment
     properties:
       config:
@@ -699,7 +700,7 @@ resources:
           default:
             list_join:
               - ","
-              - {get_param: dns_servers}
+              - {get_param: dns_server}
         - name: bastion_instance_id
           default: {get_param: bastion_node}
         - name: router_vip
