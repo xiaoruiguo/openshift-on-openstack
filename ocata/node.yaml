@@ -497,7 +497,7 @@ resources:
             '%ZONE%': {get_param: domain_name}
             '%DNS_SERVER%': {get_param: dns_server}
             '%DNS_UPDATE_KEY%': {get_param: dns_update_key}
-            '%DNS_ENTRY%': {get_param: hostname}
+#            '%DNS_ENTRY%': {get_param: hostname}
             '%IP_ADDRESS%': {get_attr: [port, fixed_ips, 0, ip_address]}
           template: {get_file: fragments/add_dns_record.sh}
 
