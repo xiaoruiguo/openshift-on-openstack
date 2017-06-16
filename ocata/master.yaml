@@ -114,11 +114,11 @@ parameters:
     constraints:
     - custom_constraint: neutron.network
 
-  dns_node:
-    description: >
-      The hostname of the bastion node in the deployment
-    type: string
-    default: dns.openshift.labs.local
+#  dns_node:
+#    description: >
+#      The hostname of the bastion node in the deployment
+#    type: string
+#    default: dns.openshift.labs.local
 
   bastion_node:
     description: >
@@ -263,6 +263,10 @@ parameters:
     type: string
     description: proxy for external network
 
+  dns_update_key:
+    type: string
+    hidden: true
+
 resources:
 
   # Create a network connection on the internal communications network
@@ -340,6 +344,7 @@ resources:
       - config: {get_resource: set_extra_repos}
       - config: {get_resource: set_extra_docker_repos}
       - config: {get_resource: host_update}
+      - config: {get_resource: add_dns_record}
       - config: {get_resource: master_boot}
 
   # Compose the short hostname and fully qualified domain name for the new host
@@ -433,17 +438,30 @@ resources:
   add_dns_record:
     type: OS::Heat::SoftwareConfig
     properties:
-      group: script
-      inputs:
-      - name: key_name
-#      - name: key_secret
-      - name: dns_server
-      - name: dns_zone
-      - name: dns_record
-      - name: dns_record_ip
-      outputs:
-      - name: result
-      config: {get_file: fragments/add_dns_resource_record.sh}
+      config:
+        str_replace:
+          params:
+            '%ZONE%': {get_param: domain_name}
+            '%DNS_SERVER%': {get_param: dns_server}
+            '%DNS_UPDATE_KEY%': {get_param: dns_update_key}
+#            '%DNS_ENTRY%': {get_param: hostname}
+            '%IP_ADDRESS%': {get_attr: [port, fixed_ips, 0, ip_address]}
+          template: {get_file: fragments/add_dns_record.sh}
+
+#  add_dns_record:
+#    type: OS::Heat::SoftwareConfig
+#    properties:
+#      group: script
+#      inputs:
+#      - name: key_name
+##      - name: key_secret
+#      - name: dns_server
+#      - name: dns_zone
+#      - name: dns_record
+#      - name: dns_record_ip
+#      outputs:
+#      - name: result
+#      config: {get_file: fragments/add_dns_resource_record.sh}
 
   # Prepare the host to run Docker and Ansible for OpenShift install and config
   master_boot:
@@ -469,23 +487,23 @@ resources:
       - name: result
       config: {get_file: fragments/bastion-node-add.sh}
 
-  #Add dns Resource Record
-  deployment_add_dns_record:
-    depends_on: wait_condition
-    type: OS::Heat::SoftwareDeployment
-    properties:
-      config:
-        get_resource: add_dns_record
-      server:
-        get_param: dns_node
-      input_values:
-        key_name: {get_param: domain_name}
-#        key_secret: {get_param: dns_update_key}
-        dns_server: {get_param: dns_server}
-        dns_zone: {get_param: domain_name}
-        dns_record: {get_param: hostname}
-        dns_record_ip: {get_attr: [port, fixed_ips, 0, ip_address]}
-      signal_transport: HEAT_SIGNAL
+#  #Add dns Resource Record
+#  deployment_add_dns_record:
+#    depends_on: wait_condition
+#    type: OS::Heat::SoftwareDeployment
+#    properties:
+#      config:
+#        get_resource: add_dns_record
+#      server:
+#        get_param: dns_node
+#      input_values:
+#        key_name: {get_param: domain_name}
+##        key_secret: {get_param: dns_update_key}
+#        dns_server: {get_param: dns_server}
+#        dns_zone: {get_param: domain_name}
+#        dns_record: {get_param: hostname}
+#        dns_record_ip: {get_attr: [port, fixed_ips, 0, ip_address]}
+#      signal_transport: HEAT_SIGNAL
 
 
   # Add the hostname and address of the bastion host to the master host
