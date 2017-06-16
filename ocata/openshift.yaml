@@ -768,6 +768,7 @@ resources:
           os_region_name: {get_param: os_region_name}
           loadbalancer_type: {get_param: loadbalancer_type}
           dns_server: {get_attr: [openshift_dns, resource.host, first_address]}
+          dns_update_key: {get_attr: [openshift_dns, resource.deployment_add_dns_record, result]}
 #          dns_servers: {get_param: dns_nameserver}
 #          dns_update_key: {get_param: dns_update_key}
           lb_ip: {get_attr: [lb_floating_ip, floating_ip_address]}

@@ -33,6 +33,7 @@ KEY="$(grep Key: K${domain}*.private | cut -d ' ' -f 2)"
 popd
 
 echo $KEY
+#> $heat_outputs_path.result
 
 rndc-confgen -a -r /dev/urandom
 
