@@ -101,11 +101,11 @@ parameters:
     type: string
     default: ''
 
-  dns_node:
-    description: >
-      The hostname of the bastion node in the deployment
-    type: string
-    default: dns.openshift.labs.local
+#  dns_node:
+#    description: >
+#      The hostname of the bastion node in the deployment
+#    type: string
+#    default: dns.openshift.labs.local
 
   bastion_node:
     description:
@@ -614,8 +614,7 @@ resources:
 
   # activation hook to add the node to DNS and Kubernetes cluster
   deployment_bastion_node_add:
-    depends_on: wait_condition
-#    depends_on: [wait_condition, deployment_add_dns_record]
+#    depends_on: wait_condition
     type: OS::Heat::SoftwareDeployment
     properties:
       config:
