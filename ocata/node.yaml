@@ -614,7 +614,7 @@ resources:
 
   # activation hook to add the node to DNS and Kubernetes cluster
   deployment_bastion_node_add:
-#    depends_on: wait_condition
+    depends_on: wait_condition
     type: OS::Heat::SoftwareDeployment
     properties:
       config:
