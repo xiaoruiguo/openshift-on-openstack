@@ -5,6 +5,7 @@ set -eux
 # ENVVARS
 #   node_etc_host = "<IP Address> <hostname>"
 
+echo $node_etc_host >> /etc/hosts
 #
 # FILES
 #   /etc/hosts - the host database file on RPM based host
