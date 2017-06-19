@@ -16,6 +16,7 @@
     <orderEntry type="module" module-name="instack-undercloud" />
     <orderEntry type="module" module-name="tripleo-incubator" />
     <orderEntry type="module" module-name="openshift-ansible" />
+    <orderEntry type="module" module-name="heat" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_FOLDERS">

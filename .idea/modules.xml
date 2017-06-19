@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../ansible/.idea/ansible.iml" filepath="$PROJECT_DIR$/../ansible/.idea/ansible.iml" />
       <module fileurl="file://$PROJECT_DIR$/../diskimage-builder/.idea/diskimage-builder.iml" filepath="$PROJECT_DIR$/../diskimage-builder/.idea/diskimage-builder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../heat/.idea/heat.iml" filepath="$PROJECT_DIR$/../heat/.idea/heat.iml" />
       <module fileurl="file://$PROJECT_DIR$/../heat-agents/.idea/heat-agents.iml" filepath="$PROJECT_DIR$/../heat-agents/.idea/heat-agents.iml" />
       <module fileurl="file://$PROJECT_DIR$/../instack/.idea/instack.iml" filepath="$PROJECT_DIR$/../instack/.idea/instack.iml" />
       <module fileurl="file://$PROJECT_DIR$/../instack-undercloud/.idea/instack-undercloud.iml" filepath="$PROJECT_DIR$/../instack-undercloud/.idea/instack-undercloud.iml" />

@@ -704,78 +704,78 @@ resources:
 #          dns_update_key: {get_param: dns_update_key}
           ca_cert: {get_param: ca_cert}
 #
-  openshift_nodes:
-    depends_on: [external_router_interface, fixed_network, fixed_subnet]
-    type: OS::Heat::AutoScalingGroup
-    properties:
-      desired_capacity: {get_param: node_count}
-      min_size: {get_param: openshift_nodes_min}
-      max_size: {get_param: openshift_nodes_max}
-      resource:
-        type: node.yaml
-        properties:
-          autoscaling: {get_param: autoscaling}
-          ocp_version: {get_param: ocp_version}
-          image: {get_param: node_image}
-          flavor: {get_param: node_flavor}
-          key_name: {get_param: ssh_key_name}
-          ssh_user: {get_param: ssh_user}
-          fixed_network: {get_resource: fixed_network}
-          fixed_subnet: {get_resource: fixed_subnet}
-          internal_network: {get_resource: cluster_network}
-          internal_subnet: {get_resource: cluster_subnet}
-          security_group: {get_resource: node_security_group}
-          docker_volume_size: {get_param: node_docker_volume_size_gb}
-          hostname:
-            str_replace:
-              template: "%stackname%-%hostname%"
-              params:
-                '%stackname%': {get_param: 'OS::stack_name'}
-                '%hostname%': {get_param: node_hostname}
-          domain_name: {get_param: domain_name}
-          set_proxy: {get_resource: set_proxy}
-          app_subdomain: {get_param: app_subdomain}
-          ansible_public_key: {get_attr: [ansible_keys, public_key]}
-          bastion_node: {get_attr: [bastion_host, resource.host]}
-          system_update: {get_param: system_update}
-          metadata: {"metering.stack": {get_param: "OS::stack_id"}}
-          extra_repository_urls: {get_param: extra_repository_urls}
-          extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
-          all_master_nodes:
-            list_join:
-              - " "
-              - {get_attr: [openshift_masters, hostname]}
-          all_infra_nodes:
-            list_join:
-              - " "
-              - {get_attr: [openshift_infra_nodes, hostname]}
-          container_quota: {get_param: container_quota}
-          volume_quota: {get_param: volume_quota}
-          deployment_type: {get_param: deployment_type}
-          openshift_sdn: {get_param: openshift_sdn}
-          deploy_registry: {get_param: deploy_registry}
-          registry_volume_id: {get_attr: [registry_volume, volume_id]}
-          registry_volume_fs: {get_param: registry_volume_fs}
-          registry_volume_size: {get_param: registry_volume_size}
-          prepare_registry: {get_param: prepare_registry}
-          deploy_router: {get_param: deploy_router}
-          os_auth_url: {get_param: os_auth_url}
-          os_username: {get_param: os_username}
-          os_password: {get_param: os_password}
-          os_tenant_name: {get_param: os_tenant_name}
-          os_domain_name: {get_param: os_domain_name}
-          os_region_name: {get_param: os_region_name}
-          loadbalancer_type: {get_param: loadbalancer_type}
-          dns_server: {get_attr: [openshift_dns, resource.host, first_address]}
-          dns_update_key: {get_attr: [openshift_dns, resource.deployment_add_dns_record, result]}
-          lb_ip: {get_attr: [lb_floating_ip, floating_ip_address]}
-          master_ip: {get_attr: [openshift_masters, resource.0.ip_address]}
-          lb_hostname: {get_attr: [loadbalancer, hostname]}
-          router_vip: {get_attr: [ipfailover, router_vip]}
-          prepare_ansible: {get_param: prepare_ansible}
-          execute_ansible: {get_param: execute_ansible}
-          extra_openshift_ansible_params: {get_param: extra_openshift_ansible_params}
-          ca_cert: {get_param: ca_cert}
+#  openshift_nodes:
+#    depends_on: [external_router_interface, fixed_network, fixed_subnet]
+#    type: OS::Heat::AutoScalingGroup
+#    properties:
+#      desired_capacity: {get_param: node_count}
+#      min_size: {get_param: openshift_nodes_min}
+#      max_size: {get_param: openshift_nodes_max}
+#      resource:
+#        type: node.yaml
+#        properties:
+#          autoscaling: {get_param: autoscaling}
+#          ocp_version: {get_param: ocp_version}
+#          image: {get_param: node_image}
+#          flavor: {get_param: node_flavor}
+#          key_name: {get_param: ssh_key_name}
+#          ssh_user: {get_param: ssh_user}
+#          fixed_network: {get_resource: fixed_network}
+#          fixed_subnet: {get_resource: fixed_subnet}
+#          internal_network: {get_resource: cluster_network}
+#          internal_subnet: {get_resource: cluster_subnet}
+#          security_group: {get_resource: node_security_group}
+#          docker_volume_size: {get_param: node_docker_volume_size_gb}
+#          hostname:
+#            str_replace:
+#              template: "%stackname%-%hostname%"
+#              params:
+#                '%stackname%': {get_param: 'OS::stack_name'}
+#                '%hostname%': {get_param: node_hostname}
+#          domain_name: {get_param: domain_name}
+#          set_proxy: {get_resource: set_proxy}
+#          app_subdomain: {get_param: app_subdomain}
+#          ansible_public_key: {get_attr: [ansible_keys, public_key]}
+#          bastion_node: {get_attr: [bastion_host, resource.host]}
+#          system_update: {get_param: system_update}
+#          metadata: {"metering.stack": {get_param: "OS::stack_id"}}
+#          extra_repository_urls: {get_param: extra_repository_urls}
+#          extra_docker_repository_urls: {get_param: extra_docker_repository_urls}
+#          all_master_nodes:
+#            list_join:
+#              - " "
+#              - {get_attr: [openshift_masters, hostname]}
+#          all_infra_nodes:
+#            list_join:
+#              - " "
+#              - {get_attr: [openshift_infra_nodes, hostname]}
+#          container_quota: {get_param: container_quota}
+#          volume_quota: {get_param: volume_quota}
+#          deployment_type: {get_param: deployment_type}
+#          openshift_sdn: {get_param: openshift_sdn}
+#          deploy_registry: {get_param: deploy_registry}
+#          registry_volume_id: {get_attr: [registry_volume, volume_id]}
+#          registry_volume_fs: {get_param: registry_volume_fs}
+#          registry_volume_size: {get_param: registry_volume_size}
+#          prepare_registry: {get_param: prepare_registry}
+#          deploy_router: {get_param: deploy_router}
+#          os_auth_url: {get_param: os_auth_url}
+#          os_username: {get_param: os_username}
+#          os_password: {get_param: os_password}
+#          os_tenant_name: {get_param: os_tenant_name}
+#          os_domain_name: {get_param: os_domain_name}
+#          os_region_name: {get_param: os_region_name}
+#          loadbalancer_type: {get_param: loadbalancer_type}
+#          dns_server: {get_attr: [openshift_dns, resource.host, first_address]}
+#          dns_update_key: {get_attr: [openshift_dns, resource.deployment_add_dns_record, result]}
+#          lb_ip: {get_attr: [lb_floating_ip, floating_ip_address]}
+#          master_ip: {get_attr: [openshift_masters, resource.0.ip_address]}
+#          lb_hostname: {get_attr: [loadbalancer, hostname]}
+#          router_vip: {get_attr: [ipfailover, router_vip]}
+#          prepare_ansible: {get_param: prepare_ansible}
+#          execute_ansible: {get_param: execute_ansible}
+#          extra_openshift_ansible_params: {get_param: extra_openshift_ansible_params}
+#          ca_cert: {get_param: ca_cert}
 
   # Define the network access policy for openshift nodes
   node_security_group:

@@ -4,6 +4,7 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../ansible" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../diskimage-builder" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../heat" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../heat-agents" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../instack" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../instack-undercloud" vcs="Git" />
