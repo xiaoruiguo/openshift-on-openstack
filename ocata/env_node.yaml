@@ -10,12 +10,12 @@ parameters:
   internal_subnet: openshift-cluster_subnet-j55anq7klnae
   security_group: openshift-node_security_group-xyzy5qaayhnd
   docker_volume_size: 25
-  hostname:
-    str_replace:
-      template: "%stackname%-%hostname%"
-      params:
-        '%stackname%': {get_param: 'OS::stack_name'}
-        '%hostname%': "node"
+  hostname: "node"
+#    str_replace:
+#      template: "%stackname%-%hostname%"
+#      params:
+#        '%stackname%': {get_param: 'OS::stack_name'}
+#        '%hostname%': "node"
   domain_name: "example.com"
 #  set_proxy: ""
   app_subdomain: "apps.example.com"

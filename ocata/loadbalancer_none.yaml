@@ -125,7 +125,7 @@ parameters:
       The name or ID of the bastion instance.
     default: ''
 
-  dns_server:
+  dns_server_ip:
     type: string
     description: address of dns nameservers reachable in your environment
 

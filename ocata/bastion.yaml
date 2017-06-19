@@ -201,7 +201,7 @@ parameters:
 #    description: address of dns nameservers reachable in your environment
 #    default: 8.8.8.8
 
-  dns_server:
+  dns_server_ip:
     type: string
     description: address of openshift dns nameserver reachable in your environment
 
@@ -357,7 +357,7 @@ resources:
         str_replace:
           params:
             '%ZONE%': {get_param: domain_name}
-            '%DNS_SERVER%': {get_param: dns_server}
+            '%DNS_SERVER%': {get_param: dns_server_ip}
             '%DNS_UPDATE_KEY%': {get_param: dns_update_key}
             '%IP_ADDRESS%': {get_attr: [{get_param: port}, fixed_ips, 0, ip_address]}
           template: {get_file: fragments/add_dns_record.sh}
@@ -429,7 +429,7 @@ resources:
       input_values:
         key_name: {get_param: domain_name}
 #        key_secret: {get_param: dns_update_key}
-        dns_server: {get_param: dns_server}
+        dns_server: {get_param: dns_server_ip}
         dns_zone: {get_param: domain_name}
         dns_record: {get_param: hostname}
         dns_record_ip: {get_attr: [host, first_address]}

@@ -225,7 +225,7 @@ parameters:
 #    description: address of dns nameservers reachable in your environment
 #    default: 10.238.19.24, 8.8.8.8
 
-  dns_server:
+  dns_server_ip:
     type: string
     description: address of dns nameservers reachable in your environment
     default: 8.8.8.8
@@ -442,7 +442,7 @@ resources:
         str_replace:
           params:
             '%ZONE%': {get_param: domain_name}
-            '%DNS_SERVER%': {get_param: dns_server}
+            '%DNS_SERVER%': {get_param: dns_server_ip}
             '%DNS_UPDATE_KEY%': {get_param: dns_update_key}
             '%IP_ADDRESS%': {get_attr: [port, fixed_ips, 0, ip_address]}
           template: {get_file: fragments/add_dns_record.sh}

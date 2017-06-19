@@ -184,7 +184,7 @@ parameters:
     description: List of docker repository URLs which will be installed on each node, if a repo is insecure use '#insecure' suffix.
     default: ''
 
-  dns_server:
+  dns_server_ip:
     type: string
     description: address of dns nameservers reachable in your environment
 
@@ -377,7 +377,7 @@ resources:
         str_replace:
           params:
             '%ZONE%': {get_param: domain_name}
-            '%DNS_SERVER%': {get_param: dns_server}
+            '%DNS_SERVER%': {get_param: dns_server_ip}
             '%DNS_UPDATE_KEY%': {get_param: dns_update_key}
 #            '%DNS_ENTRY%': {get_param: hostname}
             '%IP_ADDRESS%': {get_attr: [port, fixed_ips, 0, ip_address]}
