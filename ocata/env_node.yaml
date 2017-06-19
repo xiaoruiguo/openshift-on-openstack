@@ -17,7 +17,7 @@ parameters:
         '%stackname%': {get_param: 'OS::stack_name'}
         '%hostname%': "node"
   domain_name: "example.com"
-  set_proxy: {get_resource: set_proxy}
+#  set_proxy: ""
   app_subdomain: "apps.example.com"
   ansible_public_key: {get_attr: [ansible_keys_2ec703b7-ea68-4fdf-843d-8c6e1199a7a8, public_key]}
   bastion_node: openshift-bastion.example.com
