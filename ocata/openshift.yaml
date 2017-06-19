@@ -574,7 +574,7 @@ resources:
       set_proxy: {get_resource: set_proxy}
       ansible_public_key: {get_attr: [ansible_keys, public_key]}
       ansible_private_key: {get_attr: [ansible_keys, private_key]}
-      floating_ip: {get_attr: [dns_floating_ip, floating_ip_address]}
+#      floating_ip: {get_attr: [dns_floating_ip, floating_ip_address]}
       dns_security_group: {get_resource: dns_security_group}
       external_network: {get_param: external_network}
 #      port: {get_resource: dns_port}
