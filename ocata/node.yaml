@@ -313,6 +313,10 @@ parameters:
     type: comma_delimited_list
     description: address of openshift dns nameserver reachable in your environment
 
+  dns_server_ip:
+    type: string
+    description: ip address of openshift dns nameserver reachable in your environment
+
   dns_update_key:
     type: string
     hidden: true
@@ -509,7 +513,7 @@ resources:
         str_replace:
           params:
             '%ZONE%': {get_param: domain_name}
-            '%DNS_SERVER%': {get_param: dns_server}
+            '%DNS_SERVER%': {get_param: dns_server_ip}
             '%DNS_UPDATE_KEY%': {get_param: dns_update_key}
 #            '%DNS_ENTRY%': {get_param: hostname}
             '%IP_ADDRESS%': {get_attr: [port, fixed_ips, 0, ip_address]}
