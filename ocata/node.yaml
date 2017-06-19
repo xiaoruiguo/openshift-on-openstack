@@ -310,7 +310,7 @@ parameters:
     type: string
 
   dns_server:
-    type: string
+    type: comma_delimited_list
     description: address of openshift dns nameserver reachable in your environment
 
   dns_update_key:
