@@ -14,7 +14,7 @@ resources:
   docker_volume:
     type: OS::Cinder::Volume
     properties:
-      description: Volume Docker
+      description: Node Volume Docker
       size: {get_param: size}
 
 outputs:
