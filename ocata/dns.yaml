@@ -105,11 +105,11 @@ parameters:
 #    - custom_constraint: neutron.subnet
 #    default: tenant-sub
 #
-#  dns_security_group:
-#    description: >
-#      ID of the network access policies for the OpenShift master hosts
-#    type: string
-#    default: default
+  dns_security_group:
+    description: >
+      ID of the network access policies for the OpenShift master hosts
+    type: string
+    default: default
 
   # Networks to connect to or create
   external_network:
@@ -197,15 +197,15 @@ parameters:
       flwj4Wm7RAqQ
       -----END CERTIFICATE-----
 
-  floating_ip:
-    description: >
-      TBD: What is this a floating IP for? For the DNS server?
-    type: string
-    default: ""
-
-  port:
-    description: Neutron port (with a floating IP address) to assign to the DNS Nova Server
-    type: string
+#  floating_ip:
+#    description: >
+#      TBD: What is this a floating IP for? For the DNS server?
+#    type: string
+#    default: ""
+#
+#  port:
+#    description: Neutron port (with a floating IP address) to assign to the DNS Nova Server
+#    type: string
 #    default: ""
 
 resources:
@@ -235,11 +235,11 @@ resources:
       image: {get_param: image}
       flavor: {get_param: flavor}
       key_name: {get_param: key_name}
-#      security_groups:
-#      - {get_param: dns_security_group}
+      security_groups:
+      - {get_param: dns_security_group}
       networks:
-      - port: {get_param: port}
-#      - network: {get_param: external_network}
+#      - port: {get_param: port}
+      - network: {get_param: external_network}
       user_data_format: SOFTWARE_CONFIG
       user_data: {get_resource: init}
       software_config_transport: POLL_SERVER_HEAT
