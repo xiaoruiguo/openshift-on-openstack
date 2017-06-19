@@ -236,6 +236,7 @@ resources:
       flavor: {get_param: flavor}
       key_name: {get_param: key_name}
       security_groups:
+      - default
       - {get_param: dns_security_group}
       networks:
 #      - port: {get_param: port}
