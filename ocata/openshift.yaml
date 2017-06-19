@@ -715,7 +715,6 @@ resources:
 #        type: node.yaml
 #        properties:
 #          autoscaling: {get_param: autoscaling}
-#          ocp_version: {get_param: ocp_version}
 #          image: {get_param: node_image}
 #          flavor: {get_param: node_flavor}
 #          key_name: {get_param: ssh_key_name}

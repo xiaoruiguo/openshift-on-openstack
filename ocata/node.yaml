@@ -74,17 +74,19 @@ parameters:
       A string to identify node hostnames.  Each node will also have a
       unique random substring attached
     type: string
+    default: "node"
 
   domain_name:
     description: >
       The DNS domain suffix. All VMs will be placed in this domain
     type: string
+    default: "example.com"
 
   app_subdomain:
     type: string
     description: >
       Default subdomain to use for exposed routes.
-    default: ''
+    default: "apps.example.com"
 
   ansible_public_key:
     description: >
@@ -96,6 +98,7 @@ parameters:
     description: >
       The user for SSH access to the VM hosts
     type: string
+    default: centos
 
   all_master_nodes:
     description: >
@@ -133,6 +136,7 @@ parameters:
 
   system_update:
     type: boolean
+    default: true
 
   extra_repository_urls:
     type: comma_delimited_list
@@ -153,6 +157,7 @@ parameters:
     description: >
       Select the community or enterprise version of OpenShift
     type: string
+    default: "origin"
 
   # Load Balancer
   lb_ip:
@@ -338,6 +343,7 @@ parameters:
   set_proxy:
     type: string
     description: proxy for external network
+    default: ''
 
 resources:
 
