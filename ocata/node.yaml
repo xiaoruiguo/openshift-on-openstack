@@ -501,21 +501,6 @@ resources:
             '%IP_ADDRESS%': {get_attr: [port, fixed_ips, 0, ip_address]}
           template: {get_file: fragments/add_dns_record.sh}
 
-#  add_dns_record:
-#    type: OS::Heat::SoftwareConfig
-#    properties:
-#      group: script
-#      inputs:
-#      - name: key_name
-##      - name: key_secret
-#      - name: dns_server
-#      - name: dns_zone
-#      - name: dns_record
-#      - name: dns_record_ip
-#      outputs:
-#      - name: result
-#      config: {get_file: fragments/add_dns_resource_record.sh}
-
   # Prepare the node to run Docker and Ansible on first boot
   node_boot:
     type: OS::Heat::SoftwareConfig
@@ -545,59 +530,6 @@ resources:
       security_group: {get_param: security_group}
       network: {get_param: internal_network}
       subnet: {get_param: internal_subnet}
-
-  node_cleanup:
-    type: OS::Heat::SoftwareConfig
-    properties:
-      group: script
-      inputs:
-      - name: node_name
-      - name: node_type
-      - name: ssh_user
-        default: {get_param: ssh_user}
-      outputs:
-      - name: result
-      config: {get_file: fragments/bastion-node-cleanup.sh}
-
-  #Add dns Resource Record
-#  deployment_add_dns_record:
-#    depends_on: [port, wait_condition]
-#    type: OS::Heat::SoftwareDeployment
-#    properties:
-#      config:
-#        get_resource: add_dns_record
-#      server:
-#        get_param: dns_node
-#      input_values:
-#        key_name: {get_param: domain_name}
-##        key_secret: {get_param: dns_update_key}
-#        dns_server: {get_param: dns_server}
-#        dns_zone: {get_param: domain_name}
-#        dns_record: {get_param: hostname}
-#        dns_record_ip: {get_attr: [port, fixed_ips, 0, ip_address]}
-#      signal_transport: HEAT_SIGNAL
-
-  # activation hook for removing the node from DNS and from the Kubernetes
-  # cluster
-  deployment_bastion_node_cleanup:
-    depends_on: [host, wait_condition]
-    type: OS::Heat::SoftwareDeployment
-    properties:
-      actions: ['DELETE']
-      input_values:
-        node_type: node
-        node_name:
-          str_replace:
-            template: "HOST-SUFFIX.DOMAIN"
-            params:
-              HOST: {get_param: hostname}
-              SUFFIX: {get_attr: [random_hostname_suffix, value]}
-              DOMAIN: {get_param: domain_name}
-      config:
-        get_resource: node_cleanup
-      server:
-        get_param: bastion_node
-      signal_transport: HEAT_SIGNAL
 
   # Add a node's IP/Name mapping to DNS
   node_add:
@@ -731,7 +663,7 @@ resources:
 
   # activation hook to run the ansible playbooks to install and config a node
   deployment_run_ansible:
-    depends_on: [wait_condition, deployment_bastion_node_add]
+    depends_on: [deployment_bastion_node_add, wait_condition]
     type: OS::Heat::SoftwareDeployment
     properties:
       config:
@@ -748,6 +680,42 @@ resources:
               DOMAIN: {get_param: domain_name}
         all_master_nodes: {get_param: all_master_nodes}
         all_infra_nodes: {get_param: all_infra_nodes}
+      signal_transport: HEAT_SIGNAL
+
+
+  node_cleanup:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: script
+      inputs:
+      - name: node_name
+      - name: node_type
+      - name: ssh_user
+        default: {get_param: ssh_user}
+      outputs:
+      - name: result
+      config: {get_file: fragments/bastion-node-cleanup.sh}
+
+  # activation hook for removing the node from DNS and from the Kubernetes
+  # cluster
+  deployment_bastion_node_cleanup:
+    depends_on: [host, wait_condition]
+    type: OS::Heat::SoftwareDeployment
+    properties:
+      actions: ['DELETE']
+      input_values:
+        node_type: node
+        node_name:
+          str_replace:
+            template: "HOST-SUFFIX.DOMAIN"
+            params:
+              HOST: {get_param: hostname}
+              SUFFIX: {get_attr: [random_hostname_suffix, value]}
+              DOMAIN: {get_param: domain_name}
+      config:
+        get_resource: node_cleanup
+      server:
+        get_param: bastion_node
       signal_transport: HEAT_SIGNAL
 
   # Wait for the node_boot (cloud-init) process to complete or time out
