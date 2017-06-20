@@ -17,6 +17,7 @@
     <orderEntry type="module" module-name="tripleo-incubator" />
     <orderEntry type="module" module-name="openshift-ansible" />
     <orderEntry type="module" module-name="heat" />
+    <orderEntry type="module" module-name="trove" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_FOLDERS">

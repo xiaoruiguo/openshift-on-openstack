@@ -21,6 +21,9 @@ parameters:
 
   deployment_type: origin
   domain_name: "example.com"
+  app_subdomain: "app.example.com"
+  deploy_router: true
+  deploy_registry: true
   master_hostname: "origin-master"
   node_hostname: "origin-node"
   ssh_user: centos

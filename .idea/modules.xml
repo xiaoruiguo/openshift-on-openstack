@@ -16,6 +16,7 @@
       <module fileurl="file://$PROJECT_DIR$/../os-collect-config/.idea/os-collect-config.iml" filepath="$PROJECT_DIR$/../os-collect-config/.idea/os-collect-config.iml" />
       <module fileurl="file://$PROJECT_DIR$/../os-refresh-config/.idea/os-refresh-config.iml" filepath="$PROJECT_DIR$/../os-refresh-config/.idea/os-refresh-config.iml" />
       <module fileurl="file://$PROJECT_DIR$/../tripleo-incubator/.idea/tripleo-incubator.iml" filepath="$PROJECT_DIR$/../tripleo-incubator/.idea/tripleo-incubator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../trove/.idea/trove.iml" filepath="$PROJECT_DIR$/../trove/.idea/trove.iml" />
     </modules>
   </component>
 </project>
