@@ -5,11 +5,11 @@ parameters:
   bastion_image: centos7-heat-agents
   bastion_flavor: m1.small
   master_image: centos7-heat-agents
-  master_flavor: m1.medium
+  master_flavor: 	m1.xlarge
   infra_image: centos7-heat-agents
   infra_flavor: m1.medium
   node_image: centos7-heat-agents
-  node_flavor: m1.medium
+  node_flavor: m1.large
   loadbalancer_image: centos7-heat-agents
   loadbalancer_flavor: m1.medium
   external_network: public

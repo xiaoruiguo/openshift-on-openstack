@@ -4,13 +4,13 @@ cat << 'EOF' > /var/lib/os-apply-config/templates/var/lib/ansible/playbooks/ipfa
 {{=<% %>=}}
 - hosts: masters[0]
   sudo: yes
-  roles:
-  - role: openshift_serviceaccounts
-    openshift_serviceaccounts_names:
-    - ipfailover
-    openshift_serviceaccounts_namespace: default
-    openshift_serviceaccounts_sccs:
-    - privileged
+#  roles:
+#  - role: openshift_serviceaccounts
+#    openshift_serviceaccounts_names:
+#    - ipfailover
+#    openshift_serviceaccounts_namespace: default
+#    openshift_serviceaccounts_sccs:
+#    - privileged
 
   tasks:
   - name: Deploy Openshift IP failover for router
