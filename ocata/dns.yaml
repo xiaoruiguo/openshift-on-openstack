@@ -271,6 +271,7 @@ resources:
           params:
             $DOMAIN: {get_param: domain_name}
             $FORWARDER: {get_param: dns_forwarder}
+            $DNS_SERVER_IP: {get_attr: [host, first_address]}
           template: {get_file: fragments/dns-server-boot.sh}
 
   # Compose the FQDN for cloud-init
