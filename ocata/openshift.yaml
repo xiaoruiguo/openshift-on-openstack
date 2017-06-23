@@ -1055,6 +1055,7 @@ resources:
       stack_name: {get_param: 'OS::stack_name'}
       bastion_node: {get_attr: [bastion_host, resource.host]}
       dns_server_ip: {get_attr: [openshift_dns, resource.host, first_address]}
+      dns_update_key: {get_attr: [openshift_dns, resource.deployment_add_dns_record, result]}
 #      dns_servers: {get_param: dns_nameserver}
 #      dns_update_key: {get_param: dns_update_key}
       ca_cert: {get_param: ca_cert}
