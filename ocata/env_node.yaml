@@ -49,7 +49,7 @@ parameters:
   os_tenant_name: admin
   os_domain_name: default
   os_region_name: "RegionOne"
-  loadbalancer_type: "none"
+  loadbalancer_type: "pacemaker"
   dns_server: "10.238.121.29"
   dns_server_ip: "10.238.121.29"
   dns_update_key: "m4OaS9P5PmcV+G9R7BMyScCMCrlcLW2/JZJjg4yJWpWcptsGq/tZh4Xp6e+rjq4ODHqlfszdkZiycSXr0+LfZw=="
