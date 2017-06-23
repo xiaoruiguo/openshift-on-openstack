@@ -1040,6 +1040,7 @@ resources:
       ssh_user: {get_param: ssh_user}
       hostname: {get_param: lb_hostname}
       domain_name: {get_param: domain_name}
+      set_proxy: {get_resource: set_proxy}
       app_subdomain: {get_param: app_subdomain}
       stack_name: {get_param: 'OS::stack_name'}
       ansible_public_key: {get_attr: [ansible_keys, public_key]}
