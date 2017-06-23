@@ -17,11 +17,12 @@ parameters:
   dns_forwarder: 10.238.19.24;8.8.8.8;
 #  dns_update_key: example.com.key
 #  dns_update_key: "QzkISFKOvuQmcHN6ohBw5Gofzrmdy2OCbb5W+hh2PmJ3zZ2lVA6Zuxdc1eJSFQkEkvfYwSi0bGWnCjYm9DckeQ=="
-  node_count: 2
-
+  node_count: 3
+  master_count: 3
+  infra_count: 3
   deployment_type: origin
   domain_name: "example.com"
-  app_subdomain: "app.example.com"
+  app_subdomain: "apps.example.com"
   deploy_router: true
   deploy_registry: true
   master_hostname: "origin-master"
