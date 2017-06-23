@@ -381,6 +381,7 @@ resources:
             '%DNS_UPDATE_KEY%': {get_param: dns_update_key}
 #            '%DNS_ENTRY%': {get_param: hostname}
             '%IP_ADDRESS%': {get_attr: [port, fixed_ips, 0, ip_address]}
+#            '%IP_ADDRESS%': {get_attr: [floating_ip, floating_ip_address]}
           template: {get_file: fragments/add_dns_record.sh}
 
 #  add_dns_record:

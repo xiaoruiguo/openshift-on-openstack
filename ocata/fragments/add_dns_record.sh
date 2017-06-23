@@ -18,7 +18,7 @@ else
     retry yum -y install python2-dns
 fi
 
-echo nameserver "%DNS_SERVER%" >> /etc/resolv.conf
+#echo nameserver "%DNS_SERVER%" >> /etc/resolv.conf
 
 NAME="%DNS_ENTRY%"
 

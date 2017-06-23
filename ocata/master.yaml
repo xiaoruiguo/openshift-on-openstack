@@ -444,6 +444,7 @@ resources:
             '%ZONE%': {get_param: domain_name}
             '%DNS_SERVER%': {get_param: dns_server_ip}
             '%DNS_UPDATE_KEY%': {get_param: dns_update_key}
+#            '%IP_ADDRESS%': {get_attr: [floating_ip, floating_ip_address]}
             '%IP_ADDRESS%': {get_attr: [port, fixed_ips, 0, ip_address]}
           template: {get_file: fragments/add_dns_record.sh}
 
