@@ -393,7 +393,8 @@ resources:
           params:
             '%DNS_ENTRY%': {list_join: ["", ["*.", {get_param: app_subdomain}]]}
             '%ZONE%': {get_param: domain_name}
-            '%DNS_SERVER%': {get_param: [dns_servers, 0]}
+            '%DNS_SERVER%': {get_param: dns_server_ip}
+#            '%DNS_SERVER%': {get_param: [dns_servers, 0]}
             '%DNS_UPDATE_KEY%': {get_param: dns_update_key}
             '%IP_ADDRESS%': {get_param: floatingip}
           template: {get_file: fragments/add_dns_record.sh}
