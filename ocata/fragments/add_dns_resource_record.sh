@@ -13,6 +13,8 @@ else
 echo "DNS Resource Record add Error."
 fi
 
+sed -i "/search/a\nameserver $dns_record_ip" /etc/resolv.conf
+
 echo $KEY > $heat_outputs_path.result
 
 # ansible all -i "localhost," -c local -m nsupdate -a "key_name='openshift.labs.local' key_secret=${key_secret} server='127.0.0.1' zone='openshift.labs.local' record='openshift-dns' value='10.238.121.4'"

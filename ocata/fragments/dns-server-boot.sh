@@ -135,7 +135,7 @@ EOF
 chown -v root:named /etc/named.conf
 restorecon /etc/named.conf
 
-sed -i "/search/a\nameserver $DNS_SERVER_IP" /etc/resolv.conf
+#sed -i "/search/a\nameserver $DNS_SERVER_IP" /etc/resolv.conf
 
 echo "nameserver 127.0.0.1" >> /etc/resolv.conf
 
