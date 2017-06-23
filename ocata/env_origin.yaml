@@ -12,7 +12,7 @@ parameters:
   node_flavor: m1.medium
   loadbalancer_image: centos7-heat-agents
   loadbalancer_flavor: m1.medium
-  loadbalancer_type: "pacemaker"
+  loadbalancer_type: "dedicated"
   external_network: public
 #  dns_nameserver: 10.238.19.24,8.8.8.8
   dns_forwarder: 10.238.19.24;8.8.8.8;
