@@ -241,6 +241,7 @@ resources:
       - port: {get_resource: port}
       user_data_format: SOFTWARE_CONFIG
       user_data: {get_resource: init}
+      software_config_transport: POLL_SERVER_HEAT
 
   # Collect a set of host configuration information in a single structure
   init:
@@ -446,6 +447,7 @@ resources:
         get_resource: node_cleanup
       server:
         get_param: bastion_node
+      signal_transport: HEAT_SIGNAL
 
   # Wait for the load balancer host to complete cloud-init or time out
   wait_condition:
