@@ -360,7 +360,8 @@ resources:
             '%DNS_SERVER%': {get_param: dns_server_ip}
             '%DNS_UPDATE_KEY%': {get_param: dns_update_key}
 #            '%IP_ADDRESS%': {get_param: floating_ip}
-            '%IP_ADDRESS%': {get_attr: [{get_param: port}, fixed_ips, 0, ip_address]}
+#            '%IP_ADDRESS%': {get_attr: [{get_param: port}, fixed_ips, 0, ip_address]}
+            '%IP_ADDRESS%': {get_attr: [host, first_address]}
           template: {get_file: fragments/add_dns_record.sh}
 
   write_templates:
