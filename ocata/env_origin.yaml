@@ -23,7 +23,7 @@ parameters:
   infra_count: 3
   deployment_type: origin
   domain_name: "example.com"
-  app_subdomain: "apps.example.com"
+  app_subdomain: "apps"
   deploy_router: true
   deploy_registry: true
   master_hostname: "origin-master"
