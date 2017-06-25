@@ -21,6 +21,7 @@ fi
 #echo nameserver "%DNS_SERVER%" >> /etc/resolv.conf
 
 NAME="%DNS_ENTRY%"
+NAME=${NAME/."%ZONE%"/''}
 
 # If we didn't get an explicit name, use this server's hostname
 if [ -n "$NAME" -a "${NAME:0:1}" = "%" -a "${NAME: -1}" = "%" ]; then
