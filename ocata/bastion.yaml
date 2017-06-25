@@ -245,7 +245,7 @@ resources:
       - config: {get_resource: host_update}
         type: multipart
       - config: {get_param: set_proxy}
-      - config: {get_resource: add_dns_record}
+#      - config: {get_resource: add_dns_record}
       - config: {get_resource: bastion_boot}
 
   # Install the DNS server and retrieve the Ansible playbooks for OpenShift
@@ -350,18 +350,18 @@ resources:
             $SYSTEM_UPDATE: {get_param: system_update}
           template: {get_file: fragments/host-update.sh}
 
-  add_dns_record:
-    type: OS::Heat::SoftwareConfig
-    properties:
-      config:
-        str_replace:
-          params:
-            '%ZONE%': {get_param: domain_name}
-            '%DNS_SERVER%': {get_param: dns_server_ip}
-            '%DNS_UPDATE_KEY%': {get_param: dns_update_key}
-#            '%IP_ADDRESS%': {get_param: floating_ip}
-            '%IP_ADDRESS%': {get_attr: [host, first_address]}
-          template: {get_file: fragments/add_dns_record.sh}
+#  add_dns_record:
+#    type: OS::Heat::SoftwareConfig
+#    properties:
+#      config:
+#        str_replace:
+#          params:
+#            '%ZONE%': {get_param: domain_name}
+#            '%DNS_SERVER%': {get_param: dns_server_ip}
+#            '%DNS_UPDATE_KEY%': {get_param: dns_update_key}
+##            '%IP_ADDRESS%': {get_param: floating_ip}
+#            '%IP_ADDRESS%': {get_attr: [host, first_address]}
+#          template: {get_file: fragments/add_dns_record.sh}
 
   write_templates:
     type: OS::Heat::SoftwareConfig
