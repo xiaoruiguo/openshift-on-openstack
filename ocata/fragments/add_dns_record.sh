@@ -26,6 +26,7 @@ NAME="%DNS_ENTRY%"
 if [ -n "$NAME" -a "${NAME:0:1}" = "%" -a "${NAME: -1}" = "%" ]; then
     NAME="$(hostname)"
 else
+    #BIND9 sub domain needs.
     NAME=${NAME/."%ZONE%"/''}
 fi
 
