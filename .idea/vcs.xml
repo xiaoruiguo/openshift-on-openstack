@@ -3,6 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../ansible" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../book-insultapp" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../diskimage-builder" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../heat" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../heat-agents" vcs="Git" />

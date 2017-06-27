@@ -18,6 +18,7 @@
     <orderEntry type="module" module-name="openshift-ansible" />
     <orderEntry type="module" module-name="heat" />
     <orderEntry type="module" module-name="trove" />
+    <orderEntry type="module" module-name="book-insultapp" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_FOLDERS">
