@@ -17,7 +17,7 @@ set -o pipefail
 
 source /usr/local/share/openshift-on-openstack/common_functions.sh
 #yum -y autoremove docker
-yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion yum-utils lvm2
+yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion yum-utils device-mapper-persistent-data lvm2
 
 # ============================================================================
 # MAIN

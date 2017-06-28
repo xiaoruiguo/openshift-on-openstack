@@ -30,6 +30,7 @@ then
     systemd_add_docker_socket
 fi
 
+systemctl stop docker
 
 if [ -n "$VOLUME_ID" ]
 then
@@ -38,13 +39,18 @@ fi
 
 # lvmetad allows new volumes to be configured and made available as they appear
 # This is good for dynamically created volumes in a cloud provider service
-systemctl enable lvm2-lvmetad
-systemctl start lvm2-lvmetad
+#systemctl enable lvm2-lvmetad
+#systemctl start lvm2-lvmetad
 
 /usr/bin/docker-storage-setup || notify_failure "Docker Storage setup failed"
 
-systemctl stop docker
+
+cat /etc/sysconfig/docker-storage
+grep 'sysconfig/docker-storage' /usr/lib/systemd/system/docker.service
+sed -i 's/^DEVS/#DEVS/g' /etc/sysconfig/docker-storage-setup
+
 rm -rf /var/lib/docker/*
+systemctl restart lvm2-monitor
 systemctl start docker
 
 if [ -n "$CONTAINER_QUOTA" ] && [ "$CONTAINER_QUOTA" != 0 ]

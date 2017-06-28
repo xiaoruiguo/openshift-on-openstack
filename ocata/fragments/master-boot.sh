@@ -34,17 +34,26 @@ then
     systemd_add_docker_socket
 fi
 
-docker_set_storage_device $VOLUME_ID
+systemctl stop docker
+
+if [ -n "$VOLUME_ID" ]
+then
+    docker_set_storage_device $VOLUME_ID
+fi
 
 # lvmetad allows new volumes to be configured and made available as they appear
 # This is good for dynamically created volumes in a cloud provider service
-systemctl enable lvm2-lvmetad
-systemctl start lvm2-lvmetad
+#systemctl enable lvm2-lvmetad
+#systemctl start lvm2-lvmetad
 
 /usr/bin/docker-storage-setup || notify_failure "Docker Storage setup failed"
 
-systemctl stop docker
+cat /etc/sysconfig/docker-storage
+grep 'sysconfig/docker-storage' /usr/lib/systemd/system/docker.service
+sed -i 's/^DEVS/#DEVS/g' /etc/sysconfig/docker-storage-setup
+
 rm -rf /var/lib/docker/*
+systemctl restart lvm2-monitor
 systemctl start docker
 
 notify_success "OpenShift node has been prepared for running docker."
