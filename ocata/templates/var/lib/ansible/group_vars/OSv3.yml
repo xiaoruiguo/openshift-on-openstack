@@ -5,7 +5,7 @@ bastion_instance_id: {{bastion_instance_id}}
 ansible_ssh_user: {{ssh_user}}
 ansible_sudo: true
 ansible_become: true
-docker_version: "1.12.1"
+docker_version: "1.12.6"
 # Specify the deployment type. Valid values are origin and openshift-enterprise.
 openshift_deployment_type: origin
 #openshift_image_tag: v3.6.0
