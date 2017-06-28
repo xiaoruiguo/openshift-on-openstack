@@ -31,9 +31,9 @@ parameters:
   master_hostname: "origin-master"
   node_hostname: "origin-node"
   ssh_user: centos
-  master_docker_volume_size_gb: 10
-  infra_docker_volume_size_gb: 10
-  node_docker_volume_size_gb: 10
+  master_docker_volume_size_gb: 25
+  infra_docker_volume_size_gb: 25
+  node_docker_volume_size_gb: 25
   openshift_ansible_git_url: https://github.com/openshift/openshift-ansible.git
   openshift_ansible_git_rev: master
 
