@@ -8,7 +8,7 @@ parameters:
   master_flavor: openshift.master
   #m1.medium
   infra_image: centos7-heat-agents
-  infra_flavor: openshift.node
+  infra_flavor: openshift.master
   #m1.medium
   node_image: centos7-heat-agents
   node_flavor: openshift.node
@@ -22,7 +22,7 @@ parameters:
 #  dns_update_key: "QzkISFKOvuQmcHN6ohBw5Gofzrmdy2OCbb5W+hh2PmJ3zZ2lVA6Zuxdc1eJSFQkEkvfYwSi0bGWnCjYm9DckeQ=="
   node_count: 3
   master_count: 3
-  infra_count: 3
+  infra_count: 1
   deployment_type: origin
   domain_name: "example.com"
   app_subdomain: "apps.example.com"
@@ -31,9 +31,9 @@ parameters:
   master_hostname: "origin-master"
   node_hostname: "origin-node"
   ssh_user: centos
-  master_docker_volume_size_gb: 25
-  infra_docker_volume_size_gb: 25
-  node_docker_volume_size_gb: 25
+  master_docker_volume_size_gb: 10
+  infra_docker_volume_size_gb: 10
+  node_docker_volume_size_gb: 10
   openshift_ansible_git_url: https://github.com/openshift/openshift-ansible.git
   openshift_ansible_git_rev: master
 
