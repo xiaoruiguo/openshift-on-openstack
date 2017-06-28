@@ -47,7 +47,7 @@ fi
 
 cat /etc/sysconfig/docker-storage
 grep 'sysconfig/docker-storage' /usr/lib/systemd/system/docker.service
-sed -i 's/^DEVS/#DEVS/g' /etc/sysconfig/docker-storage-setup
+#sed -i 's/^DEVS/#DEVS/g' /etc/sysconfig/docker-storage-setup
 
 rm -rf /var/lib/docker/*
 systemctl restart lvm2-monitor

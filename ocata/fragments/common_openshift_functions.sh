@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # workaround for openshift-ansible - symlinks are created in /usr/local/bin but
 # this path is not by default in sudo secure_path so ansible fails
 function sudo_set_secure_path() {

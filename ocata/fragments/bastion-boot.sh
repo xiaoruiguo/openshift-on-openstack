@@ -126,16 +126,22 @@ if is_atomic_host
 then
     systemd_docker_disable_storage_setup
 
+    systemctl stop docker
+
     docker_set_storage_device $VOLUME_ID
 
-    systemctl enable lvm2-lvmetad
-    systemctl start lvm2-lvmetad
-
-    systemctl stop docker
-    rm -rf /var/lib/docker/*
-    systemctl start docker
+#    systemctl enable lvm2-lvmetad
+#    systemctl start lvm2-lvmetad
 
     docker-storage-setup || notify_failure "docker storage setup failed"
+
+    cat /etc/sysconfig/docker-storage
+    grep 'sysconfig/docker-storage' /usr/lib/systemd/system/docker.service
+    sed -i 's/^DEVS/#DEVS/g' /etc/sysconfig/docker-storage-setup
+
+    rm -rf /var/lib/docker/*
+    systemctl restart lvm2-monitor
+#    systemctl start docker
 
     systemctl start docker --ignore-dependencies ||
         notify_failure "docker service failed to start"

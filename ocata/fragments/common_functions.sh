@@ -50,12 +50,10 @@ function docker_set_storage_device() {
     cat << EOF > /etc/sysconfig/docker-storage-setup
 DEVS=$docker_dev
 VG=docker-vg
-SETUP_LVM_THIN_POOL=yes
 EOF
     else
         echo "DEVS=$docker_dev" >> /etc/sysconfig/docker-storage-setup
         echo "VG=docker-vg" >> /etc/sysconfig/docker-storage-setup
-        echo "SETUP_LVM_THIN_POOL=yes" >> /etc/sysconfig/docker-storage-setup
     fi
 }
 
