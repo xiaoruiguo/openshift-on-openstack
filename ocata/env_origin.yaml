@@ -5,13 +5,13 @@ parameters:
   bastion_image: centos7-heat-agents
   bastion_flavor: m1.small
   master_image: centos7-heat-agents
-  master_flavor: 	m1.xlarge
+  master_flavor: openshift.master
   #m1.medium
   infra_image: centos7-heat-agents
-  infra_flavor: m1.large
-  #m1.medium
+  infra_flavor: openshift.node
+  m1.medium
   node_image: centos7-heat-agents
-  node_flavor: m1.medium
+  node_flavor: openshift.node
   loadbalancer_image: centos7-heat-agents
   loadbalancer_flavor: m1.medium
   loadbalancer_type: "dedicated"
