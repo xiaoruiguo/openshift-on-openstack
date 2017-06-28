@@ -16,6 +16,7 @@ set -eux
 set -o pipefail
 
 source /usr/local/share/openshift-on-openstack/common_functions.sh
+yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion
 
 # ============================================================================
 # MAIN
@@ -33,3 +34,7 @@ else
     retry yum install -y deltarpm || notify_failure "could not install deltarpm"
     retry yum -y update || notify_failure "could not update RPMs"
 fi
+
+yum -y install NetworkManager
+systemctl enable NetworkManager.service
+systemctl start NetworkManager.service
