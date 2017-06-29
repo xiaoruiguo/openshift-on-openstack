@@ -127,9 +127,8 @@ then
     systemd_docker_disable_storage_setup
 
     systemctl stop docker
-
     docker_set_storage_device $VOLUME_ID
-
+    rm -rf /var/lib/docker/
 #    systemctl enable lvm2-lvmetad
 #    systemctl start lvm2-lvmetad
 
@@ -137,9 +136,9 @@ then
 
     cat /etc/sysconfig/docker-storage
     grep 'sysconfig/docker-storage' /usr/lib/systemd/system/docker.service
-#    sed -i 's/^DEVS/#DEVS/g' /etc/sysconfig/docker-storage-setup
+    sed -i 's/^DEVS/#DEVS/g' /etc/sysconfig/docker-storage-setup
 
-    rm -rf /var/lib/docker/*
+#    rm -rf /var/lib/docker/*
     systemctl restart lvm2-monitor
 #    systemctl start docker
 
